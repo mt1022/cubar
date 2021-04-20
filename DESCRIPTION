@@ -1,13 +1,13 @@
 Package: cubar
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Codon Usage Bias Analysis with R
+Version: 0.0.1
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Hong",
+           family = "Zhang",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
+           email = "murathong@gmail.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: What license it uses
+Description: Fast and flexible functions for codon usage bias analysis.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

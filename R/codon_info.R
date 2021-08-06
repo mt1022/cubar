@@ -1,8 +1,5 @@
-library(Biostrings)
-library(data.table)
-
-codon_table <- function(id_or_name){
-    codon_table <- Biostrings::getGeneticCode(id_or_name, as.data.frame = TRUE)
+codon_table <- function(gcid = '1'){
+    codon_table <- Biostrings::getGeneticCode(gcid, as.data.frame = TRUE)
     data.table::setDT(codon_table, keep.rownames = 'codon')
     data.table::setnames(codon_table, 'AA', 'aa_code')
     codon_table[, amino_acid := Biostrings::AMINO_ACID_CODE[Biostrings::GENETIC_CODE]]

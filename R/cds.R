@@ -1,3 +1,9 @@
+#' Convert CDS to codons
+#'
+#' \code{seq_to_codons} convert a coding sequence to a vector of codons
+#'
+#' @param seq DNAString, or an object that can be coerced to a DNAString
+#' @return a character vector of codons
 seq_to_codons <- function(seq){
     if(class(seq) != 'DNAString'){
         seq <- DNAString(seq)
@@ -11,44 +17,58 @@ seq_to_codons <- function(seq){
 
 #' Quality control of CDS
 #'
-#' \code{qc_cds} perform quality control of CDS sequences by filtering some peculiar sequences
-#' and optionally remove start or stop codons.
+#' \code{qc_cds} performs quality control of CDS sequences by filtering some
+#' peculiar sequences and optionally remove start or stop codons.
 #'
-#' @param cds input CDS sequences
+#' @param seqs input CDS sequences
 #' @return filtered (and trimmed) CDS, DNAStringSet
-qc_cds <- function(cds, min_len = 6, check_len = TRUE, check_start = TRUE,
+qc_cds <- function(seqs, min_len = 6, check_len = TRUE, check_start = TRUE,
                      check_stop = TRUE, check_istop = TRUE,
                      rm_start = TRUE, rm_stop = TRUE, gcid = '1'){
-    gct <- codon_table(gcid)
+    gct <- get_codon_table(gcid)
     stop_codons <- gct[aa_code == '*', codon]
     # if input is RNA sequences, convert to DNA
-    if(class(cds) == 'RNAStringSet') cds <- Biostrings::DNAStringSet(cds)
-    cds <- cds[IRanges::width(cds) >= min_len]
+    if(class(seqs) == 'RNAStringSet') seqs <- Biostrings::DNAStringSet(seqs)
+    seqs <- seqs[IRanges::width(seqs) >= min_len]
     # CDS length is multiple of 3?
     if(check_len){
-        cds <- cds[(IRanges::width(cds) %% 3) == 0]
+        seqs <- seqs[(IRanges::width(seqs) %% 3) == 0]
     }
     # begin with start codon ATG?
     if(check_start){
-        cds <- cds[Biostrings::subseq(cds, 1, 3) == 'ATG']
+        seqs <- seqs[Biostrings::subseq(seqs, 1, 3) == 'ATG']
     }
     # end with a stop codon
     if(check_stop){
-        cds <- cds[Biostrings::subseq(cds, IRanges::width(cds) - 2, IRanges::width(cds)) %in% stop_codons]
+        x <- IRanges::width(seqs)
+        seqs <- seqs[Biostrings::subseq(seqs, x - 2, x) %in% stop_codons]
     }
     # no internal stop codons?
     if(check_istop){
-        w_istop <- sapply(Biostrings::subseq(cds, 1, IRanges::width(cds) - 3), function(x){
-            any(seq_to_codons(x) %in% stop_codons)
-        })
-        cds <- cds[!w_istop]
+        x <- IRanges::width(seqs) - 3
+        w_istop <- sapply(
+            Biostrings::subseq(seqs, 1, x),
+            function(seq){ any(seq_to_codons(seq) %in% stop_codons) })
+        seqs <- seqs[!w_istop]
     }
     # trimming
     if(rm_start){
-        cds <- Biostrings::subseq(cds, 4, IRanges::width(cds))
+        seqs <- Biostrings::subseq(seqs, 4, IRanges::width(seqs))
     }
     if(rm_stop){
-        cds <- Biostrings::subseq(cds, 1, IRanges::width(cds) - 3)
+        seqs <- Biostrings::subseq(seqs, 1, IRanges::width(seqs) - 3)
     }
-    return(cds)
+    return(seqs)
+}
+
+#' Count codon frequencies
+#'
+#' \code{count_codons} tabulate all the 64 codons in input CDSs
+#'
+#' @param seqs CDSs, DNAStringSet
+#' @return matrix of codon (column) frequencies in each CDS (row)
+count_codons <- function(seqs, ...){
+    cf <- Biostrings::trinucleotideFrequency(seqs, step = 3, ...)
+    rownames(cf) <- names(seqs)
+    return(cf)
 }

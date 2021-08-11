@@ -4,14 +4,14 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of cubar is to ...
+The goal of `cubar` is to make codon usage analysis easy using R!
 
 ## Installation
 
-You can install the released version of cubar from [CRAN](https://CRAN.R-project.org) with:
+You can install the latest version of `cubar` with:
 
 ``` r
-install.packages("cubar")
+devtools::install_github('mt1022/cubar', dependencies = TRUE)
 ```
 
 ## Example

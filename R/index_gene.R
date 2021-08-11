@@ -1,16 +1,15 @@
-#' compute ENC
+#' Calculate ENC
 #'
 #' \code{get_enc} computes ENC of each CDS
 #'
 #' @param seqs CDSs, DNAStringSet or object that can be coerced to DNAStringSet
 #' @return vector of ENC values, sequence names are used as vector names
 get_enc <- function(seqs, method = 'X12'){
-    seqs <- DNAStringSet(seqs)
+    seqs <- Biostrings::DNAStringSet(seqs)
     m <- count_codons(seqs)
 
     codon_info <- get_codon_table()
     codon_info <- codon_info[!aa_code == '*']
-    codon_info[, subfam := paste(amino_acid, substr(codon, 1, 2), sep = '_')]
     codon_list <- split(codon_info$codon, codon_info$subfam)
 
     f_cf <- sapply(codon_list, function(x){
@@ -40,3 +39,27 @@ get_enc <- function(seqs, method = 'X12'){
     return(Nc)
 }
 
+#' Calculate CAI
+#'
+#' Calculate Codon Adaptation Index (CAI) or each CDS
+#'
+#' @param seqs CDS sequences
+#' @rscu rscu table containing CAI weight for each codon. This table could be
+#'   generated with `get_rscu` or you can prepare it manually.
+#' @return a vector of CAI values
+#' @import data.table
+get_cai <- function(seqs, rscu){
+    # exclude single codon sub-family
+    rscu <- data.table::as.data.table(rscu)
+    rscu[, ss := .N, by = .(subfam)]
+    rscu <- rscu[ss > 1]
+
+    # codon frequency per CDS
+    seqs <- Biostrings::DNAStringSet(seqs)
+    codon_freq <- count_codons(seqs)
+    codon_freq <- codon_freq[, rscu$codon, drop = FALSE]
+
+    # cai
+    cai <- exp(codon_freq %*% matrix(log(rscu$w_cai)) / rowSums(codon_freq))
+    return(cai[, 1])
+}

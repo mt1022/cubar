@@ -24,3 +24,29 @@ get_rscu <- function(seqs, weight = 1, pseudo_cnt = 1, gcid = '1'){
         w_cai = (cts + pseudo_cnt) / max(cts + pseudo_cnt)), by = .(subfam)]
     return(codon_table[])
 }
+
+show_ac_pairing <- fuction(gcid='1'){
+    codon_table <- get_codon_table(gcid)
+    ca_pairing <- codon_table[]
+}
+
+#' Calculate tRNA w
+#'
+#' \code{get_trna_weight} compute the tRNA weight per codon for TAI calculation.
+#' This weight reflects relative tRNA availability for each codon.
+#'
+#' @param trna_level, named vector of tRNA level, one value for each anticodon.
+#'   vector names are anticodons.
+#' @return data.table of tRNA expression information
+#' @import data.table
+get_trna_weight <- function(tlevel, gcid = '1'){
+    codon_table <- get_codon_table(gcid)
+    codon_table[, anticodon := as.character(Biostrings::reverseComplement(
+        Biostrings::DNAStringSet(codon_table$codon)))]
+    codon_table <- codon_table[aa_code != '*']
+
+
+    codon_table[, ac_level := trna_level[anticodon]]
+    codon_table[is.na(ac_level), ac_level := 0]
+
+}

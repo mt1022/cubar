@@ -31,3 +31,4 @@ library(cubar)
     - w
     - CSC
     - codon selection time at A site
+    - support GLM analysis

@@ -30,7 +30,7 @@ get_rscu <- function(seqs, weight = 1, pseudo_cnt = 1, gcid = '1'){
     return(codon_table[])
 }
 
-show_ca_pairs <- fuction(gcid='1'){
+show_ca_pairs <- function(gcid='1', plot = TRUE){
     codon_table <- get_codon_table(gcid)
     codon_table[, anticodon := as.character(rev_comp(codon_table$codon))]
     codon_table[, c('codon_b1', 'codon_b2', 'codon_b3') :=
@@ -44,7 +44,7 @@ show_ca_pairs <- fuction(gcid='1'){
         codon_b3 = factor(codon_b3, levels = rev(bases))
     )]
     codon_table <- codon_table[order(codon_b1, codon_b2, codon_b3)]
-    ca_pairing <- codon_table[, {
+    ca_pairs <- codon_table[, {
         wc <- data.table::data.table(
             type = 'WC',
             base_codon = codon_b3[1:3],
@@ -66,30 +66,36 @@ show_ca_pairs <- fuction(gcid='1'){
         rbind(wc, ih, gu)
     }, by = .(codon_b1, codon_b2)]
     stop_codons <- codon_table[aa_code == '*', codon]
-    ca_pairing <- ca_pairing[!codon %in% stop_codons]
-    ca_pairing <- ca_pairing[!anticodon %in% as.character(rev_comp(stop_codons))]
-    ca_pairing <- ca_pairing[!(codon == 'ATG' & anticodon == 'TAT')]
+    ca_pairs <- ca_pairs[!codon %in% stop_codons]
+    ca_pairs <- ca_pairs[!anticodon %in% as.character(rev_comp(stop_codons))]
+    ca_pairs <- ca_pairs[!(codon == 'ATG' & anticodon == 'TAT')]
 
-    ggplot2::ggplot(codon_table, ggplot2::aes(y = .data$codon_b3)) +
-        ggplot2::geom_segment(
-            data = ca_pairing,
-            mapping = ggplot2::aes(
-                x = 1, xend = 2,
-                y = base_codon, yend = base_anti,
-                color = type)) +
-        ggplot2::geom_label(ggplot2::aes(x = 1, label = .data$codon)) +
-        ggplot2::geom_label(ggplot2::aes(x = 2, label = .data$anticodon)) +
-        ggplot2::geom_label(ggplot2::aes(x = 0.4, label = .data$aa_code)) +
-        ggplot2::scale_color_brewer(palette = 'Dark2') +
-        ggplot2::facet_grid(codon_b2 ~ codon_b1, scales = 'free_y') +
-        ggplot2::scale_x_continuous(
-            limits = c(0.15, 2.5), breaks = c(0.4, 1, 2),
-            labels = c('AA', 'Codon', 'Anti')) +
-        ggplot2::labs(x = NULL, y = NULL, color = NULL) +
-        ggplot2::theme(axis.text.y = ggplot2::element_blank(),
-                       axis.ticks.y = ggplot2::element_blank(),
-                       axis.line.y = ggplot2::element_blank(),
-                       strip.text = ggplot2::element_blank())
+    if(plot){
+        ggplot2::ggplot(codon_table, ggplot2::aes(y = .data$codon_b3)) +
+            ggplot2::geom_segment(
+                data = ca_pairs,
+                mapping = ggplot2::aes(
+                    x = 1, xend = 2,
+                    y = base_codon, yend = base_anti,
+                    color = type)) +
+            ggplot2::geom_label(ggplot2::aes(x = 1, label = .data$codon)) +
+            ggplot2::geom_label(ggplot2::aes(x = 2, label = .data$anticodon)) +
+            ggplot2::geom_label(ggplot2::aes(x = 0.4, label = .data$aa_code)) +
+            ggplot2::scale_color_brewer(palette = 'Dark2') +
+            ggplot2::facet_grid(codon_b2 ~ codon_b1, scales = 'free_y') +
+            ggplot2::scale_x_continuous(
+                limits = c(0.15, 2.5), breaks = c(0.4, 1, 2),
+                labels = c('AA', 'Codon', 'Anti')) +
+            ggplot2::labs(x = NULL, y = NULL, color = NULL) +
+            ggplot2::theme(axis.text.y = ggplot2::element_blank(),
+                           axis.ticks.y = ggplot2::element_blank(),
+                           axis.line.y = ggplot2::element_blank(),
+                           strip.text = ggplot2::element_blank())
+        # return silently
+        invisible(ca_pairs[, .(type, codon, anticodon)])
+    }else{
+        return(ca_pairs[, .(type, codon, anticodon)])
+    }
 }
 
 #' Calculate tRNA w
@@ -97,17 +103,30 @@ show_ca_pairs <- fuction(gcid='1'){
 #' \code{get_trna_weight} compute the tRNA weight per codon for TAI calculation.
 #' This weight reflects relative tRNA availability for each codon.
 #'
+#' TODO test
+#'
 #' @param trna_level, named vector of tRNA level, one value for each anticodon.
 #'   vector names are anticodons.
 #' @return data.table of tRNA expression information
-get_trna_weight <- function(tlevel, gcid = '1'){
+get_trna_weight <- function(trna_level, gcid = '1', s = list(
+    WC=0, IU=0, IC=0.4659, IA=0.9075, GU=0.7861, UG=0.6295)){
     codon_table <- get_codon_table(gcid)
     codon_table[, anticodon := as.character(Biostrings::reverseComplement(
         Biostrings::DNAStringSet(codon_table$codon)))]
     codon_table <- codon_table[aa_code != '*']
 
-
     codon_table[, ac_level := trna_level[anticodon]]
     codon_table[is.na(ac_level), ac_level := 0]
 
+    ca_pairs <- show_ca_pairs(plot = FALSE)
+    s <- stack(s)
+    ca_pairs[s, penality := i.values, on = .(type = ind)]
+    ca_pairs <- ca_pairs[anticodon %in% names(trna_level)]
+    ca_pairs[, ac_level := trna_level[anticodon]]
+    dtt_W <- ca_pairs[, .(W = sum(ac_level * (1 - penality))), by = .(codon)]
+    codon_table[dtt_W, W := i.W, on = .(codon)]
+    codon_table[, w := W/max(W)]
+    mean_w <- mean(codon_table$w, na.rm = TRUE)
+    codon_table[is.na(w), w := mean_w]
+    return(codon_table)
 }

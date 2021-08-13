@@ -62,3 +62,23 @@ get_cai <- function(seqs, rscu){
     cai <- exp(codon_freq %*% matrix(log(rscu$w_cai)) / rowSums(codon_freq))
     return(cai[, 1])
 }
+
+#' Calculate TAI
+#'
+#' Calculate tRNA Adaptation Index (TAI) or each CDS
+#'
+#' TODO test
+#'
+#' @param seqs CDS sequences
+#' @trna_w tRNA weight for each codon, can be generated with `get_trna_weight`.
+#' @return a vector of TAI values
+get_tai <- function(seqs, trna_w){
+    # codon frequency per CDS
+    seqs <- Biostrings::DNAStringSet(seqs)
+    codon_freq <- count_codons(seqs)
+    codon_freq <- codon_freq[, trna_w$codon, drop = FALSE]
+
+    # cai
+    tai <- exp(codon_freq %*% matrix(log(trna_w$w)) / rowSums(codon_freq))
+    return(tai[, 1])
+}

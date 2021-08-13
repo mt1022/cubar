@@ -1,3 +1,8 @@
+#' Reverse complement
+rev_comp <- function(seqs){
+    Biostrings::reverseComplement(Biostrings::DNAStringSet(seqs))
+}
+
 #' Calculate RSCU
 #'
 #' \code{get_rscu} returns the RSCU value of codons
@@ -10,6 +15,7 @@
 #' @gcid ID or name of genetic code. Support for non-standard genetic code will
 #' be added in the future.
 #' @return a data.table
+#' @importFrom rlang .data
 #' @references
 get_rscu <- function(seqs, weight = 1, pseudo_cnt = 1, gcid = '1'){
     seqs <- Biostrings::DNAStringSet(seqs)
@@ -24,9 +30,66 @@ get_rscu <- function(seqs, weight = 1, pseudo_cnt = 1, gcid = '1'){
     return(codon_table[])
 }
 
-show_ac_pairing <- fuction(gcid='1'){
+show_ca_pairs <- fuction(gcid='1'){
     codon_table <- get_codon_table(gcid)
-    ca_pairing <- codon_table[]
+    codon_table[, anticodon := as.character(rev_comp(codon_table$codon))]
+    codon_table[, c('codon_b1', 'codon_b2', 'codon_b3') :=
+                    data.table::tstrsplit(codon, '')]
+    bases <- c('T', 'C', 'A', 'G')
+    codon_table[, codon_b1 := factor(codon_b1, levels = bases)]
+    codon_table[, ]
+    codon_table[, `:=`(
+        codon_b1 = factor(codon_b1, levels = bases),
+        codon_b2 = factor(codon_b2, levels = bases),
+        codon_b3 = factor(codon_b3, levels = rev(bases))
+    )]
+    codon_table <- codon_table[order(codon_b1, codon_b2, codon_b3)]
+    ca_pairing <- codon_table[, {
+        wc <- data.table::data.table(
+            type = 'WC',
+            base_codon = codon_b3[1:3],
+            base_anti = codon_b3[c(1:3)],
+            codon = codon[1:3], anticodon = anticodon[1:3])
+        # type: anticodon base + corresponding codon base
+        # note: base_anti here is used for visualization, not referring to 1st
+        #   base of anticodon
+        ih <- data.table::data.table(
+            type = c('IU', 'IC', 'IA'),
+            base_codon = codon_b3[c(4, 3, 2)],
+            base_anti = codon_b3[c(4, 4, 4)],
+            codon = codon[c(4, 3, 2)], anticodon = anticodon[4])
+        gu <- data.table::data.table(
+            type = c('GU', 'UG'),
+            base_codon = codon_b3[c(4, 1)],
+            base_anti = codon_b3[c(3, 2)],
+            codon = codon[c(4, 1)], anticodon = anticodon[c(3, 2)])
+        rbind(wc, ih, gu)
+    }, by = .(codon_b1, codon_b2)]
+    stop_codons <- codon_table[aa_code == '*', codon]
+    ca_pairing <- ca_pairing[!codon %in% stop_codons]
+    ca_pairing <- ca_pairing[!anticodon %in% as.character(rev_comp(stop_codons))]
+    ca_pairing <- ca_pairing[!(codon == 'ATG' & anticodon == 'TAT')]
+
+    ggplot2::ggplot(codon_table, ggplot2::aes(y = .data$codon_b3)) +
+        ggplot2::geom_segment(
+            data = ca_pairing,
+            mapping = ggplot2::aes(
+                x = 1, xend = 2,
+                y = base_codon, yend = base_anti,
+                color = type)) +
+        ggplot2::geom_label(ggplot2::aes(x = 1, label = .data$codon)) +
+        ggplot2::geom_label(ggplot2::aes(x = 2, label = .data$anticodon)) +
+        ggplot2::geom_label(ggplot2::aes(x = 0.4, label = .data$aa_code)) +
+        ggplot2::scale_color_brewer(palette = 'Dark2') +
+        ggplot2::facet_grid(codon_b2 ~ codon_b1, scales = 'free_y') +
+        ggplot2::scale_x_continuous(
+            limits = c(0.15, 2.5), breaks = c(0.4, 1, 2),
+            labels = c('AA', 'Codon', 'Anti')) +
+        ggplot2::labs(x = NULL, y = NULL, color = NULL) +
+        ggplot2::theme(axis.text.y = ggplot2::element_blank(),
+                       axis.ticks.y = ggplot2::element_blank(),
+                       axis.line.y = ggplot2::element_blank(),
+                       strip.text = ggplot2::element_blank())
 }
 
 #' Calculate tRNA w

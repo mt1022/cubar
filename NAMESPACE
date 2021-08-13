@@ -3,3 +3,4 @@ exportPattern("^[^\\.]")
 
 # data.table
 importFrom(data.table, .N, .I, ':=')
+importFrom(rlang, .data)

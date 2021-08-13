@@ -10,7 +10,6 @@
 #' @gcid ID or name of genetic code. Support for non-standard genetic code will
 #' be added in the future.
 #' @return a data.table
-#' @import data.table
 #' @references
 get_rscu <- function(seqs, weight = 1, pseudo_cnt = 1, gcid = '1'){
     seqs <- Biostrings::DNAStringSet(seqs)
@@ -38,7 +37,6 @@ show_ac_pairing <- fuction(gcid='1'){
 #' @param trna_level, named vector of tRNA level, one value for each anticodon.
 #'   vector names are anticodons.
 #' @return data.table of tRNA expression information
-#' @import data.table
 get_trna_weight <- function(tlevel, gcid = '1'){
     codon_table <- get_codon_table(gcid)
     codon_table[, anticodon := as.character(Biostrings::reverseComplement(

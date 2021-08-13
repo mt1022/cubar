@@ -1,5 +1,4 @@
 #' get codon information
-#' @import data.table
 get_codon_table <- function(gcid = '1'){
     codon_table <- Biostrings::getGeneticCode(gcid, as.data.frame = TRUE)
     data.table::setDT(codon_table, keep.rownames = 'codon')

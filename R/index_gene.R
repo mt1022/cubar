@@ -47,7 +47,6 @@ get_enc <- function(seqs, method = 'X12'){
 #' @rscu rscu table containing CAI weight for each codon. This table could be
 #'   generated with `get_rscu` or you can prepare it manually.
 #' @return a vector of CAI values
-#' @import data.table
 get_cai <- function(seqs, rscu){
     # exclude single codon sub-family
     rscu <- data.table::as.data.table(rscu)

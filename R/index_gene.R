@@ -82,3 +82,22 @@ get_tai <- function(seqs, trna_w){
     tai <- exp(codon_freq %*% matrix(log(trna_w$w)) / rowSums(codon_freq))
     return(tai[, 1])
 }
+
+#' Calculate GC4d
+#'
+#' Calculate GC content at synonymous position of codons (using four-fold
+#' degenerate sites only)
+get_gc4d <- function(seqs, gcid = '1'){
+    seqs <- Biostrings::DNAStringSet(seqs)
+    codon_freq <- count_codons(seqs)
+
+    codon_table <- get_codon_table(gcid)
+    codon_table[, ss := .N, by = .(subfam)]
+    codon_table <- codon_table[ss == 4]
+    codon_table[, gc3 := substr(codon, 3, 3) %in% c('G', 'C')]
+
+    codon_freq <- codon_freq[, codon_table$codon, drop = FALSE]
+    n <- rowSums(codon_freq)
+    gc <- rowSums(codon_freq[, codon_table[, codon[gc3 == T]], drop = FALSE])
+    return(gc/n)
+}

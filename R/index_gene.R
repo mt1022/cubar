@@ -21,13 +21,16 @@ get_enc <- function(seqs, method = 'X12'){
     })
     n_cf <- sapply(codon_list, function(x){
         mx <- m[, x, drop = FALSE]
-        return(rowSums(mx))
+        return(rowSums(mx + 1))
+        # return(rowSums(mx))
     })
+
     if(length(seqs) == 1){
         f_cf <- t(f_cf)
         n_cf <- t(n_cf)
     }
     ss <- lengths(codon_list)
+
     N_single <- sum(ss == 1)
     N_double <- sum(ss == 2) * rowSums(n_cf[, ss == 2, drop = F]) /
         rowSums(n_cf[, ss == 2, drop = F] * f_cf[, ss == 2, drop = F])
@@ -36,6 +39,7 @@ get_enc <- function(seqs, method = 'X12'){
     N_quad <- sum(ss == 4) * rowSums(n_cf[, ss == 4, drop = F]) /
         rowSums(n_cf[, ss == 4, drop = F] * f_cf[, ss == 4, drop = F])
     Nc <- N_single + N_double + N_triple + N_quad
+    # print(rowSums(1/f_cf))
     return(Nc)
 }
 

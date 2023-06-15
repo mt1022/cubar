@@ -24,11 +24,11 @@ library(cubar)
 ```
 
 ### TODO
-- gene specific index
-    - ITE
-    - codon stabilization index
-- codon specific index
-    - w
-    - CSC
-    - codon selection time at A site
-    - support GLM analysis
+- [ ] gene specific index
+    - [ ] ITE
+    - [ ] codon stabilization index
+- [ ] codon specific index
+    - [ ] w
+    - [ ] CSC
+    - [ ] codon selection time at A site
+    - [ ] support GLM analysis

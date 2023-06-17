@@ -130,3 +130,10 @@ get_trna_weight <- function(trna_level, gcid = '1', s = list(
     codon_table[is.na(w), w := mean_w]
     return(codon_table)
 }
+
+#' Determine optimal codons
+#'
+#' @return data.table of optimal codons
+get_optimal_codons <- function(seqs, gcid = '1'){
+
+}

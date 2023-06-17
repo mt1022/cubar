@@ -20,3 +20,7 @@ Imports:
     rlang (>= 0.4.11)
 Depends: 
     R (>= 4.1.0)
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

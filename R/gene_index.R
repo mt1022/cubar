@@ -69,7 +69,7 @@ get_cai <- function(seqs, rscu){
 
 #' Calculate TAI
 #'
-#' Calculate tRNA Adaptation Index (TAI) or each CDS
+#' Calculate tRNA Adaptation Index (TAI) of each CDS
 #'
 #' TODO test
 #'
@@ -104,4 +104,11 @@ get_gc4d <- function(seqs, gcid = '1'){
     n <- rowSums(codon_freq)
     gc <- rowSums(codon_freq[, codon_table[, codon[gc3 == T]], drop = FALSE])
     return(gc/n)
+}
+
+#' Calculate Fop
+#'
+#' Calculate Fractional of optimal codons (Fop) of each CDS
+get_fop <- function(seqs, gcid = '1'){
+
 }

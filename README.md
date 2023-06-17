@@ -26,4 +26,5 @@ devtools::install_github('mt1022/cubar', dependencies = TRUE)
     - [ ] CSC
     - [ ] Codon selection time at A site
     - [ ] Determine optimal codons
+- [ ] Support custom codon tables
 - [ ] Documentation

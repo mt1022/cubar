@@ -9,3 +9,7 @@ get_codon_table <- function(gcid = '1'){
     return(codon_table[, .(aa_code, amino_acid, codon, subfam)])
 }
 
+#' show available codon tables
+show_codon_tables <- function(){
+    cat(sprintf('%2s: %s', GENETIC_CODE_TABLE$id, GENETIC_CODE_TABLE$name), sep = '\n')
+}

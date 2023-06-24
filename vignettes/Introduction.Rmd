@@ -17,9 +17,30 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+library(Biostrings)
+library(data.table)
+library(ggplot2)
 library(cubar)
 ```
 
 ```{r}
+# example dataset
+yeast_cds
+
+# get codon frequency
+yeast_cf <- count_codons(yeast_cds)
+
+# get codon table
+ctab <- get_codon_table('1')
+
+# calculate optimal codons
+cf_by_fam <- lapply(split(ctab$codon, f = ctab$subfam), \(x) yeast_cf[, x, drop = FALSE])
+# exclude subfamily with a single codon
+cf_by_fam <- Filter(\(x) ncol(x) > 1, cf_by_fam)
+
+x <- cf_by_fam$Arg_AG
+
+fit <- glm(cbind(AGA, AGG) ~ AGA, data = as.data.frame(x), family = 'binomial')
+summary(fit)
 
 ```

@@ -133,7 +133,33 @@ get_trna_weight <- function(trna_level, gcid = '1', s = list(
 
 #' Determine optimal codons
 #'
+#' \code{get_toptimal_codons} determine optimal codon of each codon family with binomial regression.
+#'
+#' @param seqs CDS sequences of all protein-coding genes. One for each gene.
+#' @param gcid ID of genetic code used by \code{seqs}.
 #' @return data.table of optimal codons
 get_optimal_codons <- function(seqs, gcid = '1'){
-
+    enc <- get_enc(seqs, gcid = gcid)
+    ctab <- get_codon_table(gcid = gcid)
+    cf_all <- count_codons(seqs)
+    binreg <- lapply(split(ctab$codon, f = ctab$subfam), function(x){
+        cf <- cf_all[, x, drop = FALSE]
+        if(ncol(cf) == 1){
+            data.table::data.table(
+                codon = colnames(cf), coef = 0, se = 0, zvalue = 0, pvalue = 0)
+        }else{
+            total <- rowSums(cf)
+            res <- apply(cf, 2, function(x){
+                x
+                fit <- glm(cbind(x, total - x) ~ enc, family = 'binomial')
+                summary(fit)$coefficients[-1, ]
+            })
+            res <- data.table::as.data.table(
+                as.data.frame(t(res)), keep.rownames = 'codon')
+            data.table::setnames(res, c('codon', 'coef', 'se', 'zvalue', 'pvalue'))
+        }
+    })
+    bingreg <- data.table::rbindlist(binreg, idcol = 'subfam')
+    bingreg <- ctab[bingreg, on = .(codon, subfam)]
+    return(bingreg)
 }

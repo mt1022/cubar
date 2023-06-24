@@ -108,7 +108,10 @@ get_gc4d <- function(seqs, gcid = '1'){
 
 #' Calculate Fop
 #'
-#' Calculate Fractional of optimal codons (Fop) of each CDS
+#' Calculate the fraction of optimal codons (Fop) of each CDS
 get_fop <- function(seqs, gcid = '1'){
-
+    cf <- count_codons(seqs)
+    optimal_codons <- get_optimal_codons(seqs, gcid = gcid)
+    op <- optimal_codons[coef > 0 & pvalue < 0.001, codon]
+    rowSums(cf[, op]) / rowSums(cf)
 }

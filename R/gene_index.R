@@ -4,11 +4,11 @@
 #'
 #' @param seqs CDSs, DNAStringSet or object that can be coerced to DNAStringSet
 #' @return vector of ENC values, sequence names are used as vector names
-get_enc <- function(seqs, method = 'X12'){
+get_enc <- function(seqs, gcid = '1', method = 'X12'){
     seqs <- Biostrings::DNAStringSet(seqs)
     m <- count_codons(seqs)
 
-    codon_info <- get_codon_table()
+    codon_info <- get_codon_table(gcid)
     codon_info <- codon_info[!aa_code == '*']
     codon_list <- split(codon_info$codon, codon_info$subfam)
 

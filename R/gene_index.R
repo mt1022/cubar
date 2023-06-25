@@ -4,25 +4,25 @@
 #'
 #' @param seqs CDSs, DNAStringSet or object that can be coerced to DNAStringSet
 #' @return vector of ENC values, sequence names are used as vector names
-get_enc <- function(seqs, gcid = '1', method = 'X12'){
-    seqs <- Biostrings::DNAStringSet(seqs)
-    m <- count_codons(seqs)
+get_enc <- function(cf, codon_table, method = 'X12'){
+    cf <- count_codons(seqs)
+    if(missing(codon_table)){
+        codon_table <- get_codon_table(gcid = '1')
+    }
 
-    codon_info <- get_codon_table(gcid)
-    codon_info <- codon_info[!aa_code == '*']
-    codon_list <- split(codon_info$codon, codon_info$subfam)
+    codon_table <- codon_table[!aa_code == '*']
+    codon_list <- split(codon_table$codon, codon_table$subfam)
 
     f_cf <- sapply(codon_list, function(x){
-        mx <- m[, x, drop = FALSE]
+        mx <- cf[, x, drop = FALSE]
         n <- rowSums(mx)
         # p with pseudo count correction
         p <- (mx + 1) / (n + ncol(mx))
         return(rowSums(p^2))
     })
     n_cf <- sapply(codon_list, function(x){
-        mx <- m[, x, drop = FALSE]
+        mx <- cf[, x, drop = FALSE]
         return(rowSums(mx + 1))
-        # return(rowSums(mx))
     })
 
     if(length(seqs) == 1){
@@ -39,7 +39,7 @@ get_enc <- function(seqs, gcid = '1', method = 'X12'){
     N_quad <- sum(ss == 4) * rowSums(n_cf[, ss == 4, drop = F]) /
         rowSums(n_cf[, ss == 4, drop = F] * f_cf[, ss == 4, drop = F])
     Nc <- N_single + N_double + N_triple + N_quad
-    # print(rowSums(1/f_cf))
+
     return(Nc)
 }
 
@@ -51,19 +51,17 @@ get_enc <- function(seqs, gcid = '1', method = 'X12'){
 #' @rscu rscu table containing CAI weight for each codon. This table could be
 #'   generated with `get_rscu` or you can prepare it manually.
 #' @return a vector of CAI values
-get_cai <- function(seqs, rscu){
+get_cai <- function(cf, rscu){
     # exclude single codon sub-family
     rscu <- data.table::as.data.table(rscu)
     rscu[, ss := .N, by = .(subfam)]
     rscu <- rscu[ss > 1]
 
     # codon frequency per CDS
-    seqs <- Biostrings::DNAStringSet(seqs)
-    codon_freq <- count_codons(seqs)
-    codon_freq <- codon_freq[, rscu$codon, drop = FALSE]
+    cf <- cf[, rscu$codon, drop = FALSE]
 
     # cai
-    cai <- exp(codon_freq %*% matrix(log(rscu$w_cai)) / rowSums(codon_freq))
+    cai <- exp(cf %*% matrix(log(rscu$w_cai)) / rowSums(cf))
     return(cai[, 1])
 }
 
@@ -76,14 +74,12 @@ get_cai <- function(seqs, rscu){
 #' @param seqs CDS sequences
 #' @trna_w tRNA weight for each codon, can be generated with `get_trna_weight`.
 #' @return a vector of TAI values
-get_tai <- function(seqs, trna_w){
+get_tai <- function(cf, trna_w){
     # codon frequency per CDS
-    seqs <- Biostrings::DNAStringSet(seqs)
-    codon_freq <- count_codons(seqs)
-    codon_freq <- codon_freq[, trna_w$codon, drop = FALSE]
+    cf <- cf[, trna_w$codon, drop = FALSE]
 
     # cai
-    tai <- exp(codon_freq %*% matrix(log(trna_w$w)) / rowSums(codon_freq))
+    tai <- exp(cf %*% matrix(log(trna_w$w)) / rowSums(cf))
     return(tai[, 1])
 }
 
@@ -91,18 +87,17 @@ get_tai <- function(seqs, trna_w){
 #'
 #' Calculate GC content at synonymous position of codons (using four-fold
 #' degenerate sites only)
-get_gc4d <- function(seqs, gcid = '1'){
-    seqs <- Biostrings::DNAStringSet(seqs)
-    codon_freq <- count_codons(seqs)
-
-    codon_table <- get_codon_table(gcid)
+get_gc4d <- function(cf, codon_table){
+    if(missing(codon_table)){
+        codon_table <- get_codon_table(gcid =)
+    }
     codon_table[, ss := .N, by = .(subfam)]
     codon_table <- codon_table[ss == 4]
     codon_table[, gc3 := substr(codon, 3, 3) %in% c('G', 'C')]
 
-    codon_freq <- codon_freq[, codon_table$codon, drop = FALSE]
-    n <- rowSums(codon_freq)
-    gc <- rowSums(codon_freq[, codon_table[, codon[gc3 == T]], drop = FALSE])
+    cf <- cf[, codon_table$codon, drop = FALSE]
+    n <- rowSums(cf)
+    gc <- rowSums(cf[, codon_table[, codon[gc3 == T]], drop = FALSE])
     return(gc/n)
 }
 

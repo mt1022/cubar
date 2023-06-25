@@ -46,3 +46,12 @@ optimal_codons <- get_optimal_codons(yeast_cds)
 fop <- get_fop(yeast_cds)
 hist(fop)
 ```
+
+```{r testing}
+f <- function(a, b){
+    if(missing(b)){
+        b <- 20
+    }
+    return(a + b)
+}
+```

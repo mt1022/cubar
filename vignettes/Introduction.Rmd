@@ -26,6 +26,11 @@ library(ggplot2)
 devtools::load_all()
 ```
 
+Useful functions
+```{r}
+usethis::use_data(yeast_half_life)
+```
+
 ```{r}
 # example dataset
 yeast_cds
@@ -54,4 +59,33 @@ f <- function(a, b){
     }
     return(a + b)
 }
+```
+
+Codon stabilizaiton coefficients
+Yeast mRNA half life data from:
+> Presnyak V, Alhusaini N, Chen YH, et al. Codon optimality is a major determinant of mRNA stability. Cell. 2015;160(6):1111-1124. doi:10.1016/j.cell.2015.02.029
+
+```{r}
+library(readxl)
+library(dplyr)
+library(janitor)
+yeast_hf <- read_excel('./tmp/Presnyak2015_tableS1_yeast_rna_half_life.xls')
+yeast_hf <- clean_names(yeast_hf)
+yeast_hf <- yeast_hf |> select(gene_id, gene_name, half_life = total_half_life)
+
+yeast_cf <- count_codons(yeast_cds)
+yeast_cf <- yeast_cf[, !colnames(yeast_cf) %in% c('TAA', 'TAG', 'TGA')]
+yeast_cp <- yeast_cf / rowSums(yeast_cf)
+
+common_genes <- intersect(rownames(yeast_cp), yeast_hf$gene_id)
+yeast_hf <- yeast_hf |> filter(gene_id %in% common_genes)
+yeast_cp <- yeast_cp[yeast_hf$gene_id,]
+
+csc <- apply(yeast_cp, 2, function(prop){
+    res <- cor.test(prop, yeast_hf$half_life)
+    c(corr = res$estimate, pvalue = res$p.value)
+})
+csc <- data.table(t(csc), keep.rownames = TRUE)
+setnames(csc, c('codon', 'csc', 'pvalue'))
+
 ```

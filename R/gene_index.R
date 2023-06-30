@@ -43,6 +43,7 @@ get_enc <- function(cf, codon_table, method = 'X12'){
     return(Nc)
 }
 
+
 #' Calculate CAI
 #'
 #' Calculate Codon Adaptation Index (CAI) or each CDS
@@ -65,6 +66,7 @@ get_cai <- function(cf, rscu){
     return(cai[, 1])
 }
 
+
 #' Calculate TAI
 #'
 #' Calculate tRNA Adaptation Index (TAI) of each CDS
@@ -82,6 +84,7 @@ get_tai <- function(cf, trna_w){
     tai <- exp(cf %*% matrix(log(trna_w$w)) / rowSums(cf))
     return(tai[, 1])
 }
+
 
 #' Calculate GC4d
 #'
@@ -101,6 +104,7 @@ get_gc4d <- function(cf, codon_table){
     return(gc/n)
 }
 
+
 #' Calculate Fop
 #'
 #' Calculate the fraction of optimal codons (Fop) of each CDS
@@ -109,4 +113,16 @@ get_fop <- function(seqs, gcid = '1'){
     optimal_codons <- get_optimal_codons(seqs, gcid = gcid)
     op <- optimal_codons[coef > 0 & pvalue < 0.001, codon]
     rowSums(cf[, op]) / rowSums(cf)
+}
+
+
+#' Calculate CSCg
+#'
+#' Calculate mean CSC of each CDS
+get_cscg <- function(seqs, csc){
+    cf <- count_codons(seqs)
+    cf <- cf[, csc$codon]
+    cp <- cf / rowSums(cf)
+    cscg <- cp %*% as.matrix(csc$csc)
+    setNames(cscg[, 1], rownames(cscg))
 }

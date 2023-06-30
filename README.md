@@ -20,11 +20,11 @@ devtools::install_github('mt1022/cubar', dependencies = TRUE)
 
 ### TODO
 - [ ] Gene-specific index
-    - [ ] Codon stabilization index
+    - [x] Mean Codon stabilization coeffcient (CSCg)
 - [ ] Codon weights
     - [x] w for TAI
-    - [ ] CSC (collect mRNA half lives for model organisms)
+    - [x] CSC
     - [ ] Codon selection time at A site
     - [x] Determine optimal codons
-- [ ] Support custom codon tables
+- [x] Support custom codon tables
 - [ ] Documentation

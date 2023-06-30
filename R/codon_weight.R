@@ -3,6 +3,7 @@ rev_comp <- function(seqs){
     Biostrings::reverseComplement(Biostrings::DNAStringSet(seqs))
 }
 
+
 #' Calculate RSCU
 #'
 #' \code{get_rscu} returns the RSCU value of codons
@@ -29,6 +30,7 @@ get_rscu <- function(seqs, weight = 1, pseudo_cnt = 1, gcid = '1'){
         w_cai = (cts + pseudo_cnt) / max(cts + pseudo_cnt)), by = .(subfam)]
     return(codon_table[])
 }
+
 
 show_ca_pairs <- function(gcid='1', plot = TRUE){
     codon_table <- get_codon_table(gcid)
@@ -98,6 +100,7 @@ show_ca_pairs <- function(gcid='1', plot = TRUE){
     }
 }
 
+
 #' Calculate tRNA w
 #'
 #' \code{get_trna_weight} compute the tRNA weight per codon for TAI calculation.
@@ -131,6 +134,7 @@ get_trna_weight <- function(trna_level, gcid = '1', s = list(
     return(codon_table)
 }
 
+
 #' Determine optimal codons
 #'
 #' \code{get_toptimal_codons} determine optimal codon of each codon family with binomial regression.
@@ -142,6 +146,7 @@ get_optimal_codons <- function(seqs, gcid = '1'){
     enc <- get_enc(seqs, gcid = gcid)
     ctab <- get_codon_table(gcid = gcid)
     cf_all <- count_codons(seqs)
+    # regression analysis for each codon sub-family
     binreg <- lapply(split(ctab$codon, f = ctab$subfam), function(x){
         cf <- cf_all[, x, drop = FALSE]
         if(ncol(cf) == 1){
@@ -162,4 +167,31 @@ get_optimal_codons <- function(seqs, gcid = '1'){
     bingreg <- data.table::rbindlist(binreg, idcol = 'subfam')
     bingreg <- ctab[bingreg, on = .(codon, subfam)]
     return(bingreg)
+}
+
+#' Calculate Codon Stabilization Coefficient
+#'
+#' \code{get_csc} calculate codon occurrence to mRNA stability correlation coefficients (Default to Pearson's).
+#'
+#' @param seqs CDS sequences of all protein-coding genes. One for each gene.
+#' @param gcid ID of genetic code used by \code{seqs}
+#' @param half_life data.frame of mRNA half life (gene_id & half_life are column names)
+#' @return data.table of optimal codons
+get_csc <- function(seqs, gcid, half_life, cor_method = 'pearson'){
+    codon_table <-get_codon_table(gcid = gcid)
+    non_stop_codons <- codon_table[aa_code != '*', codon]
+    cf <- count_codons(seqs)
+
+    common_genes <- intersect(half_life$gene_id, rownames(cf))
+    half_life <- half_life[half_life$gene_id %in% common_genes, ]
+    cf <- cf[half_life$gene_id, non_stop_codons]
+    cp <- cf / rowSums(cf)  # codon proportions
+
+    csc <- apply(cp, 2, function(prop){
+        res <- cor.test(prop, half_life$half_life, method = cor_method)
+        c(corr = res$estimate, pvalue = res$p.value)
+    })
+    csc <- data.table::data.table(t(csc), keep.rownames = TRUE)
+    data.table::setnames(csc, c('codon', 'csc', 'pvalue'))
+    return(csc)
 }

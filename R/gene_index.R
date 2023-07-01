@@ -2,14 +2,10 @@
 #'
 #' \code{get_enc} computes ENC of each CDS
 #'
-#' @param seqs CDSs, DNAStringSet or object that can be coerced to DNAStringSet
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @param codon_table codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @return vector of ENC values, sequence names are used as vector names
-get_enc <- function(cf, codon_table, method = 'X12'){
-    cf <- count_codons(seqs)
-    if(missing(codon_table)){
-        codon_table <- get_codon_table(gcid = '1')
-    }
-
+get_enc <- function(cf, codon_table = get_codon_table()){
     codon_table <- codon_table[!aa_code == '*']
     codon_list <- split(codon_table$codon, codon_table$subfam)
 
@@ -25,7 +21,7 @@ get_enc <- function(cf, codon_table, method = 'X12'){
         return(rowSums(mx + 1))
     })
 
-    if(length(seqs) == 1){
+    if(nrow(cf) == 1){
         f_cf <- t(f_cf)
         n_cf <- t(n_cf)
     }
@@ -46,21 +42,19 @@ get_enc <- function(cf, codon_table, method = 'X12'){
 
 #' Calculate CAI
 #'
-#' Calculate Codon Adaptation Index (CAI) or each CDS
+#' \code{get_cai} calculates Codon Adaptation Index (CAI) of each input CDS
 #'
-#' @param seqs CDS sequences
-#' @rscu rscu table containing CAI weight for each codon. This table could be
-#'   generated with `get_rscu` or you can prepare it manually.
-#' @return a vector of CAI values
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @param rscu rscu table containing CAI weight for each codon. This table could be
+#'   generated with `est_rscu` or prepared manually.
+#' @returns a named vector of CAI values
 get_cai <- function(cf, rscu){
     # exclude single codon sub-family
     rscu <- data.table::as.data.table(rscu)
     rscu[, ss := .N, by = .(subfam)]
     rscu <- rscu[ss > 1]
-
     # codon frequency per CDS
     cf <- cf[, rscu$codon, drop = FALSE]
-
     # cai
     cai <- exp(cf %*% matrix(log(rscu$w_cai)) / rowSums(cf))
     return(cai[, 1])
@@ -69,13 +63,11 @@ get_cai <- function(cf, rscu){
 
 #' Calculate TAI
 #'
-#' Calculate tRNA Adaptation Index (TAI) of each CDS
+#' \code{get_tai} calculates tRNA Adaptation Index (TAI) of each CDS
 #'
-#' TODO test
-#'
-#' @param seqs CDS sequences
-#' @trna_w tRNA weight for each codon, can be generated with `get_trna_weight`.
-#' @return a vector of TAI values
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @param trna_w tRNA weight for each codon, can be generated with `est_trna_weight()`.
+#' @returns a named vector of TAI values
 get_tai <- function(cf, trna_w){
     # codon frequency per CDS
     cf <- cf[, trna_w$codon, drop = FALSE]
@@ -86,10 +78,13 @@ get_tai <- function(cf, trna_w){
 }
 
 
-#' Calculate GC4d
+#' GC contents at 4-fold degenerate sites
 #'
-#' Calculate GC content at synonymous position of codons (using four-fold
-#' degenerate sites only)
+#' Calculate GC content at synonymous position of codons (using four-fold degenerate sites only).
+#'
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @returns a named vector of GC4d values.
 get_gc4d <- function(cf, codon_table){
     if(missing(codon_table)){
         codon_table <- get_codon_table(gcid =)
@@ -105,22 +100,29 @@ get_gc4d <- function(cf, codon_table){
 }
 
 
-#' Calculate Fop
+#' Fraction of optimal codons (Fop)
 #'
-#' Calculate the fraction of optimal codons (Fop) of each CDS
-get_fop <- function(seqs, gcid = '1'){
+#' \code{get_fop} calculates the fraction of optimal codons (Fop) of each CDS.
+#'
+#' @param seqs CDS sequences of all protein-coding genes. One for each gene.
+#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @returns a named vector of fop values.
+get_fop <- function(seqs, codon_table = get_codon_table()){
     cf <- count_codons(seqs)
-    optimal_codons <- get_optimal_codons(seqs, gcid = gcid)
+    optimal_codons <- get_optimal_codons(seqs, ctab = codon_table)
     op <- optimal_codons[coef > 0 & pvalue < 0.001, codon]
     rowSums(cf[, op]) / rowSums(cf)
 }
 
 
-#' Calculate CSCg
+#' Mean Codon Stabilization Coefficients
 #'
-#' Calculate mean CSC of each CDS
-get_cscg <- function(seqs, csc){
-    cf <- count_codons(seqs)
+#' \code{get_cscg} calculates Mean Codon Stabilization Coefficients of each CDS.
+#'
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @param csc table of Codon Stabilization Coefficients as calculated by `est_csc()`.
+#' @returns a named vector of cscg values.
+get_cscg <- function(cf, csc){
     cf <- cf[, csc$codon]
     cp <- cf / rowSums(cf)
     cscg <- cp %*% as.matrix(csc$csc)

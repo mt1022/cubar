@@ -30,12 +30,10 @@ seq_to_codons <- function(seq){
 #' @param rm_stop whether to remove stop codons
 #' @param codon_table codon table matching the genetic code of \code{seqs}
 #' @returns DNAStringSet of filtered (and trimmed) CDS sequences
-check_cds <- function(seqs, codon_table, min_len = 6, check_len = TRUE,
-                      check_start = TRUE, check_stop = TRUE, check_istop = TRUE,
-                      rm_start = TRUE, rm_stop = TRUE, start_codons = c("ATG")){
-    if(missing(codon_table)){
-        codon_table <- get_codon_table()
-    }
+check_cds <- function(seqs, codon_table = get_codon_table(), min_len = 6,
+                      check_len = TRUE, check_start = TRUE, check_stop = TRUE,
+                      check_istop = TRUE, rm_start = TRUE, rm_stop = TRUE,
+                      start_codons = c("ATG")){
     stop_codons <- codon_table[aa_code == '*', codon]
     # if input is RNA sequences, convert to DNA
     if(class(seqs) == 'RNAStringSet'){

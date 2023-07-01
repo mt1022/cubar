@@ -23,6 +23,7 @@ library(ggplot2)
 ```
 
 ```{r load cubar}
+rm(list = ls())
 devtools::load_all()
 ```
 
@@ -88,4 +89,12 @@ csc <- apply(yeast_cp, 2, function(prop){
 csc <- data.table(t(csc), keep.rownames = TRUE)
 setnames(csc, c('codon', 'csc', 'pvalue'))
 
+```
+
+Test codon table specification
+```{r}
+f <- function(seqs, codon_table = get_codon_table(), ignore = TRUE){
+    print(codon_table)
+    return(0)
+}
 ```

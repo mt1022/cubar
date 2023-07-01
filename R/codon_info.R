@@ -1,4 +1,9 @@
-#' get codon information
+#' get codon table by NCBI gene code ID
+#'
+#' \code{get_codon_table} creates a codon table based on the given id of genetic code in NCBI.
+#'
+#' @param gcid a string of genetic code id. run `show_codon_tables()` to see available codon tables.
+#' @returns a `data.table` with four columns: aa_code, amino_acid, codon, and subfam.
 get_codon_table <- function(gcid = '1'){
     codon_table <- Biostrings::getGeneticCode(gcid, as.data.frame = TRUE)
     data.table::setDT(codon_table, keep.rownames = 'codon')
@@ -10,7 +15,12 @@ get_codon_table <- function(gcid = '1'){
 }
 
 
-#' create codon table from data frame of aa to codon mapping
+#' create custom codon table from a data frame
+#'
+#' \code{create_codon_table} creates codon table from data frame of aa to codon mapping.
+#'
+#' @param aa2codon a data frame with two columns: amino_acid (Ala, Arg, etc.) and codon.
+#' @returns a `data.table` with four columns: aa_code, amino_acid, codon, and subfam.
 create_codon_table <- function(aa2codon){
     codon_table <- data.table::as.data.table(aa2codon)
     aacode <- c(
@@ -25,6 +35,10 @@ create_codon_table <- function(aa2codon){
 
 
 #' show available codon tables
+#'
+#' \code{show_codon_tables} print a table of available genetic code from NCBI through
+#' `Biostrings::GENETIC_CODE_TABLE`.
+#' @returns NULL.
 show_codon_tables <- function(){
     cat(sprintf('%2s: %s',
                 Biostrings::GENETIC_CODE_TABLE$id,

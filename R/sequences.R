@@ -3,7 +3,7 @@
 #' \code{seq_to_codons} converts a coding sequence to a vector of codons
 #'
 #' @param seq DNAString, or an object that can be coerced to a DNAString
-#' @return a character vector of codons
+#' @returns a character vector of codons
 seq_to_codons <- function(seq){
     if(class(seq) != 'DNAString'){
         seq <- DNAString(seq)
@@ -29,7 +29,7 @@ seq_to_codons <- function(seq){
 #' @param rm_start whether to remove start codons
 #' @param rm_stop whether to remove stop codons
 #' @param codon_table codon table matching the genetic code of \code{seqs}
-#' @return DNAStringSet of filtered (and trimmed) CDS sequences
+#' @returns DNAStringSet of filtered (and trimmed) CDS sequences
 check_cds <- function(seqs, codon_table, min_len = 6, check_len = TRUE,
                       check_start = TRUE, check_stop = TRUE, check_istop = TRUE,
                       rm_start = TRUE, rm_stop = TRUE, start_codons = c("ATG")){
@@ -74,12 +74,12 @@ check_cds <- function(seqs, codon_table, min_len = 6, check_len = TRUE,
 }
 
 
-#' Count codon frequencies
+#' Count occurrences of different codons
 #'
 #' \code{count_codons} tabulates the occurrences of all the 64 codons in input CDSs
 #'
 #' @param seqs CDS sequences, DNAStringSet
-#' @return matrix of codon (column) frequencies of each CDS (row)
+#' @returns matrix of codon (column) frequencies of each CDS (row)
 count_codons <- function(seqs, ...){
     cf <- Biostrings::trinucleotideFrequency(seqs, step = 3, ...)
     rownames(cf) <- names(seqs)

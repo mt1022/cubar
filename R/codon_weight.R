@@ -1,28 +1,33 @@
 #' Reverse complement
+#'
+#' \code{rev_comp} creates reverse complemented version of the input sequence
+#'
+#' @param seqs input sequences, DNAStringSet or named vector of sequences
+#' @returns reverse complemented input sequences as a DNAStringSet.
 rev_comp <- function(seqs){
-    Biostrings::reverseComplement(Biostrings::DNAStringSet(seqs))
+    if(class(seqs) != "DNAStringSet"){
+        seqs <- Biostrings::DNAStringSet(seqs)
+    }
+    Biostrings::reverseComplement(seqs)
 }
 
 
-#' Calculate RSCU
+#' Estimate RSCU
 #'
-#' \code{get_rscu} returns the RSCU value of codons
+#' \code{est_rscu} returns the RSCU value of codons
 #'
 #' @param seqs CDS sequences
-#' @weight a vector of the same length as \code{seqs} that gives different
-#' weights to CDSs when count codons. It could be gene expression levels.
-#' @pseudo_cnt pseudo count to avoid dividing by zero. This may occur when
-#' only a few sequences are available for RSCU calculation.
-#' @gcid ID or name of genetic code. Support for non-standard genetic code will
-#' be added in the future.
-#' @return a data.table
-#' @importFrom rlang .data
+#' @param weight a vector of the same length as `seqs` that gives different weights to
+#'   CDSs when count codons. for example, it could be gene expression levels.
+#' @param pseudo_cnt pseudo count to avoid dividing by zero. This may occur when
+#'   only a few sequences are available for RSCU calculation.
+#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`
+#' @returns a data.table of codon info and RSCU values
 #' @references
-get_rscu <- function(seqs, weight = 1, pseudo_cnt = 1, gcid = '1'){
+est_rscu <- function(seqs, weight = 1, pseudo_cnt = 1, codon_table = get_codon_table()){
     seqs <- Biostrings::DNAStringSet(seqs)
     codon_freq <- colSums(count_codons(seqs) * weight)
 
-    codon_table <- get_codon_table(gcid)
     codon_table <- codon_table[aa_code != '*']
     codon_table[, cts := codon_freq[codon]]
     codon_table[, `:=`(
@@ -32,14 +37,19 @@ get_rscu <- function(seqs, weight = 1, pseudo_cnt = 1, gcid = '1'){
 }
 
 
-show_ca_pairs <- function(gcid='1', plot = TRUE){
-    codon_table <- get_codon_table(gcid)
+#' Plot codon-anticodon pairing relationship
+#'
+#' \code{plot_ca_pairing} returns the RSCU value of codons
+#'
+#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @param plot whether to plot the pairing relationship
+#' @importFrom rlang .data
+#' @returns a data.table of codon info and RSCU values
+plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
     codon_table[, anticodon := as.character(rev_comp(codon_table$codon))]
-    codon_table[, c('codon_b1', 'codon_b2', 'codon_b3') :=
-                    data.table::tstrsplit(codon, '')]
+    codon_table[, c('codon_b1', 'codon_b2', 'codon_b3') := data.table::tstrsplit(codon, '')]
     bases <- c('T', 'C', 'A', 'G')
     codon_table[, codon_b1 := factor(codon_b1, levels = bases)]
-    codon_table[, ]
     codon_table[, `:=`(
         codon_b1 = factor(codon_b1, levels = bases),
         codon_b2 = factor(codon_b2, levels = bases),
@@ -53,8 +63,7 @@ show_ca_pairs <- function(gcid='1', plot = TRUE){
             base_anti = codon_b3[c(1:3)],
             codon = codon[1:3], anticodon = anticodon[1:3])
         # type: anticodon base + corresponding codon base
-        # note: base_anti here is used for visualization, not referring to 1st
-        #   base of anticodon
+        # note: base_anti here is used for visualization, not referring to 1st base of anticodon
         ih <- data.table::data.table(
             type = c('IU', 'IC', 'IA'),
             base_codon = codon_b3[c(4, 3, 2)],
@@ -68,8 +77,10 @@ show_ca_pairs <- function(gcid='1', plot = TRUE){
         rbind(wc, ih, gu)
     }, by = .(codon_b1, codon_b2)]
     stop_codons <- codon_table[aa_code == '*', codon]
+    # no pairing to stop codons or anitcodon corresponding to stop codons
     ca_pairs <- ca_pairs[!codon %in% stop_codons]
     ca_pairs <- ca_pairs[!anticodon %in% as.character(rev_comp(stop_codons))]
+    # no wobble for start codon
     ca_pairs <- ca_pairs[!(codon == 'ATG' & anticodon == 'TAT')]
 
     if(plot){
@@ -101,19 +112,20 @@ show_ca_pairs <- function(gcid='1', plot = TRUE){
 }
 
 
-#' Calculate tRNA w
+#' Estimate tRNA weight w
 #'
-#' \code{get_trna_weight} compute the tRNA weight per codon for TAI calculation.
+#' \code{est_trna_weight} compute the tRNA weight per codon for TAI calculation.
 #' This weight reflects relative tRNA availability for each codon.
 #'
 #' TODO test
 #'
-#' @param trna_level, named vector of tRNA level, one value for each anticodon.
+#' @param trna_level, named vector of tRNA level (or gene copy numbers), one value for each anticodon.
 #'   vector names are anticodons.
+#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @param s list of non-Waston-Crick pairing panelty.
 #' @return data.table of tRNA expression information
-get_trna_weight <- function(trna_level, gcid = '1', s = list(
-    WC=0, IU=0, IC=0.4659, IA=0.9075, GU=0.7861, UG=0.6295)){
-    codon_table <- get_codon_table(gcid)
+est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
+                            s = list(WC=0, IU=0, IC=0.4659, IA=0.9075, GU=0.7861, UG=0.6295)){
     codon_table[, anticodon := as.character(Biostrings::reverseComplement(
         Biostrings::DNAStringSet(codon_table$codon)))]
     codon_table <- codon_table[aa_code != '*']
@@ -135,16 +147,15 @@ get_trna_weight <- function(trna_level, gcid = '1', s = list(
 }
 
 
-#' Determine optimal codons
+#' Estimate optimal codons
 #'
-#' \code{get_toptimal_codons} determine optimal codon of each codon family with binomial regression.
+#' \code{est_toptimal_codons} determine optimal codon of each codon family with binomial regression.
 #'
 #' @param seqs CDS sequences of all protein-coding genes. One for each gene.
-#' @param gcid ID of genetic code used by \code{seqs}.
-#' @return data.table of optimal codons
-get_optimal_codons <- function(seqs, gcid = '1'){
-    enc <- get_enc(seqs, gcid = gcid)
-    ctab <- get_codon_table(gcid = gcid)
+#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @returns data.table of optimal codons
+est_optimal_codons <- function(seqs, ctab = get_codon_table()){
+    enc <- get_enc(seqs, codon_table = ctab)
     cf_all <- count_codons(seqs)
     # regression analysis for each codon sub-family
     binreg <- lapply(split(ctab$codon, f = ctab$subfam), function(x){
@@ -169,16 +180,16 @@ get_optimal_codons <- function(seqs, gcid = '1'){
     return(bingreg)
 }
 
-#' Calculate Codon Stabilization Coefficient
+#' Estimate Codon Stabilization Coefficient
 #'
 #' \code{get_csc} calculate codon occurrence to mRNA stability correlation coefficients (Default to Pearson's).
 #'
 #' @param seqs CDS sequences of all protein-coding genes. One for each gene.
-#' @param gcid ID of genetic code used by \code{seqs}
-#' @param half_life data.frame of mRNA half life (gene_id & half_life are column names)
-#' @return data.table of optimal codons
-get_csc <- function(seqs, gcid, half_life, cor_method = 'pearson'){
-    codon_table <-get_codon_table(gcid = gcid)
+#' @param half_life data.frame of mRNA half life (gene_id & half_life are column names).
+#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @param cor_method method name passed to `cor.test` used for calculating correlation coefficients.
+#' @returns data.table of optimal codons.
+est_csc <- function(seqs, half_life, codon_table = get_codon_table(), cor_method = 'pearson'){
     non_stop_codons <- codon_table[aa_code != '*', codon]
     cf <- count_codons(seqs)
 

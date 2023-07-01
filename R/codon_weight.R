@@ -21,7 +21,7 @@ rev_comp <- function(seqs){
 #'   CDSs when count codons. for example, it could be gene expression levels.
 #' @param pseudo_cnt pseudo count to avoid dividing by zero. This may occur when
 #'   only a few sequences are available for RSCU calculation.
-#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`
+#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @returns a data.table of codon info and RSCU values
 #' @references
 est_rscu <- function(seqs, weight = 1, pseudo_cnt = 1, codon_table = get_codon_table()){

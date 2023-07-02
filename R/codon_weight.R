@@ -154,11 +154,11 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
 #' @param seqs CDS sequences of all protein-coding genes. One for each gene.
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @returns data.table of optimal codons
-est_optimal_codons <- function(seqs, ctab = get_codon_table()){
-    enc <- get_enc(seqs, codon_table = ctab)
+est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
     cf_all <- count_codons(seqs)
+    enc <- get_enc(cf_all, codon_table = codon_table)
     # regression analysis for each codon sub-family
-    binreg <- lapply(split(ctab$codon, f = ctab$subfam), function(x){
+    binreg <- lapply(split(codon_table$codon, f = codon_table$subfam), function(x){
         cf <- cf_all[, x, drop = FALSE]
         if(ncol(cf) == 1){
             data.table::data.table(
@@ -176,9 +176,10 @@ est_optimal_codons <- function(seqs, ctab = get_codon_table()){
         }
     })
     bingreg <- data.table::rbindlist(binreg, idcol = 'subfam')
-    bingreg <- ctab[bingreg, on = .(codon, subfam)]
+    bingreg <- codon_table[bingreg, on = .(codon, subfam)]
     return(bingreg)
 }
+
 
 #' Estimate Codon Stabilization Coefficient
 #'

@@ -20,16 +20,7 @@ knitr::opts_chunk$set(
 library(Biostrings)
 library(data.table)
 library(ggplot2)
-```
-
-```{r load cubar}
-rm(list = ls())
-devtools::load_all()
-```
-
-Useful functions
-```{r}
-usethis::use_data(yeast_half_life)
+library(cubar)
 ```
 
 ### Common analyses
@@ -97,8 +88,6 @@ trna_w <- est_trna_weight(trna_level = trna_gcn, codon_table = ctab)
 tai <- get_tai(yeast_cf, trna_w = trna_w)
 hist(tai)
 ```
-
-### Testing
 
 
 #### References

@@ -31,4 +31,4 @@ devtools::install_github('mt1022/cubar', dependencies = TRUE)
 ```
 
 ## Example
-see vignettes.
+see `vignettes/Introduction.Rmd`.

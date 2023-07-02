@@ -143,6 +143,11 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
 est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
     cf_all <- count_codons(seqs)
     enc <- get_enc(cf_all, codon_table = codon_table)
+
+    # exclude stop codons
+    codon_table <- codon_table[aa_code != '*']
+    cf_all <- cf_all[, colnames(cf_all) %in% codon_table$codon]
+
     # regression analysis for each codon sub-family
     binreg <- lapply(split(codon_table$codon, f = codon_table$subfam), function(x){
         cf <- cf_all[, x, drop = FALSE]

@@ -5,7 +5,7 @@
 #' @param seq DNAString, or an object that can be coerced to a DNAString
 #' @returns a character vector of codons
 seq_to_codons <- function(seq){
-    if(class(seq) != 'DNAString'){
+    if(!inherits(seq, 'DNAString')){
         seq <- DNAString(seq)
     }
     if(length(seq) < 3){
@@ -23,7 +23,7 @@ seq_to_codons <- function(seq){
 #' @param seqs input sequences, DNAStringSet or named vector of sequences
 #' @returns reverse complemented input sequences as a DNAStringSet.
 rev_comp <- function(seqs){
-    if(class(seqs) != "DNAStringSet"){
+    if(!inherits(seqs, "DNAStringSet")){
         seqs <- Biostrings::DNAStringSet(seqs)
     }
     Biostrings::reverseComplement(seqs)
@@ -51,7 +51,7 @@ check_cds <- function(seqs, codon_table = get_codon_table(), min_len = 6,
                       start_codons = c("ATG")){
     stop_codons <- codon_table[aa_code == '*', codon]
     # if input is RNA sequences, convert to DNA
-    if(class(seqs) == 'RNAStringSet'){
+    if(inherits(seqs, 'RNAStringSet')){
         seqs <- Biostrings::DNAStringSet(seqs)
     }
     seqs <- seqs[IRanges::width(seqs) >= min_len]

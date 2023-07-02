@@ -15,6 +15,21 @@ seq_to_codons <- function(seq){
     return(as.character(codons))
 }
 
+
+#' Reverse complement
+#'
+#' \code{rev_comp} creates reverse complemented version of the input sequence
+#'
+#' @param seqs input sequences, DNAStringSet or named vector of sequences
+#' @returns reverse complemented input sequences as a DNAStringSet.
+rev_comp <- function(seqs){
+    if(class(seqs) != "DNAStringSet"){
+        seqs <- Biostrings::DNAStringSet(seqs)
+    }
+    Biostrings::reverseComplement(seqs)
+}
+
+
 #' Quality control of CDS
 #'
 #' \code{check_cds} performs quality control of CDS sequences by filtering some

@@ -1,17 +1,3 @@
-#' Reverse complement
-#'
-#' \code{rev_comp} creates reverse complemented version of the input sequence
-#'
-#' @param seqs input sequences, DNAStringSet or named vector of sequences
-#' @returns reverse complemented input sequences as a DNAStringSet.
-rev_comp <- function(seqs){
-    if(class(seqs) != "DNAStringSet"){
-        seqs <- Biostrings::DNAStringSet(seqs)
-    }
-    Biostrings::reverseComplement(seqs)
-}
-
-
 #' Estimate RSCU
 #'
 #' \code{est_rscu} returns the RSCU value of codons

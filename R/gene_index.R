@@ -110,7 +110,7 @@ get_gc4d <- function(cf, codon_table){
 get_fop <- function(seqs, codon_table = get_codon_table()){
     cf <- count_codons(seqs)
     optimal_codons <- est_optimal_codons(seqs, codon_table = codon_table)
-    op <- optimal_codons[coef > 0 & pvalue < 0.001, codon]
+    op <- optimal_codons[coef < 0 & qvalue < 0.001, codon]
     rowSums(cf[, op]) / rowSums(cf)
 }
 

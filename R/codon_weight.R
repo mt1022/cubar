@@ -2,18 +2,17 @@
 #'
 #' \code{est_rscu} returns the RSCU value of codons
 #'
-#' @param seqs CDS sequences
-#' @param weight a vector of the same length as `seqs` that gives different weights to
-#'   CDSs when count codons. for example, it could be gene expression levels.
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @param weight a vector of the same length as `seqs` that gives different weights
+#'   to CDSs when count codons. for example, it could be gene expression levels.
 #' @param pseudo_cnt pseudo count to avoid dividing by zero. This may occur when
 #'   only a few sequences are available for RSCU calculation.
-#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @param codon_table a table of genetic code derived from `get_codon_table` or
+#'   `create_codon_table`.
 #' @returns a data.table of codon info and RSCU values
 #' @references
-est_rscu <- function(seqs, weight = 1, pseudo_cnt = 1, codon_table = get_codon_table()){
-    seqs <- Biostrings::DNAStringSet(seqs)
-    codon_freq <- colSums(count_codons(seqs) * weight)
-
+est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_table()){
+    codon_freq <- colSums(cf * weight)
     codon_table <- codon_table[aa_code != '*']
     codon_table[, cts := codon_freq[codon]]
     codon_table[, `:=`(
@@ -119,14 +118,14 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
     codon_table[, ac_level := trna_level[anticodon]]
     codon_table[is.na(ac_level), ac_level := 0]
 
-    ca_pairs <- show_ca_pairs(plot = FALSE)
+    ca_pairs <- plot_ca_pairing(codon_table = codon_table, plot = FALSE)
     s <- stack(s)
     ca_pairs[s, penality := i.values, on = .(type = ind)]
     ca_pairs <- ca_pairs[anticodon %in% names(trna_level)]
     ca_pairs[, ac_level := trna_level[anticodon]]
     dtt_W <- ca_pairs[, .(W = sum(ac_level * (1 - penality))), by = .(codon)]
     codon_table[dtt_W, W := i.W, on = .(codon)]
-    codon_table[, w := W/max(W)]
+    codon_table[, w := W/max(W, na.rm = TRUE)]
     mean_w <- mean(codon_table$w, na.rm = TRUE)
     codon_table[is.na(w), w := mean_w]
     return(codon_table)
@@ -136,6 +135,7 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
 #' Estimate optimal codons
 #'
 #' \code{est_toptimal_codons} determine optimal codon of each codon family with binomial regression.
+#'   Usage of optimal codons should correlate negatively with enc.
 #'
 #' @param seqs CDS sequences of all protein-coding genes. One for each gene.
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
@@ -162,6 +162,7 @@ est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
         }
     })
     bingreg <- data.table::rbindlist(binreg, idcol = 'subfam')
+    bingreg[, qvalue := p.adjust(pvalue, method = 'BH')]
     bingreg <- codon_table[bingreg, on = .(codon, subfam)]
     return(bingreg)
 }

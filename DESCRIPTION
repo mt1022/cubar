@@ -1,6 +1,6 @@
 Package: cubar
 Title: Codon Usage Bias Analysis with R
-Version: 0.1.1
+Version: 0.2.0
 Authors@R: 
     person(given = "Hong",
            family = "Zhang",
@@ -13,8 +13,10 @@ URL: https://github.com/mt1022/cubar
 BugReports: https://github.com/mt1022/cubar/issues
 Encoding: UTF-8
 LazyData: true
+LazyDataCompression: bzip2
 Imports: 
     Biostrings (>= 2.60.0),
+    IRanges (>= 2.34.0),
     data.table (>= 1.14.0),
     ggplot2 (>= 3.3.5),
     rlang (>= 0.4.11)
@@ -24,3 +26,4 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+RoxygenNote: 7.2.3

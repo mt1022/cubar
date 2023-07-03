@@ -17,11 +17,11 @@
 "yeast_half_life"
 
 
-#' fly CDS sequences
+#' amino acids to codons
 #'
-#' CDSs of all protein-coding genes in Drosophila melanogaster
+#'  A data.frame of mapping from amino acids to codons
 #'
-#' @format ## `dm6_cds`
-#' A DNAStringSet of 20,476 fly CDS sequences
-#' @source <https://ftp.ensembl.org/pub/release-107/fasta/drosophila_melanogaster/cds/Drosophila_melanogaster.BDGP6.32.cds.all.fa.gz>
-"dm6_cds"
+#' @format ## `aa2codon`
+#' data.frame with two columns: amino_acid, and codons.
+#' @source It is actually the standard genetic code.
+"aa2codon"

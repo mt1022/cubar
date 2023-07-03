@@ -6,9 +6,6 @@
 \usage{
 show_codon_tables()
 }
-\value{
-NULL.
-}
 \description{
 \code{show_codon_tables} print a table of available genetic code from NCBI through
 `Biostrings::GENETIC_CODE_TABLE`.

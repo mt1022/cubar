@@ -19,12 +19,9 @@ vector names are anticodons.}
 \item{s}{list of non-Waston-Crick pairing panelty.}
 }
 \value{
-data.table of tRNA expression information
+data.table of tRNA expression information.
 }
 \description{
 \code{est_trna_weight} compute the tRNA weight per codon for TAI calculation.
 This weight reflects relative tRNA availability for each codon.
-}
-\details{
-TODO test
 }

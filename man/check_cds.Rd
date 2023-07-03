@@ -35,6 +35,8 @@ check_cds(
 \item{rm_start}{whether to remove start codons}
 
 \item{rm_stop}{whether to remove stop codons}
+
+\item{start_codons}{vector of start codons}
 }
 \value{
 DNAStringSet of filtered (and trimmed) CDS sequences

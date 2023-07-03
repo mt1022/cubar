@@ -7,10 +7,12 @@
 count_codons(seqs, ...)
 }
 \arguments{
-\item{seqs}{CDS sequences, DNAStringSet}
+\item{seqs}{CDS sequences, DNAStringSet.}
+
+\item{...}{additional arguments passed to `Biostrings::trinucleotideFrequency`.}
 }
 \value{
-matrix of codon (column) frequencies of each CDS (row)
+matrix of codon (column) frequencies of each CDS (row).
 }
 \description{
 \code{count_codons} tabulates the occurrences of all the 64 codons in input CDSs

@@ -17,9 +17,6 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(Biostrings)
-library(data.table)
-library(ggplot2)
 library(cubar)
 ```
 

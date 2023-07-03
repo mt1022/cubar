@@ -10,8 +10,10 @@
 #' @param codon_table a table of genetic code derived from `get_codon_table` or
 #'   `create_codon_table`.
 #' @returns a data.table of codon info and RSCU values
-#' @references
+#' @importFrom data.table ':='
+#' @export
 est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_table()){
+    aa_code <- cts <- codon <- . <- subfam <- NULL # due to NSE notes in R CMD check
     codon_freq <- colSums(cf * weight)
     codon_table <- codon_table[aa_code != '*']
     codon_table[, cts := codon_freq[codon]]
@@ -28,9 +30,13 @@ est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_tab
 #'
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @param plot whether to plot the pairing relationship
-#' @importFrom rlang .data
 #' @returns a data.table of codon info and RSCU values
+#' @importFrom data.table ':='
+#' @importFrom rlang .data
+#' @export
 plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
+    anticodon <- codon <- codon_b1 <- codon_b2 <- codon_b3 <- NULL # due to NSE notes in R CMD check
+    . <- aa_code <- base_codon <- base_anti <- type <- NULL
     codon_table[, anticodon := as.character(rev_comp(codon_table$codon))]
     codon_table[, c('codon_b1', 'codon_b2', 'codon_b3') := data.table::tstrsplit(codon, '')]
     bases <- c('T', 'C', 'A', 'G')
@@ -102,15 +108,17 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
 #' \code{est_trna_weight} compute the tRNA weight per codon for TAI calculation.
 #' This weight reflects relative tRNA availability for each codon.
 #'
-#' TODO test
-#'
 #' @param trna_level, named vector of tRNA level (or gene copy numbers), one value for each anticodon.
 #'   vector names are anticodons.
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @param s list of non-Waston-Crick pairing panelty.
-#' @return data.table of tRNA expression information
+#' @returns data.table of tRNA expression information.
+#' @importFrom data.table ':='
+#' @export
 est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
                             s = list(WC=0, IU=0, IC=0.4659, IA=0.9075, GU=0.7861, UG=0.6295)){
+    anticodon <- aa_code <- ac_level <- penality <- NULL # due to NSE notes in R CMD check
+    i.values <- . <- ind <- codon <- W <- i.W <- w <- NULL # due to NSE notes in R CMD check
     codon_table[, anticodon := as.character(Biostrings::reverseComplement(
         Biostrings::DNAStringSet(codon_table$codon)))]
     codon_table <- codon_table[aa_code != '*']
@@ -119,7 +127,7 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
     codon_table[is.na(ac_level), ac_level := 0]
 
     ca_pairs <- plot_ca_pairing(codon_table = codon_table, plot = FALSE)
-    s <- stack(s)
+    s <- utils::stack(s)
     ca_pairs[s, penality := i.values, on = .(type = ind)]
     ca_pairs <- ca_pairs[anticodon %in% names(trna_level)]
     ca_pairs[, ac_level := trna_level[anticodon]]
@@ -140,7 +148,10 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
 #' @param seqs CDS sequences of all protein-coding genes. One for each gene.
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @returns data.table of optimal codons
+#' @importFrom data.table ':='
+#' @export
 est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
+    aa_code <- qvalue <- pvalue <- . <- codon <- subfam <- NULL # due to NSE notes in R CMD check
     cf_all <- count_codons(seqs)
     enc <- get_enc(cf_all, codon_table = codon_table)
 
@@ -158,7 +169,7 @@ est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
             total <- rowSums(cf)
             res <- apply(cf, 2, function(x){
                 x
-                fit <- glm(cbind(x, total - x) ~ enc, family = 'binomial')
+                fit <- stats::glm(cbind(x, total - x) ~ enc, family = 'binomial')
                 summary(fit)$coefficients[-1, ]
             })
             res <- data.table::as.data.table(
@@ -167,7 +178,7 @@ est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
         }
     })
     bingreg <- data.table::rbindlist(binreg, idcol = 'subfam')
-    bingreg[, qvalue := p.adjust(pvalue, method = 'BH')]
+    bingreg[, qvalue := stats::p.adjust(pvalue, method = 'BH')]
     bingreg <- codon_table[bingreg, on = .(codon, subfam)]
     return(bingreg)
 }
@@ -182,7 +193,9 @@ est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @param cor_method method name passed to `cor.test` used for calculating correlation coefficients.
 #' @returns data.table of optimal codons.
+#' @export
 est_csc <- function(seqs, half_life, codon_table = get_codon_table(), cor_method = 'pearson'){
+    aa_code <- codon <- NULL # due to NSE notes in R CMD check
     non_stop_codons <- codon_table[aa_code != '*', codon]
     cf <- count_codons(seqs)
 
@@ -192,7 +205,7 @@ est_csc <- function(seqs, half_life, codon_table = get_codon_table(), cor_method
     cp <- cf / rowSums(cf)  # codon proportions
 
     csc <- apply(cp, 2, function(prop){
-        res <- cor.test(prop, half_life$half_life, method = cor_method)
+        res <- stats::cor.test(prop, half_life$half_life, method = cor_method)
         c(corr = res$estimate, pvalue = res$p.value)
     })
     csc <- data.table::data.table(t(csc), keep.rownames = TRUE)

@@ -4,9 +4,10 @@
 #'
 #' @param seq DNAString, or an object that can be coerced to a DNAString
 #' @returns a character vector of codons
+#' @export
 seq_to_codons <- function(seq){
     if(!inherits(seq, 'DNAString')){
-        seq <- DNAString(seq)
+        seq <- Biostrings::DNAString(seq)
     }
     if(length(seq) < 3){
         stop('Input sequence too short')
@@ -22,6 +23,7 @@ seq_to_codons <- function(seq){
 #'
 #' @param seqs input sequences, DNAStringSet or named vector of sequences
 #' @returns reverse complemented input sequences as a DNAStringSet.
+#' @export
 rev_comp <- function(seqs){
     if(!inherits(seqs, "DNAStringSet")){
         seqs <- Biostrings::DNAStringSet(seqs)
@@ -44,11 +46,14 @@ rev_comp <- function(seqs){
 #' @param rm_start whether to remove start codons
 #' @param rm_stop whether to remove stop codons
 #' @param codon_table codon table matching the genetic code of \code{seqs}
+#' @param start_codons vector of start codons
 #' @returns DNAStringSet of filtered (and trimmed) CDS sequences
+#' @export
 check_cds <- function(seqs, codon_table = get_codon_table(), min_len = 6,
                       check_len = TRUE, check_start = TRUE, check_stop = TRUE,
                       check_istop = TRUE, rm_start = TRUE, rm_stop = TRUE,
                       start_codons = c("ATG")){
+    aa_code <- codon <- NULL  # due to NSE notes in R CMD check
     stop_codons <- codon_table[aa_code == '*', codon]
     # if input is RNA sequences, convert to DNA
     if(inherits(seqs, 'RNAStringSet')){
@@ -91,8 +96,10 @@ check_cds <- function(seqs, codon_table = get_codon_table(), min_len = 6,
 #'
 #' \code{count_codons} tabulates the occurrences of all the 64 codons in input CDSs
 #'
-#' @param seqs CDS sequences, DNAStringSet
-#' @returns matrix of codon (column) frequencies of each CDS (row)
+#' @param seqs CDS sequences, DNAStringSet.
+#' @param ... additional arguments passed to `Biostrings::trinucleotideFrequency`.
+#' @returns matrix of codon (column) frequencies of each CDS (row).
+#' @export
 count_codons <- function(seqs, ...){
     cf <- Biostrings::trinucleotideFrequency(seqs, step = 3, ...)
     rownames(cf) <- names(seqs)

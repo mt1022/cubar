@@ -5,7 +5,9 @@
 #' @param cf matrix of codon frequencies as calculated by `count_codons()`.
 #' @param codon_table codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @return vector of ENC values, sequence names are used as vector names
+#' @export
 get_enc <- function(cf, codon_table = get_codon_table()){
+    aa_code <- NULL # due to NSE notes in R CMD check
     codon_table <- codon_table[!aa_code == '*']
     codon_list <- split(codon_table$codon, codon_table$subfam)
 
@@ -48,7 +50,11 @@ get_enc <- function(cf, codon_table = get_codon_table()){
 #' @param rscu rscu table containing CAI weight for each codon. This table could be
 #'   generated with `est_rscu` or prepared manually.
 #' @returns a named vector of CAI values
+#' @importFrom data.table ':='
+#' @importFrom data.table .N
+#' @export
 get_cai <- function(cf, rscu){
+    ss <- . <- subfam <- NULL
     # exclude single codon sub-family
     rscu <- data.table::as.data.table(rscu)
     rscu[, ss := .N, by = .(subfam)]
@@ -68,6 +74,7 @@ get_cai <- function(cf, rscu){
 #' @param cf matrix of codon frequencies as calculated by `count_codons()`.
 #' @param trna_w tRNA weight for each codon, can be generated with `est_trna_weight()`.
 #' @returns a named vector of TAI values
+#' @export
 get_tai <- function(cf, trna_w){
     # codon frequency per CDS
     cf <- cf[, trna_w$codon, drop = FALSE]
@@ -85,17 +92,21 @@ get_tai <- function(cf, trna_w){
 #' @param cf matrix of codon frequencies as calculated by `count_codons()`.
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @returns a named vector of GC4d values.
+#' @importFrom data.table ':='
+#' @importFrom data.table .N
+#' @export
 get_gc4d <- function(cf, codon_table){
+    ss <- . <- subfam <- gc4d <- codon <- NULL
     if(missing(codon_table)){
         codon_table <- get_codon_table(gcid =)
     }
     codon_table[, ss := .N, by = .(subfam)]
     codon_table <- codon_table[ss == 4]
-    codon_table[, gc3 := substr(codon, 3, 3) %in% c('G', 'C')]
+    codon_table[, gc4d := substr(codon, 3, 3) %in% c('G', 'C')]
 
     cf <- cf[, codon_table$codon, drop = FALSE]
     n <- rowSums(cf)
-    gc <- rowSums(cf[, codon_table[, codon[gc3 == T]], drop = FALSE])
+    gc <- rowSums(cf[, codon_table[, codon[gc4d == T]], drop = FALSE])
     return(gc/n)
 }
 
@@ -107,7 +118,9 @@ get_gc4d <- function(cf, codon_table){
 #' @param seqs CDS sequences of all protein-coding genes. One for each gene.
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @returns a named vector of fop values.
+#' @export
 get_fop <- function(seqs, codon_table = get_codon_table()){
+    coef <- qvalue <- codon <- NULL
     cf <- count_codons(seqs)
     optimal_codons <- est_optimal_codons(seqs, codon_table = codon_table)
     op <- optimal_codons[coef < 0 & qvalue < 0.001, codon]
@@ -122,9 +135,10 @@ get_fop <- function(seqs, codon_table = get_codon_table()){
 #' @param cf matrix of codon frequencies as calculated by `count_codons()`.
 #' @param csc table of Codon Stabilization Coefficients as calculated by `est_csc()`.
 #' @returns a named vector of cscg values.
+#' @export
 get_cscg <- function(cf, csc){
     cf <- cf[, csc$codon]
     cp <- cf / rowSums(cf)
     cscg <- cp %*% as.matrix(csc$csc)
-    setNames(cscg[, 1], rownames(cscg))
+    stats::setNames(cscg[, 1], rownames(cscg))
 }

@@ -4,7 +4,10 @@
 #'
 #' @param gcid a string of genetic code id. run `show_codon_tables()` to see available codon tables.
 #' @returns a `data.table` with four columns: aa_code, amino_acid, codon, and subfam.
+#' @importFrom data.table ':='
+#' @export
 get_codon_table <- function(gcid = '1'){
+    amino_acid <- aa_code <- subfam <- codon <- . <- NULL # due to NSE notes in R CMD check
     codon_table <- Biostrings::getGeneticCode(gcid, as.data.frame = TRUE)
     data.table::setDT(codon_table, keep.rownames = 'codon')
     data.table::setnames(codon_table, 'AA', 'aa_code')
@@ -21,7 +24,10 @@ get_codon_table <- function(gcid = '1'){
 #'
 #' @param aa2codon a data frame with two columns: amino_acid (Ala, Arg, etc.) and codon.
 #' @returns a `data.table` with four columns: aa_code, amino_acid, codon, and subfam.
+#' @importFrom data.table ':='
+#' @export
 create_codon_table <- function(aa2codon){
+    aa_code <- amino_acid <- subfam <- codon <- . <- NULL # due to NSE notes in R CMD check
     codon_table <- data.table::as.data.table(aa2codon)
     aacode <- c(
         `*` = "*", Ala = "A", Arg = "R", Asn = "N", Asp = "D", Cys = "C",
@@ -38,7 +44,8 @@ create_codon_table <- function(aa2codon){
 #'
 #' \code{show_codon_tables} print a table of available genetic code from NCBI through
 #' `Biostrings::GENETIC_CODE_TABLE`.
-#' @returns NULL.
+#' @returns NULL
+#' @export
 show_codon_tables <- function(){
     cat(sprintf('%2s: %s',
                 Biostrings::GENETIC_CODE_TABLE$id,

@@ -32,3 +32,7 @@ devtools::install_github('mt1022/cubar', dependencies = TRUE)
 
 ## Example
 see `vignettes/Introduction.Rmd`.
+
+## Suggests
+- [Peptides](https://github.com/dosorio/Peptides) for peptide- or protein-related indices.
+

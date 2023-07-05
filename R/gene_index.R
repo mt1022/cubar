@@ -85,6 +85,42 @@ get_tai <- function(cf, trna_w){
 }
 
 
+#' GC contents
+#'
+#' Calculate GC content of the whole sequences.
+#'
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @returns a named vector of GC contents.
+#' @export
+get_gc <- function(cf){
+    codon_gc <- sapply(strsplit(colnames(cf), ''), \(x) sum(x %in% c('C', 'G')))
+    cf %*% matrix(codon_gc) / (rowSums(cf) * 3)
+}
+
+
+#' GC contents at synonymous 3rd codon positions
+#'
+#' Calculate GC content at synonymous 3rd codon positions.
+#'
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @returns a named vector of GC3s values.
+#' @importFrom data.table ':='
+#' @importFrom data.table .N
+#' @export
+get_gc3s <- function(cf, codon_table=get_codon_table()){
+    aa_code <- ss <- . <- subfam <- gc3s <- codon <- NULL
+    codon_table[, ss := .N, by = .(subfam)]
+    codon_table <- codon_table[aa_code != '*' & ss > 1]
+    codon_table[, gc3s := substr(codon, 3, 3) %in% c('G', 'C')]
+
+    cf <- cf[, codon_table$codon, drop = FALSE]
+    n <- rowSums(cf)
+    gc <- rowSums(cf[, codon_table[, codon[gc3s == T]], drop = FALSE])
+    return(gc/n)
+}
+
+
 #' GC contents at 4-fold degenerate sites
 #'
 #' Calculate GC content at synonymous position of codons (using four-fold degenerate sites only).
@@ -95,11 +131,9 @@ get_tai <- function(cf, trna_w){
 #' @importFrom data.table ':='
 #' @importFrom data.table .N
 #' @export
-get_gc4d <- function(cf, codon_table){
+get_gc4d <- function(cf, codon_table = get_codon_table()){
     ss <- . <- subfam <- gc4d <- codon <- NULL
-    if(missing(codon_table)){
-        codon_table <- get_codon_table(gcid =)
-    }
+
     codon_table[, ss := .N, by = .(subfam)]
     codon_table <- codon_table[ss == 4]
     codon_table[, gc4d := substr(codon, 3, 3) %in% c('G', 'C')]

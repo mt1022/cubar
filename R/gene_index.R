@@ -94,7 +94,8 @@ get_tai <- function(cf, trna_w){
 #' @export
 get_gc <- function(cf){
     codon_gc <- sapply(strsplit(colnames(cf), ''), \(x) sum(x %in% c('C', 'G')))
-    cf %*% matrix(codon_gc) / (rowSums(cf) * 3)
+    gc <- cf %*% matrix(codon_gc) / (rowSums(cf) * 3)
+    return(gc[, 1])
 }
 
 

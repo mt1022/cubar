@@ -5,7 +5,7 @@ Authors@R:
     person(given = "Hong",
            family = "Zhang",
            role = c("aut", "cre"),
-           email = "iie.zhangh@gmail.com",
+           email = "mt1022.dev@gmail.com",
            comment = c(ORCID = "0000-0002-4064-9432"))
 Description: Fast and flexible functions for codon usage bias analysis.
 License: MIT + file LICENSE

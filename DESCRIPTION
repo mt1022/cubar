@@ -9,7 +9,7 @@ Authors@R:
            comment = c(ORCID = "0000-0002-4064-9432"))
 Description: Fast and flexible functions for codon usage bias analysis.
 License: MIT + file LICENSE
-URL: https://github.com/mt1022/cubar
+URL: https://github.com/mt1022/cubar, https://mt1022.github.io/cubar/
 BugReports: https://github.com/mt1022/cubar/issues
 Encoding: UTF-8
 LazyData: true

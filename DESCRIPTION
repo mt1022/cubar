@@ -1,13 +1,13 @@
 Package: cubar
 Title: Codon Usage Bias Analysis with R
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: 
     person(given = "Hong",
            family = "Zhang",
            role = c("aut", "cre"),
            email = "mt1022.dev@gmail.com",
            comment = c(ORCID = "0000-0002-4064-9432"))
-Description: Fast and flexible functions for codon usage bias analysis.
+Description: Fast and flexible functions for codon usage bias analyses.
 License: MIT + file LICENSE
 URL: https://github.com/mt1022/cubar, https://mt1022.github.io/cubar/
 BugReports: https://github.com/mt1022/cubar/issues

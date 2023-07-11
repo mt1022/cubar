@@ -85,9 +85,3 @@ trna_w <- est_trna_weight(trna_level = trna_gcn, codon_table = ctab)
 tai <- get_tai(yeast_cf, trna_w = trna_w)
 hist(tai)
 ```
-
-
-#### References
-
-> Presnyak V, Alhusaini N, Chen YH, et al. Codon optimality is a major determinant of mRNA stability. Cell. 2015;160(6):1111-1124. doi:10.1016/j.cell.2015.02.029
-

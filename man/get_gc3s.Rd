@@ -20,6 +20,8 @@ Calculate GC content at synonymous 3rd codon positions.
 \examples{
 # estimate GC3s of yeast genes
 cf_all <- count_codons(yeast_cds)
-get_gc3s(cf_all)
+gc3s <- get_gc3s(cf_all)
+head(gc3s)
+hist(gc3s)
 
 }

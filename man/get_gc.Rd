@@ -18,6 +18,8 @@ Calculate GC content of the whole sequences.
 \examples{
 # estimate GC content of yeast genes
 cf_all <- count_codons(yeast_cds)
-get_gc(cf_all)
+gc <- get_gc(cf_all)
+head(gc)
+hist(gc)
 
 }

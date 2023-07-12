@@ -23,5 +23,6 @@ data.table of optimal codons
 codons_opt <- est_optimal_codons(yeast_cds)
 # select optimal codons with a fdr of 0.001
 codons_opt <- codons_opt[qvalue < 0.001 & coef < 0]
+codons_opt
 
 }

@@ -47,7 +47,8 @@ est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_tab
 #' @export
 #' @examples
 #' ctab <- get_codon_table(gcid = '2')
-#' plot_ca_pairing(ctab)
+#' pairing <- plot_ca_pairing(ctab)
+#' head(pairing)
 #'
 plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
     anticodon <- codon <- codon_b1 <- codon_b2 <- codon_b3 <- NULL # due to NSE notes in R CMD check
@@ -178,6 +179,7 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
 #' codons_opt <- est_optimal_codons(yeast_cds)
 #' # select optimal codons with a fdr of 0.001
 #' codons_opt <- codons_opt[qvalue < 0.001 & coef < 0]
+#' codons_opt
 #'
 est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
     aa_code <- qvalue <- pvalue <- . <- codon <- subfam <- NULL # due to NSE notes in R CMD check

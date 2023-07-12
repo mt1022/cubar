@@ -19,6 +19,8 @@ a named vector of fop values.
 }
 \examples{
 # estimate Fop of yeast genes
-get_fop(yeast_cds)
+fop <- get_fop(yeast_cds)
+head(fop)
+hist(fop)
 
 }

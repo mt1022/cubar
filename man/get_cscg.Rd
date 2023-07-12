@@ -21,6 +21,8 @@ a named vector of cscg values.
 # estimate CSCg of yeast genes
 yeast_csc <- est_csc(yeast_cds, yeast_half_life)
 cf_all <- count_codons(yeast_cds)
-get_cscg(cf_all, csc = yeast_csc)
+cscg <- get_cscg(cf_all, csc = yeast_csc)
+head(cscg)
+hist(cscg)
 
 }

@@ -20,6 +20,8 @@ Calculate GC content at synonymous position of codons (using four-fold degenerat
 \examples{
 # estimate GC4d of yeast genes
 cf_all <- count_codons(yeast_cds)
-get_gc4d(cf_all)
+gc4d <- get_gc4d(cf_all)
+head(gc4d)
+hist(gc4d)
 
 }

@@ -21,6 +21,8 @@ a named vector of TAI values
 # calculate TAI of yeast genes based on genomic tRNA copy numbers
 w <- est_trna_weight(yeast_trna_gcn)
 cf_all <- count_codons(yeast_cds)
-get_tai(cf_all, w)
+tai <- get_tai(cf_all, w)
+head(tai)
+hist(tai)
 
 }

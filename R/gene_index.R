@@ -9,8 +9,9 @@
 #' @examples
 #' # estimate ENC of yeast genes
 #' cf_all <- count_codons(yeast_cds)
-#' get_enc(cf_all)
-#'
+#' enc <- get_enc(cf_all)
+#' head(enc)
+#' hist(enc)
 get_enc <- function(cf, codon_table = get_codon_table()){
     aa_code <- NULL # due to NSE notes in R CMD check
     codon_table <- codon_table[!aa_code == '*']
@@ -64,7 +65,9 @@ get_enc <- function(cf, codon_table = get_codon_table()){
 #' cf_all <- count_codons(yeast_cds)
 #' cf_heg <- cf_all[heg$gene_id, ]
 #' rscu_heg <- est_rscu(cf_heg)
-#' get_cai(cf_all, rscu_heg)
+#' cai <- get_cai(cf_all, rscu_heg)
+#' head(cai)
+#' hist(cai)
 #'
 get_cai <- function(cf, rscu){
     ss <- . <- subfam <- NULL
@@ -92,7 +95,9 @@ get_cai <- function(cf, rscu){
 #' # calculate TAI of yeast genes based on genomic tRNA copy numbers
 #' w <- est_trna_weight(yeast_trna_gcn)
 #' cf_all <- count_codons(yeast_cds)
-#' get_tai(cf_all, w)
+#' tai <- get_tai(cf_all, w)
+#' head(tai)
+#' hist(tai)
 #'
 get_tai <- function(cf, trna_w){
     # codon frequency per CDS
@@ -114,7 +119,9 @@ get_tai <- function(cf, trna_w){
 #' @examples
 #' # estimate GC content of yeast genes
 #' cf_all <- count_codons(yeast_cds)
-#' get_gc(cf_all)
+#' gc <- get_gc(cf_all)
+#' head(gc)
+#' hist(gc)
 #'
 get_gc <- function(cf){
     codon_gc <- sapply(strsplit(colnames(cf), ''), \(x) sum(x %in% c('C', 'G')))
@@ -136,7 +143,9 @@ get_gc <- function(cf){
 #' @examples
 #' # estimate GC3s of yeast genes
 #' cf_all <- count_codons(yeast_cds)
-#' get_gc3s(cf_all)
+#' gc3s <- get_gc3s(cf_all)
+#' head(gc3s)
+#' hist(gc3s)
 #'
 get_gc3s <- function(cf, codon_table = get_codon_table()){
     aa_code <- ss <- . <- subfam <- gc3s <- codon <- NULL
@@ -164,7 +173,9 @@ get_gc3s <- function(cf, codon_table = get_codon_table()){
 #' @examples
 #' # estimate GC4d of yeast genes
 #' cf_all <- count_codons(yeast_cds)
-#' get_gc4d(cf_all)
+#' gc4d <- get_gc4d(cf_all)
+#' head(gc4d)
+#' hist(gc4d)
 #'
 get_gc4d <- function(cf, codon_table = get_codon_table()){
     ss <- . <- subfam <- gc4d <- codon <- NULL
@@ -190,7 +201,9 @@ get_gc4d <- function(cf, codon_table = get_codon_table()){
 #' @export
 #' @examples
 #' # estimate Fop of yeast genes
-#' get_fop(yeast_cds)
+#' fop <- get_fop(yeast_cds)
+#' head(fop)
+#' hist(fop)
 #'
 get_fop <- function(seqs, codon_table = get_codon_table()){
     coef <- qvalue <- codon <- NULL
@@ -213,7 +226,9 @@ get_fop <- function(seqs, codon_table = get_codon_table()){
 #' # estimate CSCg of yeast genes
 #' yeast_csc <- est_csc(yeast_cds, yeast_half_life)
 #' cf_all <- count_codons(yeast_cds)
-#' get_cscg(cf_all, csc = yeast_csc)
+#' cscg <- get_cscg(cf_all, csc = yeast_csc)
+#' head(cscg)
+#' hist(cscg)
 #'
 get_cscg <- function(cf, csc){
     cf <- cf[, csc$codon]

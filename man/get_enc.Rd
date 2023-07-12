@@ -20,6 +20,7 @@ vector of ENC values, sequence names are used as vector names
 \examples{
 # estimate ENC of yeast genes
 cf_all <- count_codons(yeast_cds)
-get_enc(cf_all)
-
+enc <- get_enc(cf_all)
+head(enc)
+hist(enc)
 }

@@ -117,7 +117,9 @@ check_cds <- function(seqs, codon_table = get_codon_table(), min_len = 6,
 #' @export
 #' @examples
 #' # count codon occurrences
-#' count_codons(yeast_cds)
+#' cf_all <- count_codons(yeast_cds)
+#' dim(cf_all)
+#' cf_all[1:5, 1:5]
 #' count_codons(yeast_cds[1])
 #'
 count_codons <- function(seqs, ...){

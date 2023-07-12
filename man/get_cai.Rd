@@ -24,6 +24,8 @@ heg <- head(yeast_exp[order(-yeast_exp$fpkm), ], n = 500)
 cf_all <- count_codons(yeast_cds)
 cf_heg <- cf_all[heg$gene_id, ]
 rscu_heg <- est_rscu(cf_heg)
-get_cai(cf_all, rscu_heg)
+cai <- get_cai(cf_all, rscu_heg)
+head(cai)
+hist(cai)
 
 }

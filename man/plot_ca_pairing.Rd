@@ -19,6 +19,7 @@ a data.table of codon info and RSCU values
 }
 \examples{
 ctab <- get_codon_table(gcid = '2')
-plot_ca_pairing(ctab)
+pairing <- plot_ca_pairing(ctab)
+head(pairing)
 
 }

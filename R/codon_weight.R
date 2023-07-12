@@ -12,6 +12,17 @@
 #' @returns a data.table of codon info and RSCU values
 #' @importFrom data.table ':='
 #' @export
+#'
+#' @examples
+#' # compute RSCU of all yeast genes
+#' cf_all <- count_codons(yeast_cds)
+#' est_rscu(cf_all)
+#'
+#' # compute RSCU of highly expressed (top 500) yeast genes
+#' heg <- head(yeast_exp[order(-yeast_exp$fpkm), ], n = 500)
+#' cf_heg <- count_codons(yeast_cds[heg$gene_id])
+#' est_rscu(cf_heg)
+#'
 est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_table()){
     aa_code <- cts <- codon <- . <- subfam <- NULL # due to NSE notes in R CMD check
     codon_freq <- colSums(cf * weight)
@@ -34,6 +45,10 @@ est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_tab
 #' @importFrom data.table ':='
 #' @importFrom rlang .data
 #' @export
+#' @examples
+#' ctab <- get_codon_table(gcid = '2')
+#' plot_ca_pairing(ctab)
+#'
 plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
     anticodon <- codon <- codon_b1 <- codon_b2 <- codon_b3 <- NULL # due to NSE notes in R CMD check
     . <- aa_code <- base_codon <- base_anti <- type <- NULL
@@ -71,11 +86,13 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
     # no pairing to stop codons or anitcodon corresponding to stop codons
     ca_pairs <- ca_pairs[!codon %in% stop_codons]
     ca_pairs <- ca_pairs[!anticodon %in% as.character(rev_comp(stop_codons))]
-    # no wobble for start codon
-    ca_pairs <- ca_pairs[!(codon == 'ATG' & anticodon == 'TAT')]
+    # only wobble among synonymous codons and anticodons
+    ca_pairs[codon_table, codon_aa := i.aa_code, on = .(codon)]
+    ca_pairs[codon_table, anticodon_aa := i.aa_code, on = .(anticodon)]
+    ca_pairs <- ca_pairs[codon_aa == anticodon_aa]
 
     if(plot){
-        ggplot2::ggplot(codon_table, ggplot2::aes(y = .data$codon_b3)) +
+        p <- ggplot2::ggplot(codon_table, ggplot2::aes(y = .data$codon_b3)) +
             ggplot2::geom_segment(
                 data = ca_pairs,
                 mapping = ggplot2::aes(
@@ -95,6 +112,7 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
                            axis.ticks.y = ggplot2::element_blank(),
                            axis.line.y = ggplot2::element_blank(),
                            strip.text = ggplot2::element_blank())
+        print(p)
         # return silently
         invisible(ca_pairs[, .(type, codon, anticodon)])
     }else{
@@ -115,6 +133,10 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
 #' @returns data.table of tRNA expression information.
 #' @importFrom data.table ':='
 #' @export
+#' @examples
+#' # estimate codon tRNA weight for yeasts
+#' est_trna_weight(yeast_trna_gcn)
+#'
 est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
                             s = list(WC=0, IU=0, IC=0.4659, IA=0.9075, GU=0.7861, UG=0.6295)){
     anticodon <- aa_code <- ac_level <- penality <- NULL # due to NSE notes in R CMD check
@@ -150,6 +172,12 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
 #' @returns data.table of optimal codons
 #' @importFrom data.table ':='
 #' @export
+#' @examples
+#' # perform binomial regression for optimal codon estimation
+#' codons_opt <- est_optimal_codons(yeast_cds)
+#' # select optimal codons with a fdr of 0.001
+#' codons_opt <- codons_opt[qvalue < 0.001 & coef < 0]
+#'
 est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
     aa_code <- qvalue <- pvalue <- . <- codon <- subfam <- NULL # due to NSE notes in R CMD check
     cf_all <- count_codons(seqs)
@@ -194,6 +222,10 @@ est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
 #' @param cor_method method name passed to `cor.test` used for calculating correlation coefficients.
 #' @returns data.table of optimal codons.
 #' @export
+#' @examples
+#' # estimate yeast mRNA CSC
+#' est_csc(yeast_cds, yeast_half_life)
+#'
 est_csc <- function(seqs, half_life, codon_table = get_codon_table(), cor_method = 'pearson'){
     aa_code <- codon <- NULL # due to NSE notes in R CMD check
     non_stop_codons <- codon_table[aa_code != '*', codon]

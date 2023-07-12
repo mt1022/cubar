@@ -85,6 +85,145 @@ only a few sequences are available for RSCU calculation.</p></dd>
 <p>a data.table of codon info and RSCU values</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># compute RSCU of all yeast genes</span></span></span>
+<span class="r-in"><span><span class="va">cf_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="count_codons.html">count_codons</a></span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">est_rscu</span><span class="op">(</span><span class="va">cf_all</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid codon subfam    cts      rscu     w_cai</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       F        Phe   TTT Phe_TT  79149 0.5946835 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       F        Phe   TTC Phe_TT  53945 0.4053165 0.6815666</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       L        Leu   TTA Leu_TT  77584 0.4968747 0.9875765</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       L        Leu   TTG Leu_TT  78560 0.5031253 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       S        Ser   TCT Ser_TC  68480 0.3590299 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:       S        Ser   TCC Ser_TC  41295 0.2165053 0.6030286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       S        Ser   TCA Ser_TC  55198 0.2893955 0.8060484</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       S        Ser   TCG Ser_TC  25762 0.1350694 0.3762065</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       Y        Tyr   TAT Tyr_TA  55654 0.5696637 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       Y        Tyr   TAC Tyr_TA  42042 0.4303363 0.7554218</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       C        Cys   TGT Cys_TG  24113 0.6208388 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:       C        Cys   TGC Cys_TG  14726 0.3791612 0.6107241</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:       W        Trp   TGG Trp_TG  30566 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:       L        Leu   CTT Leu_CT  36969 0.2960679 0.9384678</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:       L        Leu   CTC Leu_CT  16801 0.1345559 0.4265117</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:       L        Leu   CTA Leu_CT  39393 0.3154801 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:       L        Leu   CTG Leu_CT  31703 0.2538961 0.8047926</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:       P        Pro   CCT Pro_CC  38941 0.3095868 0.7628656</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:       P        Pro   CCC Pro_CC  20258 0.1610580 0.3968696</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:       P        Pro   CCA Pro_CC  51046 0.4058210 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:       P        Pro   CCG Pro_CC  15538 0.1235342 0.3044057</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:       H        His   CAT His_CA  40077 0.6428010 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:       H        His   CAC His_CA  22270 0.3571990 0.5556914</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:       Q        Gln   CAA Gln_CA  77278 0.6826948 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:       Q        Gln   CAG Gln_CA  35917 0.3173052 0.4647834</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:       R        Arg   CGT Arg_CG  18306 0.4462945 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:       R        Arg   CGC Arg_CG   7918 0.1930522 0.4325668</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28:       R        Arg   CGA Arg_CG   9151 0.2231107 0.4999181</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29:       R        Arg   CGG Arg_CG   5641 0.1375427 0.3081881</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30:       I        Ile   ATT Ile_AT  88446 0.4621442 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31:       I        Ile   ATC Ile_AT  49094 0.2565261 0.5550782</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32:       I        Ile   ATA Ile_AT  53841 0.2813297 0.6087487</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33:       M        Met   ATG Met_AT  61057 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34:       T        Thr   ACT Thr_AC  58292 0.3424508 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35:       T        Thr   ACC Thr_AC  36147 0.2123567 0.6201088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36:       T        Thr   ACA Thr_AC  51798 0.3043008 0.8885973</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37:       T        Thr   ACG Thr_AC  23982 0.1408917 0.4114216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38:       N        Asn   AAT Asn_AA 105623 0.5979721 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39:       N        Asn   AAC Asn_AA  71012 0.4020279 0.6723188</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40:       K        Lys   AAA Lys_AA 123449 0.5820258 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41:       K        Lys   AAG Lys_AA  88653 0.4179742 0.7181369</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42:       S        Ser   AGT Ser_AG  42680 0.5901361 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43:       S        Ser   AGC Ser_AG  29642 0.4098639 0.6945245</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44:       R        Arg   AGA Arg_AG  61208 0.6859688 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45:       R        Arg   AGG Arg_AG  28020 0.3140312 0.4577922</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46:       V        Val   GTT Val_GT  63153 0.3851488 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47:       V        Val   GTC Val_GT  32925 0.2008014 0.5213605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48:       V        Val   GTA Val_GT  35748 0.2180176 0.5660607</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49:       V        Val   GTG Val_GT  32143 0.1960323 0.5089781</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50:       A        Ala   GCT Ala_GC  58801 0.3666234 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51:       A        Ala   GCC Ala_GC  35734 0.2228035 0.6077174</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52:       A        Ala   GCA Ala_GC  47400 0.2955396 0.8061120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53:       A        Ala   GCG Ala_GC  18449 0.1150335 0.3137648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54:       D        Asp   GAT Asp_GA 109757 0.6539559 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55:       D        Asp   GAC Asp_GA  58078 0.3460441 0.5291551</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56:       E        Glu   GAA Glu_GA 132048 0.6987459 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57:       E        Glu   GAG Glu_GA  56930 0.3012541 0.4311354</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58:       G        Gly   GGT Gly_GG  65720 0.4515325 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59:       G        Gly   GGC Gly_GG  28880 0.1984253 0.4394486</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60:       G        Gly   GGA Gly_GG  32779 0.2252132 0.4987751</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61:       G        Gly   GGG Gly_GG  18168 0.1248291 0.2764565</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid codon subfam    cts      rscu     w_cai</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># compute RSCU of highly expressed (top 500) yeast genes</span></span></span>
+<span class="r-in"><span><span class="va">heg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">yeast_exp</span><span class="op">$</span><span class="va">fpkm</span><span class="op">)</span>, <span class="op">]</span>, n <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cf_heg</span> <span class="op">&lt;-</span> <span class="fu"><a href="count_codons.html">count_codons</a></span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">[</span><span class="va">heg</span><span class="op">$</span><span class="va">gene_id</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">est_rscu</span><span class="op">(</span><span class="va">cf_heg</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid codon subfam  cts       rscu      w_cai</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       F        Phe   TTT Phe_TT 2681 0.40005967 0.66683242</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       F        Phe   TTC Phe_TT 4021 0.59994033 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       L        Leu   TTA Leu_TT 3178 0.32133832 0.47348823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       L        Leu   TTG Leu_TT 6713 0.67866168 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       S        Ser   TCT Ser_TC 4602 0.48916047 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:       S        Ser   TCC Ser_TC 2885 0.30669501 0.62698240</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       S        Ser   TCA Ser_TC 1380 0.14675877 0.30002172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       S        Ser   TCG Ser_TC  539 0.05738576 0.11731479</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       Y        Tyr   TAT Tyr_TA 1856 0.36648905 0.57850467</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       Y        Tyr   TAC Tyr_TA 3209 0.63351095 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       C        Cys   TGT Cys_TG 1285 0.80425266 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:       C        Cys   TGC Cys_TG  312 0.19574734 0.24339036</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:       W        Trp   TGG Trp_TG 1621 1.00000000 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:       L        Leu   CTT Leu_CT 1048 0.29309863 0.68651832</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:       L        Leu   CTC Leu_CT  279 0.07823414 0.18324607</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:       L        Leu   CTA Leu_CT 1527 0.42693490 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:       L        Leu   CTG Leu_CT  721 0.20173233 0.47251309</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:       P        Pro   CCT Pro_CC 1648 0.25330261 0.38955823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:       P        Pro   CCC Pro_CC  423 0.06513057 0.10016537</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:       P        Pro   CCA Pro_CC 4232 0.65023041 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:       P        Pro   CCG Pro_CC  203 0.03133641 0.04819277</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:       H        His   CAT His_CA 1509 0.49185668 0.96794872</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:       H        His   CAC His_CA 1559 0.50814332 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:       Q        Gln   CAA Gln_CA 4792 0.85650465 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:       Q        Gln   CAG Gln_CA  802 0.14349535 0.16753599</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:       R        Arg   CGT Arg_CG 1409 0.86450031 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:       R        Arg   CGC Arg_CG  142 0.08767627 0.10141844</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28:       R        Arg   CGA Arg_CG   38 0.02391171 0.02765957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29:       R        Arg   CGG Arg_CG   38 0.02391171 0.02765957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30:       I        Ile   ATT Ile_AT 4991 0.52409449 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31:       I        Ile   ATC Ile_AT 3872 0.40661417 0.77584135</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32:       I        Ile   ATA Ile_AT  659 0.06929134 0.13221154</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33:       M        Met   ATG Met_AT 3093 1.00000000 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34:       T        Thr   ACT Thr_AC 4102 0.45266990 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35:       T        Thr   ACC Thr_AC 3032 0.33462048 0.73921521</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36:       T        Thr   ACA Thr_AC 1425 0.15732568 0.34755057</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37:       T        Thr   ACG Thr_AC  501 0.05538394 0.12234950</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38:       N        Asn   AAT Asn_AA 2651 0.36930790 0.58555973</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39:       N        Asn   AAC Asn_AA 4528 0.63069210 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40:       K        Lys   AAA Lys_AA 4395 0.36551093 0.57607129</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41:       K        Lys   AAG Lys_AA 7630 0.63448907 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42:       S        Ser   AGT Ser_AG  987 0.57375145 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43:       S        Ser   AGC Ser_AG  733 0.42624855 0.74291498</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44:       R        Arg   AGA Arg_AG 4804 0.90268646 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45:       R        Arg   AGG Arg_AG  517 0.09731354 0.10780437</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46:       V        Val   GTT Val_GT 5528 0.49689943 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47:       V        Val   GTC Val_GT 3497 0.31437045 0.63266413</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48:       V        Val   GTA Val_GT  935 0.08411971 0.16928920</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49:       V        Val   GTG Val_GT 1163 0.10461041 0.21052632</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50:       A        Ala   GCT Ala_GC 7045 0.55401793 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51:       A        Ala   GCC Ala_GC 3479 0.27362793 0.49389725</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52:       A        Ala   GCA Ala_GC 1725 0.13571316 0.24496168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53:       A        Ala   GCG Ala_GC  465 0.03664098 0.06613682</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54:       D        Asp   GAT Asp_GA 4820 0.54678462 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55:       D        Asp   GAC Asp_GA 3995 0.45321538 0.82887368</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56:       E        Glu   GAA Glu_GA 8649 0.81673119 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57:       E        Glu   GAG Glu_GA 1940 0.18326881 0.22439306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58:       G        Gly   GGT Gly_GG 8092 0.76718172 1.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59:       G        Gly   GGC Gly_GG 1194 0.11328088 0.14765847</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60:       G        Gly   GGA Gly_GG  778 0.07384586 0.09625602</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61:       G        Gly   GGG Gly_GG  481 0.04569153 0.05955764</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid codon subfam  cts       rscu      w_cai</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

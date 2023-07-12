@@ -70,6 +70,29 @@
 <p>a character vector of codons</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># convert a CDS sequence to a sequence of codons</span></span></span>
+<span class="r-in"><span><span class="fu">seq_to_codons</span><span class="op">(</span><span class="st">'ATGTGGTAG'</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ATG" "TGG" "TAG"</span>
+<span class="r-in"><span><span class="fu">seq_to_codons</span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "ATG" "AGT" "TCC" "CGG" "TTT" "GCA" "AGA" "AGT" "AAT" "GGC" "AAT" "CCC"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [13] "AAC" "CAC" "ATT" "AGG" "AAA" "AGA" "AAT" "CAT" "TCT" "CCA" "GAC" "CCA"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [25] "ATA" "GGA" "ATT" "GAT" "AAT" "TAT" "AAA" "AGA" "AAA" "AGA" "CTA" "ATT"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [37] "ATA" "GAT" "TTA" "GAG" "AAT" "TTA" "TCC" "TTA" "AAT" "GAT" "AAA" "GGG"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [49] "CCC" "AAG" "AAC" "GGA" "CAT" "GCA" "GAT" "GAT" "AAC" "AAT" "CTT" "ATT"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [61] "CAT" "AAC" "AAT" "ATA" "GTA" "TTC" "ACA" "GAC" "GCT" "ATT" "GAT" "GAT"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [73] "AAG" "GTC" "CTG" "AAA" "GAG" "ATC" "ATC" "AAG" "TGT" "TCC" "ACA" "AGT"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] "AAA" "CGC" "GGC" "GAC" "AAT" "GAC" "TTG" "TTT" "TAT" "GAC" "AAA" "ATA"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [97] "TGG" "GAA" "CGT" "TTG" "AGA" "GAA" "AAA" "AGG" "CTA" "CAA" "ATA" "ATA"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [109] "AAA" "TGG" "GTA" "GAT" "TAT" "AAG" "GAA" "ATT" "GCT" "TAT" "CTA" "AGC"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [121] "TGG" "TGG" "AAG" "TGG" "TTC" "CAT" "AAT" "CAA" "ATG" "ACT" "TCG" "AAA"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [133] "TAC" "ACT" "TAT" "GAT" "GGA" "GAG" "GCT" "GAT" "ACC" "GAT" "GTT" "GAA"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [145] "ATG" "ATG" "GCA" "GTG" "GAT" "ACT" "GAT" "GTG" "GAT" "ATG" "GAT" "GCG"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [157] "TAA"</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

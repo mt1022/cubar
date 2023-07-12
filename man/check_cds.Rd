@@ -47,7 +47,7 @@ peculiar sequences and optionally remove start or stop codons.
 }
 \examples{
 # CDS sequence QC for a sample of yeast genes
-s <- yeast_cds[1:10]
+s <- head(yeast_cds, 10)
 print(s)
 check_cds(s)
 

@@ -45,3 +45,10 @@ DNAStringSet of filtered (and trimmed) CDS sequences
 \code{check_cds} performs quality control of CDS sequences by filtering some
 peculiar sequences and optionally remove start or stop codons.
 }
+\examples{
+# CDS sequence QC for a sample of yeast genes
+s <- yeast_cds[1:10]
+print(s)
+check_cds(s)
+
+}

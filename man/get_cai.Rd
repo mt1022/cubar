@@ -18,3 +18,12 @@ a named vector of CAI values
 \description{
 \code{get_cai} calculates Codon Adaptation Index (CAI) of each input CDS
 }
+\examples{
+# estimate CAI of yeast genes based on RSCU of highly expressed genes
+heg <- head(yeast_exp[order(-yeast_exp$fpkm), ], n = 500)
+cf_all <- count_codons(yeast_cds)
+cf_heg <- cf_all[heg$gene_id, ]
+rscu_heg <- est_rscu(cf_heg)
+get_cai(cf_all, rscu_heg)
+
+}

@@ -6,6 +6,13 @@
 #' @returns a `data.table` with four columns: aa_code, amino_acid, codon, and subfam.
 #' @importFrom data.table ':='
 #' @export
+#'
+#' @examples
+#' # Standard genetic code
+#' get_codon_table()
+#'
+#' # Vertebrate Mitochondrial genetic code
+#' get_codon_table(gcid = '2')
 get_codon_table <- function(gcid = '1'){
     amino_acid <- aa_code <- subfam <- codon <- . <- NULL # due to NSE notes in R CMD check
     codon_table <- Biostrings::getGeneticCode(gcid, as.data.frame = TRUE)
@@ -26,6 +33,10 @@ get_codon_table <- function(gcid = '1'){
 #' @returns a `data.table` with four columns: aa_code, amino_acid, codon, and subfam.
 #' @importFrom data.table ':='
 #' @export
+#'
+#' @examples
+#' head(aa2codon)
+#' create_codon_table(aa2codon = aa2codon)
 create_codon_table <- function(aa2codon){
     aa_code <- amino_acid <- subfam <- codon <- . <- NULL # due to NSE notes in R CMD check
     codon_table <- data.table::as.data.table(aa2codon)
@@ -46,6 +57,10 @@ create_codon_table <- function(aa2codon){
 #' `Biostrings::GENETIC_CODE_TABLE`.
 #' @returns NULL
 #' @export
+#'
+#' @examples
+#' # print available NCBI codon table IDs and descriptions.
+#' show_codon_tables()
 show_codon_tables <- function(){
     cat(sprintf('%2s: %s',
                 Biostrings::GENETIC_CODE_TABLE$id,

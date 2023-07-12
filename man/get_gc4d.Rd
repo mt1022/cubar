@@ -17,3 +17,9 @@ a named vector of GC4d values.
 \description{
 Calculate GC content at synonymous position of codons (using four-fold degenerate sites only).
 }
+\examples{
+# estimate GC4d of yeast genes
+cf_all <- count_codons(yeast_cds)
+get_gc4d(cf_all)
+
+}

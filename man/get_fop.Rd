@@ -17,3 +17,8 @@ a named vector of fop values.
 \description{
 \code{get_fop} calculates the fraction of optimal codons (Fop) of each CDS.
 }
+\examples{
+# estimate Fop of yeast genes
+get_fop(yeast_cds)
+
+}

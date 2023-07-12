@@ -10,3 +10,7 @@ show_codon_tables()
 \code{show_codon_tables} print a table of available genetic code from NCBI through
 `Biostrings::GENETIC_CODE_TABLE`.
 }
+\examples{
+# print available NCBI codon table IDs and descriptions.
+show_codon_tables()
+}

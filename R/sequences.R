@@ -5,6 +5,11 @@
 #' @param seq DNAString, or an object that can be coerced to a DNAString
 #' @returns a character vector of codons
 #' @export
+#' @examples
+#' # convert a CDS sequence to a sequence of codons
+#' seq_to_codons('ATGTGGTAG')
+#' seq_to_codons(yeast_cds[[1]])
+#'
 seq_to_codons <- function(seq){
     if(!inherits(seq, 'DNAString')){
         seq <- Biostrings::DNAString(seq)
@@ -24,6 +29,10 @@ seq_to_codons <- function(seq){
 #' @param seqs input sequences, DNAStringSet or named vector of sequences
 #' @returns reverse complemented input sequences as a DNAStringSet.
 #' @export
+#' @examples
+#' # reverse complement of codons
+#' rev_comp(Biostrings::DNAStringSet(c('TAA', 'TAG')))
+#'
 rev_comp <- function(seqs){
     if(!inherits(seqs, "DNAStringSet")){
         seqs <- Biostrings::DNAStringSet(seqs)
@@ -49,6 +58,12 @@ rev_comp <- function(seqs){
 #' @param start_codons vector of start codons
 #' @returns DNAStringSet of filtered (and trimmed) CDS sequences
 #' @export
+#' @examples
+#' # CDS sequence QC for a sample of yeast genes
+#' s <- yeast_cds[1:10]
+#' print(s)
+#' check_cds(s)
+#'
 check_cds <- function(seqs, codon_table = get_codon_table(), min_len = 6,
                       check_len = TRUE, check_start = TRUE, check_stop = TRUE,
                       check_istop = TRUE, rm_start = TRUE, rm_stop = TRUE,
@@ -100,6 +115,11 @@ check_cds <- function(seqs, codon_table = get_codon_table(), min_len = 6,
 #' @param ... additional arguments passed to `Biostrings::trinucleotideFrequency`.
 #' @returns matrix of codon (column) frequencies of each CDS (row).
 #' @export
+#' @examples
+#' # count codon occurrences
+#' count_codons(yeast_cds)
+#' count_codons(yeast_cds[1])
+#'
 count_codons <- function(seqs, ...){
     cf <- Biostrings::trinucleotideFrequency(seqs, step = 3, ...)
     rownames(cf) <- names(seqs)

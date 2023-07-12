@@ -15,3 +15,8 @@ reverse complemented input sequences as a DNAStringSet.
 \description{
 \code{rev_comp} creates reverse complemented version of the input sequence
 }
+\examples{
+# reverse complement of codons
+rev_comp(Biostrings::DNAStringSet(c('TAA', 'TAG')))
+
+}

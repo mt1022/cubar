@@ -17,3 +17,9 @@ matrix of codon (column) frequencies of each CDS (row).
 \description{
 \code{count_codons} tabulates the occurrences of all the 64 codons in input CDSs
 }
+\examples{
+# count codon occurrences
+count_codons(yeast_cds)
+count_codons(yeast_cds[1])
+
+}

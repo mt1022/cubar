@@ -15,3 +15,10 @@ a `data.table` with four columns: aa_code, amino_acid, codon, and subfam.
 \description{
 \code{get_codon_table} creates a codon table based on the given id of genetic code in NCBI.
 }
+\examples{
+# Standard genetic code
+get_codon_table()
+
+# Vertebrate Mitochondrial genetic code
+get_codon_table(gcid = '2')
+}

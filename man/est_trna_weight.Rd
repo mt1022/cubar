@@ -25,3 +25,8 @@ data.table of tRNA expression information.
 \code{est_trna_weight} compute the tRNA weight per codon for TAI calculation.
 This weight reflects relative tRNA availability for each codon.
 }
+\examples{
+# estimate codon tRNA weight for yeasts
+est_trna_weight(yeast_trna_gcn)
+
+}

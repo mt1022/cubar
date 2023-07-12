@@ -15,3 +15,7 @@ a `data.table` with four columns: aa_code, amino_acid, codon, and subfam.
 \description{
 \code{create_codon_table} creates codon table from data frame of aa to codon mapping.
 }
+\examples{
+head(aa2codon)
+create_codon_table(aa2codon = aa2codon)
+}

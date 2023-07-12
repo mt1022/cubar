@@ -24,3 +24,14 @@ a data.table of codon info and RSCU values
 \description{
 \code{est_rscu} returns the RSCU value of codons
 }
+\examples{
+# compute RSCU of all yeast genes
+cf_all <- count_codons(yeast_cds)
+est_rscu(cf_all)
+
+# compute RSCU of highly expressed (top 500) yeast genes
+heg <- head(yeast_exp[order(-yeast_exp$fpkm), ], n = 500)
+cf_heg <- count_codons(yeast_cds[heg$gene_id])
+est_rscu(cf_heg)
+
+}

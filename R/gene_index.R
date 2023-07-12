@@ -6,6 +6,11 @@
 #' @param codon_table codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @return vector of ENC values, sequence names are used as vector names
 #' @export
+#' @examples
+#' # estimate ENC of yeast genes
+#' cf_all <- count_codons(yeast_cds)
+#' get_enc(cf_all)
+#'
 get_enc <- function(cf, codon_table = get_codon_table()){
     aa_code <- NULL # due to NSE notes in R CMD check
     codon_table <- codon_table[!aa_code == '*']
@@ -53,6 +58,14 @@ get_enc <- function(cf, codon_table = get_codon_table()){
 #' @importFrom data.table ':='
 #' @importFrom data.table .N
 #' @export
+#' @examples
+#' # estimate CAI of yeast genes based on RSCU of highly expressed genes
+#' heg <- head(yeast_exp[order(-yeast_exp$fpkm), ], n = 500)
+#' cf_all <- count_codons(yeast_cds)
+#' cf_heg <- cf_all[heg$gene_id, ]
+#' rscu_heg <- est_rscu(cf_heg)
+#' get_cai(cf_all, rscu_heg)
+#'
 get_cai <- function(cf, rscu){
     ss <- . <- subfam <- NULL
     # exclude single codon sub-family
@@ -75,6 +88,12 @@ get_cai <- function(cf, rscu){
 #' @param trna_w tRNA weight for each codon, can be generated with `est_trna_weight()`.
 #' @returns a named vector of TAI values
 #' @export
+#' @examples
+#' # calculate TAI of yeast genes based on genomic tRNA copy numbers
+#' w <- est_trna_weight(yeast_trna_gcn)
+#' cf_all <- count_codons(yeast_cds)
+#' get_tai(cf_all, w)
+#'
 get_tai <- function(cf, trna_w){
     # codon frequency per CDS
     cf <- cf[, trna_w$codon, drop = FALSE]
@@ -92,6 +111,11 @@ get_tai <- function(cf, trna_w){
 #' @param cf matrix of codon frequencies as calculated by `count_codons()`.
 #' @returns a named vector of GC contents.
 #' @export
+#' @examples
+#' # estimate GC content of yeast genes
+#' cf_all <- count_codons(yeast_cds)
+#' get_gc(cf_all)
+#'
 get_gc <- function(cf){
     codon_gc <- sapply(strsplit(colnames(cf), ''), \(x) sum(x %in% c('C', 'G')))
     gc <- cf %*% matrix(codon_gc) / (rowSums(cf) * 3)
@@ -109,7 +133,12 @@ get_gc <- function(cf){
 #' @importFrom data.table ':='
 #' @importFrom data.table .N
 #' @export
-get_gc3s <- function(cf, codon_table=get_codon_table()){
+#' @examples
+#' # estimate GC3s of yeast genes
+#' cf_all <- count_codons(yeast_cds)
+#' get_gc3s(cf_all)
+#'
+get_gc3s <- function(cf, codon_table = get_codon_table()){
     aa_code <- ss <- . <- subfam <- gc3s <- codon <- NULL
     codon_table[, ss := .N, by = .(subfam)]
     codon_table <- codon_table[aa_code != '*' & ss > 1]
@@ -132,6 +161,11 @@ get_gc3s <- function(cf, codon_table=get_codon_table()){
 #' @importFrom data.table ':='
 #' @importFrom data.table .N
 #' @export
+#' @examples
+#' # estimate GC4d of yeast genes
+#' cf_all <- count_codons(yeast_cds)
+#' get_gc4d(cf_all)
+#'
 get_gc4d <- function(cf, codon_table = get_codon_table()){
     ss <- . <- subfam <- gc4d <- codon <- NULL
 
@@ -154,6 +188,10 @@ get_gc4d <- function(cf, codon_table = get_codon_table()){
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @returns a named vector of fop values.
 #' @export
+#' @examples
+#' # estimate Fop of yeast genes
+#' get_fop(yeast_cds)
+#'
 get_fop <- function(seqs, codon_table = get_codon_table()){
     coef <- qvalue <- codon <- NULL
     cf <- count_codons(seqs)
@@ -171,6 +209,12 @@ get_fop <- function(seqs, codon_table = get_codon_table()){
 #' @param csc table of Codon Stabilization Coefficients as calculated by `est_csc()`.
 #' @returns a named vector of cscg values.
 #' @export
+#' @examples
+#' # estimate CSCg of yeast genes
+#' yeast_csc <- est_csc(yeast_cds, yeast_half_life)
+#' cf_all <- count_codons(yeast_cds)
+#' get_cscg(cf_all, csc = yeast_csc)
+#'
 get_cscg <- function(cf, csc){
     cf <- cf[, csc$codon]
     cp <- cf / rowSums(cf)

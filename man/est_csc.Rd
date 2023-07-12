@@ -26,3 +26,8 @@ data.table of optimal codons.
 \description{
 \code{get_csc} calculate codon occurrence to mRNA stability correlation coefficients (Default to Pearson's).
 }
+\examples{
+# estimate yeast mRNA CSC
+est_csc(yeast_cds, yeast_half_life)
+
+}

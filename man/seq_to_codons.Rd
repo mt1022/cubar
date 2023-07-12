@@ -15,3 +15,9 @@ a character vector of codons
 \description{
 \code{seq_to_codons} converts a coding sequence to a vector of codons
 }
+\examples{
+# convert a CDS sequence to a sequence of codons
+seq_to_codons('ATGTGGTAG')
+seq_to_codons(yeast_cds[[1]])
+
+}

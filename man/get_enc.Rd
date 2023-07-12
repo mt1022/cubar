@@ -17,3 +17,9 @@ vector of ENC values, sequence names are used as vector names
 \description{
 \code{get_enc} computes ENC of each CDS
 }
+\examples{
+# estimate ENC of yeast genes
+cf_all <- count_codons(yeast_cds)
+get_enc(cf_all)
+
+}

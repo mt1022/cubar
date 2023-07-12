@@ -18,3 +18,10 @@ data.table of optimal codons
 \code{est_toptimal_codons} determine optimal codon of each codon family with binomial regression.
   Usage of optimal codons should correlate negatively with enc.
 }
+\examples{
+# perform binomial regression for optimal codon estimation
+codons_opt <- est_optimal_codons(yeast_cds)
+# select optimal codons with a fdr of 0.001
+codons_opt <- codons_opt[qvalue < 0.001 & coef < 0]
+
+}

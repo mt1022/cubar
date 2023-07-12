@@ -30,6 +30,17 @@
 "yeast_exp"
 
 
+#' yeast tRNA gene copy numbers (GCN)
+#'
+#' Yeast tRNA gene copy numbers (GCN) by anticodon obtained from gtRNAdb.
+#'
+#' @format ## `yeast_trna_gcn`
+#' A named (anticodon) vector with a length of 41 anticodons.
+#' @source <http://gtrnadb.ucsc.edu/genomes/eukaryota/Scere3/sacCer3-mature-tRNAs.fa>
+#' @references Chan, P.P. & Lowe, T.M. (2016) GtRNAdb 2.0: an expanded database of transfer RNA genes identified in complete and draft genomes. Nucl. Acids Res. 44(Database issue):D184-D189.Chan, P.P. & Lowe, T.M. (2016) GtRNAdb 2.0: an expanded database of transfer RNA genes identified in complete and draft genomes. Nucl. Acids Res. 44(Database issue):D184-D189.
+"yeast_trna_gcn"
+
+
 #' amino acids to codons
 #'
 #'  A data.frame of mapping from amino acids to codons

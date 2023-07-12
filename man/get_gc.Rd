@@ -15,3 +15,9 @@ a named vector of GC contents.
 \description{
 Calculate GC content of the whole sequences.
 }
+\examples{
+# estimate GC content of yeast genes
+cf_all <- count_codons(yeast_cds)
+get_gc(cf_all)
+
+}

@@ -52,6 +52,7 @@ est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_tab
 plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
     anticodon <- codon <- codon_b1 <- codon_b2 <- codon_b3 <- NULL # due to NSE notes in R CMD check
     . <- aa_code <- base_codon <- base_anti <- type <- NULL
+    anticodon_aa <- codon_aa <- i.aa_code <- NULL
     codon_table[, anticodon := as.character(rev_comp(codon_table$codon))]
     codon_table[, c('codon_b1', 'codon_b2', 'codon_b3') := data.table::tstrsplit(codon, '')]
     bases <- c('T', 'C', 'A', 'G')

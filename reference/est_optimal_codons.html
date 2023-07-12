@@ -12,7 +12,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">cubar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,6 +83,65 @@
 <span class="r-in"><span><span class="va">codons_opt</span> <span class="op">&lt;-</span> <span class="fu">est_optimal_codons</span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># select optimal codons with a fdr of 0.001</span></span></span>
 <span class="r-in"><span><span class="va">codons_opt</span> <span class="op">&lt;-</span> <span class="va">codons_opt</span><span class="op">[</span><span class="va">qvalue</span> <span class="op">&lt;</span> <span class="fl">0.001</span> <span class="op">&amp;</span> <span class="va">coef</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">codons_opt</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid codon subfam        coef          se     zvalue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       A        Ala   GCT Ala_GC -0.08586353 0.001276589 -67.260132</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       A        Ala   GCC Ala_GC -0.01660752 0.001397053 -11.887539</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       R        Arg   AGA Arg_AG -0.13131610 0.002676336 -49.065633</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       R        Arg   CGT Arg_CG -0.20942840 0.004128514 -50.727307</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       N        Asn   AAC Asn_AA -0.04243915 0.001476152 -28.749855</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:       D        Asp   GAC Asp_GA -0.01548768 0.001452692 -10.661362</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       C        Cys   TGT Cys_TG -0.10173880 0.003863820 -26.331141</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       Q        Gln   CAA Gln_CA -0.11358343 0.002408535 -47.158713</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       E        Glu   GAA Glu_GA -0.08514744 0.001729299 -49.238112</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       G        Gly   GGT Gly_GG -0.16885153 0.001710938 -98.689454</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       H        His   CAC His_CA -0.03106030 0.002356312 -13.181744</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:       I        Ile   ATT Ile_AT -0.04103142 0.001307079 -31.391681</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:       I        Ile   ATC Ile_AT -0.04053426 0.001381237 -29.346346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:       L        Leu   CTT Leu_CT -0.02079531 0.002256764  -9.214659</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:       L        Leu   CTA Leu_CT -0.05336602 0.002195796 -24.303727</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:       L        Leu   TTG Leu_TT -0.03574780 0.001335922 -26.758889</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:       K        Lys   AAG Lys_AA -0.05928741 0.001241310 -47.761983</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:       F        Phe   TTC Phe_TT -0.05586432 0.001629600 -34.281009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:       P        Pro   CCA Pro_CC -0.10530399 0.001743792 -60.387921</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:       S        Ser   AGT Ser_AG -0.02607544 0.002778368  -9.385163</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:       S        Ser   TCT Ser_TC -0.06174128 0.001338631 -46.122699</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:       S        Ser   TCC Ser_TC -0.02651792 0.001494564 -17.742916</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:       T        Thr   ACT Thr_AC -0.04947163 0.001349172 -36.668138</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:       T        Thr   ACC Thr_AC -0.04730168 0.001474519 -32.079394</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:       Y        Tyr   TAC Tyr_TA -0.04275237 0.001824660 -23.430322</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:       V        Val   GTT Val_GT -0.05920949 0.001290821 -45.869629</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:       V        Val   GTC Val_GT -0.05086915 0.001421823 -35.777413</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid codon subfam        coef          se     zvalue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            pvalue        qvalue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:  0.000000e+00  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  1.373963e-32  1.523850e-32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:  0.000000e+00  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:  0.000000e+00  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: 9.095455e-182 1.387057e-181</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:  1.543207e-26  1.651503e-26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: 8.440487e-153 1.144155e-152</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  0.000000e+00  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:  0.000000e+00  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  0.000000e+00  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:  1.117772e-39  1.262668e-39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12: 2.627944e-216 4.452905e-216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13: 2.660338e-189 4.270543e-189</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:  3.122680e-20  3.174725e-20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15: 1.790310e-130 2.374107e-130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16: 9.730992e-158 1.413311e-157</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:  0.000000e+00  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18: 1.505846e-257 2.870519e-257</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:  0.000000e+00  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:  6.281898e-21  6.494844e-21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:  0.000000e+00  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:  1.955211e-70  2.338586e-70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23: 2.352299e-294 4.947939e-294</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24: 8.546350e-226 1.489507e-225</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25: 2.098384e-121 2.666697e-121</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:  0.000000e+00  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27: 2.480125e-280 5.042921e-280</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            pvalue        qvalue</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -59,14 +59,90 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>## `aa2codon`
-data.frame with two columns: amino_acid, and codons.</p>
-    </div>
+    <p>a data.frame with two columns: amino_acid, and codon.</p><dl><dt>amino_acid</dt>
+<dd><p>amino acid corresponding to the codon</p></dd>
+
+<dt>codon</dt>
+<dd><p>codon identity</p></dd>
+
+
+</dl></div>
     <div class="section level2">
     <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
     <p>It is actually the standard genetic code.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">aa2codon</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    amino_acid codon</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           *   TAA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           *   TAG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           *   TGA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         Ala   GCT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5         Ala   GCC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6         Ala   GCA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7         Ala   GCG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8         Arg   CGT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9         Arg   CGC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10        Arg   CGA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11        Arg   CGG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12        Arg   AGA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13        Arg   AGG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14        Asn   AAT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15        Asn   AAC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16        Asp   GAT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17        Asp   GAC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18        Cys   TGT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19        Cys   TGC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20        Gln   CAA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21        Gln   CAG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22        Glu   GAA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23        Glu   GAG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24        Gly   GGT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25        Gly   GGC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26        Gly   GGA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27        Gly   GGG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28        His   CAT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29        His   CAC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30        Ile   ATT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31        Ile   ATC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32        Ile   ATA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33        Leu   TTA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34        Leu   TTG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35        Leu   CTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36        Leu   CTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37        Leu   CTA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38        Leu   CTG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39        Lys   AAA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40        Lys   AAG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41        Met   ATG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42        Phe   TTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43        Phe   TTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44        Pro   CCT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45        Pro   CCC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46        Pro   CCA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47        Pro   CCG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48        Ser   TCT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49        Ser   TCC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50        Ser   TCA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51        Ser   TCG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52        Ser   AGT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53        Ser   AGC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54        Thr   ACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55        Thr   ACC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56        Thr   ACA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57        Thr   ACG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58        Trp   TGG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59        Tyr   TAT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60        Tyr   TAC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61        Val   GTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62        Val   GTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63        Val   GTA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64        Val   GTG</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

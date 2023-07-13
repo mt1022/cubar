@@ -59,9 +59,17 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>## `yeast_exp`
-A data.frame with 6717 rows and three columns (gene_id, gene_name, fpkm)</p>
-    </div>
+    <p>a data.frame with 6717 rows and three columns:</p><dl><dt>gene_id</dt>
+<dd><p>gene ID</p></dd>
+
+<dt>gene_name</dt>
+<dd><p>gene name</p></dd>
+
+<dt>fpkm</dt>
+<dd><p>mRNA expression level in Fragments per kilobase per million reads</p></dd>
+
+
+</dl></div>
     <div class="section level2">
     <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
     <p>&lt;https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE57385&amp;format=file&amp;file=GSE57385<!-- %5FRiboZero%5FFPKM%2Etxt%2Egz&gt; --></p>
@@ -71,6 +79,20 @@ A data.frame with 6717 rows and three columns (gene_id, gene_name, fpkm)</p>
     <p>Presnyak V, Alhusaini N, Chen YH, et al. Codon optimality is a major determinant of mRNA stability. Cell. 2015;160(6):1111-1124. doi:10.1016/j.cell.2015.02.029</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   gene_id gene_name  fpkm</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> YAL001C TFC3       28.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> YAL002W VPS8       19.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> YAL003W EFB1      889. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> YAL004W YAL004w    84.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> YAL005C SSA1      385. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> YAL007C ERP2      123. </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

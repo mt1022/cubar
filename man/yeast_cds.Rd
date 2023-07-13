@@ -5,8 +5,7 @@
 \alias{yeast_cds}
 \title{yeast CDS sequences}
 \format{
-## `yeast_cds`
-A DNAStringSet of 6600 yeast CDS sequences
+a DNAStringSet of 6600 sequences
 }
 \source{
 <https://ftp.ensembl.org/pub/release-107/fasta/saccharomyces_cerevisiae/cds/Saccharomyces_cerevisiae.R64-1-1.cds.all.fa.gz>
@@ -16,5 +15,8 @@ yeast_cds
 }
 \description{
 CDSs of all protein-coding genes in Saccharomyces_cerevisiae
+}
+\examples{
+head(yeast_cds)
 }
 \keyword{datasets}

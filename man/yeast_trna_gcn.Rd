@@ -5,8 +5,7 @@
 \alias{yeast_trna_gcn}
 \title{yeast tRNA gene copy numbers (GCN)}
 \format{
-## `yeast_trna_gcn`
-A named (anticodon) vector with a length of 41 anticodons.
+a named vector with a length of 41. Value names are anticodons.
 }
 \source{
 <http://gtrnadb.ucsc.edu/genomes/eukaryota/Scere3/sacCer3-mature-tRNAs.fa>
@@ -16,6 +15,9 @@ yeast_trna_gcn
 }
 \description{
 Yeast tRNA gene copy numbers (GCN) by anticodon obtained from gtRNAdb.
+}
+\examples{
+yeast_trna_gcn
 }
 \references{
 Chan, P.P. & Lowe, T.M. (2016) GtRNAdb 2.0: an expanded database of transfer RNA genes identified in complete and draft genomes. Nucl. Acids Res. 44(Database issue):D184-D189.Chan, P.P. & Lowe, T.M. (2016) GtRNAdb 2.0: an expanded database of transfer RNA genes identified in complete and draft genomes. Nucl. Acids Res. 44(Database issue):D184-D189.

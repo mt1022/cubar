@@ -5,8 +5,11 @@
 \alias{aa2codon}
 \title{amino acids to codons}
 \format{
-## `aa2codon`
-data.frame with two columns: amino_acid, and codons.
+a data.frame with two columns: amino_acid, and codon.
+\describe{
+\item{amino_acid}{amino acid corresponding to the codon}
+\item{codon}{codon identity}
+}
 }
 \source{
 It is actually the standard genetic code.
@@ -16,5 +19,9 @@ aa2codon
 }
 \description{
 A data.frame of mapping from amino acids to codons
+}
+\examples{
+aa2codon
+
 }
 \keyword{datasets}

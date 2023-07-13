@@ -5,8 +5,12 @@
 \alias{yeast_half_life}
 \title{Half life of yeast mRNAs}
 \format{
-## `yeast_half_life`
-A data.frame with 3888 rows and three columns (gene_id, gene_name, half_life in min)
+a data.frame with 3888 rows and three columns:
+\describe{
+\item{gene_id}{gene id}
+\item{gene_name}{gene name}
+\item{half_life}{mRNA half life in minutes}
+}
 }
 \source{
 <https://doi.org/10.1016/j.cell.2015.02.029>
@@ -16,6 +20,9 @@ yeast_half_life
 }
 \description{
 Half life of yeast mRNAs in Saccharomyces_cerevisiae calculated from rRNA-deleted total RNAs by Presnyak et al.
+}
+\examples{
+head(yeast_half_life)
 }
 \references{
 Presnyak V, Alhusaini N, Chen YH, et al. Codon optimality is a major determinant of mRNA stability. Cell. 2015;160(6):1111-1124. doi:10.1016/j.cell.2015.02.029

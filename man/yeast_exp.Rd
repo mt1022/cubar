@@ -5,8 +5,12 @@
 \alias{yeast_exp}
 \title{yeast mRNA expression levels}
 \format{
-## `yeast_exp`
-A data.frame with 6717 rows and three columns (gene_id, gene_name, fpkm)
+a data.frame with 6717 rows and three columns:
+\describe{
+\item{gene_id}{gene ID}
+\item{gene_name}{gene name}
+\item{fpkm}{mRNA expression level in Fragments per kilobase per million reads}
+}
 }
 \source{
 <https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE57385&format=file&file=GSE57385%5FRiboZero%5FFPKM%2Etxt%2Egz>
@@ -16,6 +20,9 @@ yeast_exp
 }
 \description{
 Yeast mRNA FPKM determined from rRNA-depleted (RiboZero) total RNA-Seq libraries. RUN1_0_WT and RUN2_0_WT (0 min after RNA Pol II repression) were averaged and used here.
+}
+\examples{
+head(yeast_exp)
 }
 \references{
 Presnyak V, Alhusaini N, Chen YH, et al. Codon optimality is a major determinant of mRNA stability. Cell. 2015;160(6):1111-1124. doi:10.1016/j.cell.2015.02.029

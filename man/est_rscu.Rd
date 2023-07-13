@@ -35,3 +35,6 @@ cf_heg <- count_codons(yeast_cds[heg$gene_id])
 est_rscu(cf_heg)
 
 }
+\references{
+Sharp PM, Tuohy TM, Mosurski KR. 1986. Codon usage in yeast: cluster analysis clearly differentiates highly and lowly expressed genes. Nucleic Acids Res 14:5125-5143.
+}

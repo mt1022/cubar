@@ -13,7 +13,7 @@ a data.frame with 6717 rows and three columns:
 }
 }
 \source{
-<https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE57385&format=file&file=GSE57385%5FRiboZero%5FFPKM%2Etxt%2Egz>
+<https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE57385>
 }
 \usage{
 yeast_exp
@@ -25,6 +25,6 @@ Yeast mRNA FPKM determined from rRNA-depleted (RiboZero) total RNA-Seq libraries
 head(yeast_exp)
 }
 \references{
-Presnyak V, Alhusaini N, Chen YH, et al. Codon optimality is a major determinant of mRNA stability. Cell. 2015;160(6):1111-1124. doi:10.1016/j.cell.2015.02.029
+Presnyak V, Alhusaini N, Chen YH, Martin S, Morris N, Kline N, Olson S, Weinberg D, Baker KE, Graveley BR, et al. 2015. Codon optimality is a major determinant of mRNA stability. Cell 160:1111-1124.
 }
 \keyword{datasets}

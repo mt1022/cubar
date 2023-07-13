@@ -29,3 +29,6 @@ head(cai)
 hist(cai)
 
 }
+\references{
+Sharp PM, Li WH. 1987. The codon Adaptation Index--a measure of directional synonymous codon usage bias, and its potential applications. Nucleic Acids Res 15:1281-1295.
+}

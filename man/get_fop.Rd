@@ -24,3 +24,6 @@ head(fop)
 hist(fop)
 
 }
+\references{
+Ikemura T. 1981. Correlation between the abundance of Escherichia coli transfer RNAs and the occurrence of the respective codons in its protein genes: a proposal for a synonymous codon choice that is optimal for the E. coli translational system. J Mol Biol 151:389-409.
+}

@@ -11,6 +11,7 @@
 #'   `create_codon_table`.
 #' @returns a data.table of codon info and RSCU values
 #' @importFrom data.table ':='
+#' @references Sharp PM, Tuohy TM, Mosurski KR. 1986. Codon usage in yeast: cluster analysis clearly differentiates highly and lowly expressed genes. Nucleic Acids Res 14:5125-5143.
 #' @export
 #'
 #' @examples
@@ -134,6 +135,7 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
 #' @param s list of non-Waston-Crick pairing panelty.
 #' @returns data.table of tRNA expression information.
 #' @importFrom data.table ':='
+#' @references dos Reis M, Savva R, Wernisch L. 2004. Solving the riddle of codon usage preferences: a test for translational selection. Nucleic Acids Res 32:5036-5044.
 #' @export
 #' @examples
 #' # estimate codon tRNA weight for yeasts
@@ -224,6 +226,7 @@ est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @param cor_method method name passed to `cor.test` used for calculating correlation coefficients.
 #' @returns data.table of optimal codons.
+#' @references Presnyak V, Alhusaini N, Chen YH, Martin S, Morris N, Kline N, Olson S, Weinberg D, Baker KE, Graveley BR, et al. 2015. Codon optimality is a major determinant of mRNA stability. Cell 160:1111-1124.
 #' @export
 #' @examples
 #' # estimate yeast mRNA CSC

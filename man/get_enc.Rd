@@ -24,3 +24,7 @@ enc <- get_enc(cf_all)
 head(enc)
 hist(enc)
 }
+\references{
+* Wright F. 1990. The 'effective number of codons' used in a gene. Gene 87:23-29.
+* Sun X, Yang Q, Xia X. 2013. An improved implementation of effective number of codons (nc). Mol Biol Evol 30:191-196.
+}

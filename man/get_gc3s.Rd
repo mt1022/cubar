@@ -25,3 +25,6 @@ head(gc3s)
 hist(gc3s)
 
 }
+\references{
+Peden JF. 2000. Analysis of codon usage.
+}

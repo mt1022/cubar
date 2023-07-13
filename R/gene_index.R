@@ -6,6 +6,9 @@
 #' @param codon_table codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @return vector of ENC values, sequence names are used as vector names
 #' @export
+#' @references
+#' * Wright F. 1990. The 'effective number of codons' used in a gene. Gene 87:23-29.
+#' * Sun X, Yang Q, Xia X. 2013. An improved implementation of effective number of codons (nc). Mol Biol Evol 30:191-196.
 #' @examples
 #' # estimate ENC of yeast genes
 #' cf_all <- count_codons(yeast_cds)
@@ -58,6 +61,7 @@ get_enc <- function(cf, codon_table = get_codon_table()){
 #' @returns a named vector of CAI values
 #' @importFrom data.table ':='
 #' @importFrom data.table .N
+#' @references Sharp PM, Li WH. 1987. The codon Adaptation Index--a measure of directional synonymous codon usage bias, and its potential applications. Nucleic Acids Res 15:1281-1295.
 #' @export
 #' @examples
 #' # estimate CAI of yeast genes based on RSCU of highly expressed genes
@@ -90,6 +94,7 @@ get_cai <- function(cf, rscu){
 #' @param cf matrix of codon frequencies as calculated by `count_codons()`.
 #' @param trna_w tRNA weight for each codon, can be generated with `est_trna_weight()`.
 #' @returns a named vector of TAI values
+#' @references dos Reis M, Savva R, Wernisch L. 2004. Solving the riddle of codon usage preferences: a test for translational selection. Nucleic Acids Res 32:5036-5044.
 #' @export
 #' @examples
 #' # calculate TAI of yeast genes based on genomic tRNA copy numbers
@@ -139,6 +144,7 @@ get_gc <- function(cf){
 #' @returns a named vector of GC3s values.
 #' @importFrom data.table ':='
 #' @importFrom data.table .N
+#' @references Peden JF. 2000. Analysis of codon usage.
 #' @export
 #' @examples
 #' # estimate GC3s of yeast genes
@@ -198,6 +204,7 @@ get_gc4d <- function(cf, codon_table = get_codon_table()){
 #' @param seqs CDS sequences of all protein-coding genes. One for each gene.
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @returns a named vector of fop values.
+#' @references Ikemura T. 1981. Correlation between the abundance of Escherichia coli transfer RNAs and the occurrence of the respective codons in its protein genes: a proposal for a synonymous codon choice that is optimal for the E. coli translational system. J Mol Biol 151:389-409.
 #' @export
 #' @examples
 #' # estimate Fop of yeast genes
@@ -221,6 +228,7 @@ get_fop <- function(seqs, codon_table = get_codon_table()){
 #' @param cf matrix of codon frequencies as calculated by `count_codons()`.
 #' @param csc table of Codon Stabilization Coefficients as calculated by `est_csc()`.
 #' @returns a named vector of cscg values.
+#' @references Presnyak V, Alhusaini N, Chen YH, Martin S, Morris N, Kline N, Olson S, Weinberg D, Baker KE, Graveley BR, et al. 2015. Codon optimality is a major determinant of mRNA stability. Cell 160:1111-1124.
 #' @export
 #' @examples
 #' # estimate CSCg of yeast genes

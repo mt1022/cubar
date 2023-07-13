@@ -26,3 +26,6 @@ head(tai)
 hist(tai)
 
 }
+\references{
+dos Reis M, Savva R, Wernisch L. 2004. Solving the riddle of codon usage preferences: a test for translational selection. Nucleic Acids Res 32:5036-5044.
+}

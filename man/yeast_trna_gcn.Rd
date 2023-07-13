@@ -20,6 +20,6 @@ Yeast tRNA gene copy numbers (GCN) by anticodon obtained from gtRNAdb.
 yeast_trna_gcn
 }
 \references{
-Chan, P.P. & Lowe, T.M. (2016) GtRNAdb 2.0: an expanded database of transfer RNA genes identified in complete and draft genomes. Nucl. Acids Res. 44(Database issue):D184-D189.Chan, P.P. & Lowe, T.M. (2016) GtRNAdb 2.0: an expanded database of transfer RNA genes identified in complete and draft genomes. Nucl. Acids Res. 44(Database issue):D184-D189.
+Chan PP, Lowe TM. 2016. GtRNAdb 2.0: an expanded database of transfer RNA genes identified in complete and draft genomes. Nucleic Acids Res 44:D184-189.
 }
 \keyword{datasets}

@@ -20,7 +20,7 @@
 #' \item{half_life}{mRNA half life in minutes}
 #' }
 #' @source <https://doi.org/10.1016/j.cell.2015.02.029>
-#' @references Presnyak V, Alhusaini N, Chen YH, et al. Codon optimality is a major determinant of mRNA stability. Cell. 2015;160(6):1111-1124. doi:10.1016/j.cell.2015.02.029
+#' @references Presnyak V, Alhusaini N, Chen YH, Martin S, Morris N, Kline N, Olson S, Weinberg D, Baker KE, Graveley BR, et al. 2015. Codon optimality is a major determinant of mRNA stability. Cell 160:1111-1124.
 #' @examples
 #' head(yeast_half_life)
 "yeast_half_life"
@@ -36,8 +36,8 @@
 #' \item{gene_name}{gene name}
 #' \item{fpkm}{mRNA expression level in Fragments per kilobase per million reads}
 #' }
-#' @source <https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE57385&format=file&file=GSE57385%5FRiboZero%5FFPKM%2Etxt%2Egz>
-#' @references Presnyak V, Alhusaini N, Chen YH, et al. Codon optimality is a major determinant of mRNA stability. Cell. 2015;160(6):1111-1124. doi:10.1016/j.cell.2015.02.029
+#' @source <https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE57385>
+#' @references Presnyak V, Alhusaini N, Chen YH, Martin S, Morris N, Kline N, Olson S, Weinberg D, Baker KE, Graveley BR, et al. 2015. Codon optimality is a major determinant of mRNA stability. Cell 160:1111-1124.
 #' @examples
 #' head(yeast_exp)
 "yeast_exp"
@@ -49,7 +49,7 @@
 #'
 #' @format a named vector with a length of 41. Value names are anticodons.
 #' @source <http://gtrnadb.ucsc.edu/genomes/eukaryota/Scere3/sacCer3-mature-tRNAs.fa>
-#' @references Chan, P.P. & Lowe, T.M. (2016) GtRNAdb 2.0: an expanded database of transfer RNA genes identified in complete and draft genomes. Nucl. Acids Res. 44(Database issue):D184-D189.Chan, P.P. & Lowe, T.M. (2016) GtRNAdb 2.0: an expanded database of transfer RNA genes identified in complete and draft genomes. Nucl. Acids Res. 44(Database issue):D184-D189.
+#' @references Chan PP, Lowe TM. 2016. GtRNAdb 2.0: an expanded database of transfer RNA genes identified in complete and draft genomes. Nucleic Acids Res 44:D184-189.
 #' @examples
 #' yeast_trna_gcn
 "yeast_trna_gcn"

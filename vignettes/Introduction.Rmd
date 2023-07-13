@@ -18,10 +18,11 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(cubar)
+library(ggplot2)
 ```
 
 ### Common analyses
-Sequences handling and codon table
+CDS sequence QC and basic manipulation.
 ```{r}
 # example data
 yeast_cds
@@ -35,20 +36,34 @@ Biostrings::translate(yeast_cds_qc[['YDR320W-B']])
 
 # get codon frequency
 yeast_cf <- count_codons(yeast_cds_qc)
+```
 
+Get codon table and visualize
+```{r}
 # get codon table for the standard genetic code
 ctab <- get_codon_table(gcid = '1')
+
+# plot possible codon and anticodon pairings
+plot_ca_pairing(ctab)
 ```
 
-Effective number of codons (ENC)
+Calculate effective number of codons (ENC)
 ```{r}
 # get enc
-yeast_enc <- get_enc(yeast_cf)
-head(yeast_enc)
-hist(yeast_enc)
+enc <- get_enc(yeast_cf)
+head(enc)
+
+plot_dist <- function(x, xlab = 'values'){
+    x <- stack(x)
+    ggplot(x, aes(x = values)) +
+        geom_histogram() +
+        labs(x = xlab, y = 'Number of genes')
+}
+
+plot_dist(enc, 'ENC')
 ```
 
-Fraction of optimal codons (Fop)
+Calculate fraction of optimal codons (Fop)
 ```{r}
 # estimate optimal codons
 optimal_codons <- est_optimal_codons(yeast_cds_qc, codon_table = ctab)
@@ -56,21 +71,23 @@ optimal_codons
 
 # get fop
 fop <- get_fop(yeast_cds)
-hist(fop)
+plot_dist(fop, 'Fop')
 ```
 
-Codon Adaptation Index (CAI)
+Calculate Codon Adaptation Index (CAI)
 ```{r}
-# estimate RSCU
-rscu <- est_rscu(yeast_cf, codon_table = ctab)
+# estimate RSCU of highly expressed genes
+yeast_heg <- head(yeast_exp[order(-yeast_exp$fpkm), ], n = 500)
+yeast_heg <- yeast_heg[yeast_heg$gene_id %in% rownames(yeast_cf), ]
+rscu_heg <- est_rscu(yeast_cf[yeast_heg$gene_id, ], codon_table = ctab)
 
-# calculate CAI
+# calculate CAI of all genes
 # note: CAI values are usually calculated based RSCU of highly expressed genes.
-cai <- get_cai(yeast_cf, rscu = rscu)
-hist(cai)
+cai <- get_cai(yeast_cf, rscu = rscu_heg)
+plot_dist(cai, xlab = 'CAI')
 ```
 
-tRNA Adaptation Index (tAI)
+Calculate tRNA Adaptation Index (tAI)
 ```{r}
 # get tRNA gene copy number from GtRNADB
 path_gtrnadb <- 'http://gtrnadb.ucsc.edu/genomes/eukaryota/Scere3/sacCer3-mature-tRNAs.fa'
@@ -83,5 +100,5 @@ trna_w <- est_trna_weight(trna_level = trna_gcn, codon_table = ctab)
 
 # get tAI
 tai <- get_tai(yeast_cf, trna_w = trna_w)
-hist(tai)
+plot_dist(tai, 'tAI')
 ```

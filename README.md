@@ -5,16 +5,15 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-Codon usage bias analysis using R!
-
-Features
+### Overview
+cubar is a package for codon usage bias analysis in R. Main features are listed as follows:
 
 - Codon level analyses
     - Support NCBI and custom genetic codes
     - Calculate tRNA weights
     - Calculate relative synonymous codon usage (RSCU)
-    - Machine learning analyses of preferred codons
-    - Show possible codon-anticodon pairings
+    - Machine learning-based inference of optimal codons
+    - Visualization codon-anticodon pairing relationships
 - Gene level analyses
     - Codon frequency matrix
     - Codon Adaptation Index (CAI)
@@ -45,9 +44,7 @@ The latest version of `cubar` can be installed with:
 devtools::install_github('mt1022/cubar', dependencies = TRUE)
 ```
 
-Full Documentation can be found at cubar [website](https://mt1022.github.io/cubar/).
-
-
 ### Suggests
+- [Biostrings](https://bioconductor.org/packages/release/bioc/html/Biostrings.html) for sequence input/output and manipulation.
 - [Peptides](https://github.com/dosorio/Peptides) for peptide- or protein-related indices.
 

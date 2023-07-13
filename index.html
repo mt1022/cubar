@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cubar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,16 +68,18 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>Codon usage bias analysis using R!</p>
-<p>Features</p>
+<div class="section level3">
+<h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h3>
+<p>cubar is a package for codon usage bias analysis in R. Main features are listed as follows:</p>
 <ul>
 <li>Codon level analyses
 <ul>
 <li>Support NCBI and custom genetic codes</li>
 <li>Calculate tRNA weights</li>
 <li>Calculate relative synonymous codon usage (RSCU)</li>
-<li>Machine learning analyses of preferred codons</li>
-<li>Show possible codon-anticodon pairings</li>
+<li>Machine learning-based inference of optimal codons</li>
+<li>Visualization codon-anticodon pairing relationships</li>
 </ul>
 </li>
 <li>Gene level analyses
@@ -92,6 +94,7 @@
 </ul>
 </li>
 </ul>
+</div>
 <div class="section level3">
 <h3 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
 </h3>
@@ -120,12 +123,13 @@
 <p>The latest version of <code>cubar</code> can be installed with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'mt1022/cubar'</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>Full Documentation can be found at cubar <a href="https://mt1022.github.io/cubar/">website</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="suggests">Suggests<a class="anchor" aria-label="anchor" href="#suggests"></a>
 </h3>
 <ul>
+<li>
+<a href="https://bioconductor.org/packages/release/bioc/html/Biostrings.html" class="external-link">Biostrings</a> for sequence input/output and manipulation.</li>
 <li>
 <a href="https://github.com/dosorio/Peptides" class="external-link">Peptides</a> for peptide- or protein-related indices.</li>
 </ul>

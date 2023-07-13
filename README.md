@@ -48,3 +48,5 @@ devtools::install_github('mt1022/cubar', dependencies = TRUE)
 - [Biostrings](https://bioconductor.org/packages/release/bioc/html/Biostrings.html) for sequence input/output and manipulation.
 - [Peptides](https://github.com/dosorio/Peptides) for peptide- or protein-related indices.
 
+### Getting help
+Please use GitHub [issues](https://github.com/mt1022/cubar/issues) for bug reports, questions, and feature requests.

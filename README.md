@@ -38,10 +38,16 @@ Imports
 
 ### Installation
 
-The latest version of `cubar` can be installed with:
+The latest release of `cubar` can be installed with:
 
 ```r
-devtools::install_github('mt1022/cubar', dependencies = TRUE)
+install.packages("cubar")
+```
+
+The latest developmental version of `cubar` can be installed with:
+
+```r
+devtools::install_github("mt1022/cubar", dependencies = TRUE)
 ```
 
 ### Suggests

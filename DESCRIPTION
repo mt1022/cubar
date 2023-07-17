@@ -1,5 +1,5 @@
 Package: cubar
-Title: Codon Usage Bias Analysis with R
+Title: Codon Usage Bias Analysis
 Version: 0.4.0
 Authors@R: 
     person(given = "Hong",
@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre", "cph"),
            email = "mt1022.dev@gmail.com",
            comment = c(ORCID = "0000-0002-4064-9432"))
-Description: Fast and flexible functions for codon usage bias analyses.
+Description: Cubar is a powerful R package that allows for rapid and flexible analysis of codon usage bias. It provides in-depth analysis at the codon level, including relative synonymous codon usage (RSCU), tRNA weight calculations, machine learning predictions for optimal or preferred codons, and visualization of codon-anticodon pairing. Additionally, it can calculate various gene-specific codon indices such as codon adaptation index (CAI), effective number of codons (ENC), fraction of optimal codons (Fop), tRNA adaptation index (tAI), mean codon stabilization coefficients (CSCg), and GC contents (GC/GC3s/GC4d). Cubar also supports both standard and non-standard genetic code tables found in NCBI, as well as custom genetic code tables.
 License: MIT + file LICENSE
 URL: https://github.com/mt1022/cubar, https://mt1022.github.io/cubar/
 BugReports: https://github.com/mt1022/cubar/issues

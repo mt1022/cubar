@@ -55,7 +55,7 @@ create_codon_table <- function(aa2codon){
 #'
 #' \code{show_codon_tables} print a table of available genetic code from NCBI through
 #' `Biostrings::GENETIC_CODE_TABLE`.
-#' @returns NULL
+#' @returns No return value (NULL). Available codon tables will be printed out directly.
 #' @export
 #'
 #' @examples

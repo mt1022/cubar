@@ -3,12 +3,10 @@ This is a resubmission. In this version I have:
 
 * Omitted the redundant "with R" in the title
 
-* Added more details to the Description field
+* Added more details to the Description field and changed starting words
 
 * Updated documentation of `show_codon_tables` so that \values tag has been
   correctly generated in show_codon_tables.Rd
-
-* Start the package description with "This package" rather than package name.
  
 ## R CMD check results
 

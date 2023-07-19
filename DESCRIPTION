@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre", "cph"),
            email = "mt1022.dev@gmail.com",
            comment = c(ORCID = "0000-0002-4064-9432"))
-Description: This package allows for rapid and flexible analysis of codon 
+Description: A suite of functions for rapid and flexible analysis of codon 
     usage bias. It provides in-depth analysis at the codon level, including 
     relative synonymous codon usage (RSCU), tRNA weight calculations, machine 
     learning predictions for optimal or preferred codons, and visualization of 

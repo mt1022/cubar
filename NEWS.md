@@ -1,3 +1,9 @@
 # cubar (development version)
 
-* Added a `NEWS.md` file to track changes to the package.
+# cubar 0.4.0
+
+* Released to CRAN.
+
+# cubar 0.3.2
+
+* Initial CRAN submission.

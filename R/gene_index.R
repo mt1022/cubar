@@ -108,7 +108,7 @@ get_tai <- function(cf, trna_w){
     # codon frequency per CDS
     cf <- cf[, trna_w$codon, drop = FALSE]
 
-    # cai
+    # tai
     tai <- exp(cf %*% matrix(log(trna_w$w)) / rowSums(cf))
     return(tai[, 1])
 }

@@ -1,3 +1,14 @@
+#' human mitochondrial CDS sequences
+#'
+#' CDSs of 13 protein-coding genes in the human mitochondrial genome extracted from ENSEMBL Biomart
+#'
+#' @format a DNAStringSet of 13 sequences
+#' @source <https://www.ensembl.org/index.html>
+#' @examples
+#' head(human_mt)
+"human_mt"
+
+
 #' yeast CDS sequences
 #'
 #' CDSs of all protein-coding genes in Saccharomyces_cerevisiae

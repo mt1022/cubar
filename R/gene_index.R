@@ -38,15 +38,22 @@ get_enc <- function(cf, codon_table = get_codon_table()){
     }
     ss <- lengths(codon_list)
 
-    N_single <- sum(ss == 1)
-    N_double <- sum(ss == 2) * rowSums(n_cf[, ss == 2, drop = F]) /
-        rowSums(n_cf[, ss == 2, drop = F] * f_cf[, ss == 2, drop = F])
-    N_triple <- sum(ss == 3) * rowSums(n_cf[, ss == 3, drop = F]) /
-        rowSums(n_cf[, ss == 3, drop = F] * f_cf[, ss == 3, drop = F])
-    N_quad <- sum(ss == 4) * rowSums(n_cf[, ss == 4, drop = F]) /
-        rowSums(n_cf[, ss == 4, drop = F] * f_cf[, ss == 4, drop = F])
-    Nc <- N_single + N_double + N_triple + N_quad
-
+    Nc <- N_single <- sum(ss == 1)
+    if(sum(ss == 2) > 0){
+        N_double <- sum(ss == 2) * rowSums(n_cf[, ss == 2, drop = F]) /
+            rowSums(n_cf[, ss == 2, drop = F] * f_cf[, ss == 2, drop = F])
+        Nc <- Nc + N_double
+    }
+    if(sum(ss = 3) > 0){
+        N_triple <- sum(ss == 3) * rowSums(n_cf[, ss == 3, drop = F]) /
+            rowSums(n_cf[, ss == 3, drop = F] * f_cf[, ss == 3, drop = F])
+        Nc <- Nc + N_triple
+    }
+    if(sum(ss == 4) > 0){
+        N_quad <- sum(ss == 4) * rowSums(n_cf[, ss == 4, drop = F]) /
+            rowSums(n_cf[, ss == 4, drop = F] * f_cf[, ss == 4, drop = F])
+        Nc <- Nc + N_quad
+    }
     return(Nc)
 }
 

@@ -44,7 +44,7 @@ get_enc <- function(cf, codon_table = get_codon_table()){
             rowSums(n_cf[, ss == 2, drop = F] * f_cf[, ss == 2, drop = F])
         Nc <- Nc + N_double
     }
-    if(sum(ss = 3) > 0){
+    if(sum(ss == 3) > 0){
         N_triple <- sum(ss == 3) * rowSums(n_cf[, ss == 3, drop = F]) /
             rowSums(n_cf[, ss == 3, drop = F] * f_cf[, ss == 3, drop = F])
         Nc <- Nc + N_triple

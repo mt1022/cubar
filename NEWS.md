@@ -1,3 +1,5 @@
+# cubar 0.4.2
+
 # cubar 0.4.1
 
 * New vignette for mitochondrial codon usage analysis.

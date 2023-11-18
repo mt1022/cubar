@@ -1,5 +1,8 @@
 # cubar 0.4.2
 
+* adjust formatting
+* fix a typo in `get_enc` code
+
 # cubar 0.4.1
 
 * New vignette for mitochondrial codon usage analysis.

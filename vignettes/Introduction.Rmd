@@ -68,7 +68,7 @@ Calculate fraction of optimal codons (Fop)
 ```{r}
 # estimate optimal codons
 optimal_codons <- est_optimal_codons(yeast_cds_qc, codon_table = ctab)
-optimal_codons
+head(optimal_codons)
 
 # get fop
 fop <- get_fop(yeast_cds)

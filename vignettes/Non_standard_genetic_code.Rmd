@@ -1,5 +1,5 @@
 ---
-title: "Non_standard_genetic_code"
+title: "Non-standard genetic code"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Non_standard_genetic_code}

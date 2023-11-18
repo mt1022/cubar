@@ -214,6 +214,7 @@ est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
     bingreg <- data.table::rbindlist(binreg, idcol = 'subfam')
     bingreg[, qvalue := stats::p.adjust(pvalue, method = 'BH')]
     bingreg <- codon_table[bingreg, on = .(codon, subfam)]
+    bingreg[, c('codon_b1', 'codon_b2', 'codon_b3', 'se', 'zvalue') := NULL]
     return(bingreg)
 }
 

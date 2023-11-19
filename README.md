@@ -5,6 +5,7 @@
 [![CRAN status](https://www.r-pkg.org/badges/version/cubar)](https://CRAN.R-project.org/package=cubar)
 [![](https://cranlogs.r-pkg.org/badges/cubar)](https://cran.r-project.org/package=cubar)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10155991.svg)](https://doi.org/10.5281/zenodo.10155991)
 <!-- badges: end -->
 
 ### Overview

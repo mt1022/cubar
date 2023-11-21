@@ -16,17 +16,25 @@ knitr::opts_chunk$set(
 )
 ```
 
+#### Introduction
+`cubar` supports the codon usage bias analysis of sequences utilizing non-standard genetic codes, such as those found in mitochondrial or chloroplast protein-coding sequences. To illustrate its application, we demonstrate the calculation of effective number of codons (ENC) for human mitochondrial CDS sequences.
+
 ```{r setup}
 suppressPackageStartupMessages(library(Biostrings))
 library(cubar)
 ```
 
+#### Main analysis
+First, Load sequences and get the corresponding codon table.
 ```{r}
 human_mt
 
 ctab <- get_codon_table(gcid = '2')
+head(ctab)
+```
 
-# we do not check CDS length and stop codons as incomplete stop codons are prevalent among MT CDSs.
+We do not check CDS length and stop codons as incomplete stop codons are prevalent among MT CDSs.
+```{r}
 human_mt_qc <- check_cds(
     human_mt,
     codon_table = ctab,
@@ -36,17 +44,25 @@ human_mt_qc <- check_cds(
     start_codons = c('ATG', 'ATA', 'ATT'))
 
 human_mt_qc
+```
 
-# As stop codons are present, now we manually remove them
+As stop codons are present, now we manually remove them.
+```{r}
 len_trim <- width(human_mt_qc) %% 3
 len_trim <- ifelse(len_trim == 0, 3, len_trim)
 human_mt_qc <- subseq(human_mt_qc, start = 1, end = width(human_mt_qc) - len_trim)
 
+human_mt_qc
+```
+
+Finally, we calculate codon frequencies and ENC.
+```{r}
 # calculate codon frequency
 mt_cf <- count_codons(human_mt_qc)
-
 
 # calculate ENC
 get_enc(mt_cf, codon_table = ctab)
 ```
+
+It is important to note that the `check_cds` function and stop codon trimming are optional steps, and you can implement your own quality control procedures. However, it is crucial to ensure that your input sequences are suitable for codon usage bias analysis. Failure to do so may lead to ambiguous and misleading results from problematic sequences.
 

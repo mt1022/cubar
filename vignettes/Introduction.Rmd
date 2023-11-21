@@ -9,6 +9,12 @@ editor_options:
   chunk_output_type: console
 ---
 
+Codon usage bias is a phenomenon whereby different organisms exhibit distinct preferences for synonymous codons, which are multiple codons that encode the same amino acid. This variation in codon usage patterns is observed across all levels of life, from bacteria to eukaryotes. Codon usage bias is influenced by a variety of factors, including gene expression, GC content, and horizontal gene transfer. Understanding the causes and consequences of codon usage bias is important for a variety of fields, including molecular biology, evolutionary biology, and biotechnology.
+
+`cubar` can be a helpful tool for researchers who are interested in studying codon usage bias. It provides a variety of functions that can be used to calculate and visualize codon usage bias metrics.
+
+Here, we demonstrate the basic functionalities of `cubar` by analyzing the coding sequences (CDSs) of brewer's yeast as an example.
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -16,30 +22,40 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 ```{r setup}
 suppressPackageStartupMessages(library(Biostrings))
 library(cubar)
 library(ggplot2)
 ```
 
-### Common analyses
-CDS sequence QC and basic manipulation.
+#### Sequences and the Genetic Code
+First, quality control was performed on the provided Yeast CDS sequences to ensure that each sequence had the correct start codon, stop codon, and no internal stop codons. Additionally, the length of each sequence was verified to be a multiple of three. These QC procedures can be adjusted based on the input sequences. For example, if your sequences do not contain 3' stop codons, you can skip this check by setting `check_stop = FALSE`.
 ```{r}
 # example data
 yeast_cds
-yeast_cds_qc <- check_cds(yeast_cds)
 
+# qc
+yeast_cds_qc <- check_cds(yeast_cds)
+yeast_cds_qc
+```
+
+CDSs sequences can be convert to codon sequences by `seq_to_codons` or translated to corresponding amino acid sequences with `translate` from `Biostrings`.
+```{r}
 # convert a CDS to codon sequence
 seq_to_codons(yeast_cds_qc[['YDR320W-B']])
 
 # convert a CDS to amino acid sequence
 Biostrings::translate(yeast_cds_qc[['YDR320W-B']])
+```
 
+Many codon usage metrics depend on codon frequencies, which can be calculated easily by the function `count_codons`.
+```{r}
 # get codon frequency
 yeast_cf <- count_codons(yeast_cds_qc)
 ```
 
-Get codon table and visualize
+To interact with the genetic code, `cubar` provided a helpful function to convert genetic code in `Biostrings` to a handy table and an option to visualize possible codon-anticodon pairing.
 ```{r}
 # get codon table for the standard genetic code
 ctab <- get_codon_table(gcid = '1')
@@ -48,7 +64,10 @@ ctab <- get_codon_table(gcid = '1')
 plot_ca_pairing(ctab)
 ```
 
-Calculate effective number of codons (ENC)
+#### Codon usage indices
+Most indices can be calculate with `get_*` series functions and the return value is usually a vector with value names identical to the names of sequences. Here we demonstrate how to calculate various indices with the above yeast CDS data.
+
+##### Effective Number of Codons (ENC)
 ```{r}
 # get enc
 enc <- get_enc(yeast_cf)
@@ -64,18 +83,20 @@ plot_dist <- function(x, xlab = 'values'){
 plot_dist(enc, 'ENC')
 ```
 
-Calculate fraction of optimal codons (Fop)
+##### Fraction of optimal codons (Fop)
 ```{r}
-# estimate optimal codons
-optimal_codons <- est_optimal_codons(yeast_cds_qc, codon_table = ctab)
-head(optimal_codons)
-
 # get fop
 fop <- get_fop(yeast_cds)
 plot_dist(fop, 'Fop')
 ```
 
-Calculate Codon Adaptation Index (CAI)
+`cubar` provides a method to determine the optimal (or "preferred") codon for each codon subfamily based on regression of codon usage against ENC. Preferred codons are more likely to be used in genes that exhibit strong codon usage bias and tend to have lower ENC values. Consequently, preferred codons will have negative coefficients in the regression analysis. To view the optimal codons, you can manually run the `est_optimal_codons` function.
+```{r}
+optimal_codons <- est_optimal_codons(yeast_cds_qc, codon_table = ctab)
+head(optimal_codons[optimal_codons$coef < 0 & optimal_codons$qvalue < 0.01, ])
+```
+
+##### Codon Adaptation Index (CAI)
 ```{r}
 # estimate RSCU of highly expressed genes
 yeast_heg <- head(yeast_exp[order(-yeast_exp$fpkm), ], n = 500)
@@ -88,7 +109,7 @@ cai <- get_cai(yeast_cf, rscu = rscu_heg)
 plot_dist(cai, xlab = 'CAI')
 ```
 
-Calculate tRNA Adaptation Index (tAI)
+##### tRNA Adaptation Index (tAI)
 ```{r}
 # get tRNA gene copy number from GtRNADB
 path_gtrnadb <- 'http://gtrnadb.ucsc.edu/genomes/eukaryota/Scere3/sacCer3-mature-tRNAs.fa'
@@ -103,3 +124,7 @@ trna_w <- est_trna_weight(trna_level = trna_gcn, codon_table = ctab)
 tai <- get_tai(yeast_cf, trna_w = trna_w)
 plot_dist(tai, 'tAI')
 ```
+
+#### FAQ
+1. What is subfamily in `cubar`?
+   For large codon family that has more than four synonymous codons, `cubar` will break it into two subfamilies depending on the first two nucleotides of codons. For example, leucine is encoded by six codons in the standard genetic code. `cubar` will break the six codons into two subfamilies: `Leu_UU` for `UUA` and `UUG`; `Leu_CU` for `CUU`, `CUC`, `CUA`, and `CUG`.

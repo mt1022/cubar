@@ -53,6 +53,12 @@ The latest developmental version of `cubar` can be installed with:
 devtools::install_github("mt1022/cubar", dependencies = TRUE)
 ```
 
+### Usage
+- [Documentation](https://mt1022.github.io/cubar/)
+- Tutorials
+  - [Getting Started](https://mt1022.github.io/cubar/articles/introduction.html)
+  - [Non-standard Genetic Code](https://mt1022.github.io/cubar/articles/non_standard_genetic_code.html)
+
 ### Suggests
 - [Biostrings](https://bioconductor.org/packages/release/bioc/html/Biostrings.html) for sequence input/output and manipulation.
 - [Peptides](https://github.com/dosorio/Peptides) for peptide- or protein-related indices.

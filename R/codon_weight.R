@@ -56,6 +56,7 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
     anticodon <- codon <- codon_b1 <- codon_b2 <- codon_b3 <- NULL # due to NSE notes in R CMD check
     . <- aa_code <- base_codon <- base_anti <- type <- NULL
     anticodon_aa <- codon_aa <- i.aa_code <- NULL
+    codon_table <- data.table::copy(codon_table)
     codon_table[, anticodon := as.character(rev_comp(codon_table$codon))]
     codon_table[, c('codon_b1', 'codon_b2', 'codon_b3') := data.table::tstrsplit(codon, '')]
     bases <- c('T', 'C', 'A', 'G')
@@ -161,7 +162,11 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
     dtt_W <- ca_pairs[, .(W = sum(ac_level * (1 - penality))), by = .(codon)]
     codon_table[dtt_W, W := i.W, on = .(codon)]
     codon_table[, w := W/max(W, na.rm = TRUE)]
-    mean_w <- mean(codon_table$w, na.rm = TRUE)
+
+    # using geometric mean of w for rare cases that a codon has no matching tRNA
+    # probably due to incomplete tRNA annotation
+    w0 <- codon_table[!is.na(w), w]
+    mean_w <- exp(mean(log(w0)))
     codon_table[is.na(w), w := mean_w]
     return(codon_table)
 }

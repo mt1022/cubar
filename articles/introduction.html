@@ -8,8 +8,8 @@
 <meta name="description" content="cubar">
 <title>Introduction • cubar</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction">
 <meta property="og:description" content="cubar">
@@ -210,12 +210,6 @@ calculate various indices with the above yeast CDS data.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get fop</span></span>
 <span><span class="va">fop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_fop.html">get_fop</a></span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in `[.data.table`(bingreg, , `:=`(c("codon_b1", "codon_b2", "codon_b3",</span></span>
-<span><span class="co">#&gt; : Column 'codon_b1' does not exist to remove</span></span>
-<span><span class="co">#&gt; Warning in `[.data.table`(bingreg, , `:=`(c("codon_b1", "codon_b2", "codon_b3",</span></span>
-<span><span class="co">#&gt; : Column 'codon_b2' does not exist to remove</span></span>
-<span><span class="co">#&gt; Warning in `[.data.table`(bingreg, , `:=`(c("codon_b1", "codon_b2", "codon_b3",</span></span>
-<span><span class="co">#&gt; : Column 'codon_b3' does not exist to remove</span></span>
 <span><span class="fu">plot_dist</span><span class="op">(</span><span class="va">fop</span>, <span class="st">'Fop'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
@@ -229,20 +223,13 @@ the <code>est_optimal_codons</code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">optimal_codons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/est_optimal_codons.html">est_optimal_codons</a></span><span class="op">(</span><span class="va">yeast_cds_qc</span>, codon_table <span class="op">=</span> <span class="va">ctab</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">optimal_codons</span><span class="op">[</span><span class="va">optimal_codons</span><span class="op">$</span><span class="va">coef</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">optimal_codons</span><span class="op">$</span><span class="va">qvalue</span> <span class="op">&lt;</span> <span class="fl">0.01</span>, <span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    aa_code amino_acid codon subfam anticodon        coef        pvalue</span></span>
-<span><span class="co">#&gt; 1:       A        Ala   GCT Ala_GC       AGC -0.08702058  0.000000e+00</span></span>
-<span><span class="co">#&gt; 2:       A        Ala   GCC Ala_GC       GGC -0.01876569  2.164990e-40</span></span>
-<span><span class="co">#&gt; 3:       R        Arg   AGA Arg_AG       TCT -0.13023392  0.000000e+00</span></span>
-<span><span class="co">#&gt; 4:       R        Arg   CGT Arg_CG       ACG -0.21009663  0.000000e+00</span></span>
-<span><span class="co">#&gt; 5:       N        Asn   AAC Asn_AA       GTT -0.05752254 1.600668e-292</span></span>
-<span><span class="co">#&gt; 6:       D        Asp   GAC Asp_GA       GTC -0.01846525  4.298281e-36</span></span>
-<span><span class="co">#&gt;           qvalue</span></span>
-<span><span class="co">#&gt; 1:  0.000000e+00</span></span>
-<span><span class="co">#&gt; 2:  2.401170e-40</span></span>
-<span><span class="co">#&gt; 3:  0.000000e+00</span></span>
-<span><span class="co">#&gt; 4:  0.000000e+00</span></span>
-<span><span class="co">#&gt; 5: 2.871787e-292</span></span>
-<span><span class="co">#&gt; 6:  4.599915e-36</span></span></code></pre></div>
+<span><span class="co">#&gt;    aa_code amino_acid codon subfam        coef        pvalue        qvalue</span></span>
+<span><span class="co">#&gt; 1:       A        Ala   GCT Ala_GC -0.08702058  0.000000e+00  0.000000e+00</span></span>
+<span><span class="co">#&gt; 2:       A        Ala   GCC Ala_GC -0.01876569  2.164990e-40  2.401170e-40</span></span>
+<span><span class="co">#&gt; 3:       R        Arg   AGA Arg_AG -0.13023392  0.000000e+00  0.000000e+00</span></span>
+<span><span class="co">#&gt; 4:       R        Arg   CGT Arg_CG -0.21009663  0.000000e+00  0.000000e+00</span></span>
+<span><span class="co">#&gt; 5:       N        Asn   AAC Asn_AA -0.05752254 1.600668e-292 2.871787e-292</span></span>
+<span><span class="co">#&gt; 6:       D        Asp   GAC Asp_GA -0.01846525  4.298281e-36  4.599915e-36</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="codon-adaptation-index-cai">Codon Adaptation Index (CAI)<a class="anchor" aria-label="anchor" href="#codon-adaptation-index-cai"></a>
@@ -267,7 +254,7 @@ the <code>est_optimal_codons</code> function.</p>
 <code class="sourceCode R"><span><span class="co"># get tRNA gene copy number from GtRNADB</span></span>
 <span><span class="va">path_gtrnadb</span> <span class="op">&lt;-</span> <span class="st">'http://gtrnadb.ucsc.edu/genomes/eukaryota/Scere3/sacCer3-mature-tRNAs.fa'</span></span>
 <span><span class="va">yeast_trna</span> <span class="op">&lt;-</span> <span class="fu">Biostrings</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Biostrings/man/XStringSet-io.html" class="external-link">readRNAStringSet</a></span><span class="op">(</span><span class="va">path_gtrnadb</span><span class="op">)</span></span>
-<span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/tstrsplit.html" class="external-link">tstrsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">' .*'</span>, <span class="st">''</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">yeast_trna</span><span class="op">)</span><span class="op">)</span>, <span class="st">'-'</span><span class="op">)</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/tstrsplit.html" class="external-link">tstrsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">' .*'</span>, <span class="st">''</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">yeast_trna</span><span class="op">)</span><span class="op">)</span>, <span class="st">'-'</span><span class="op">)</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="va">trna_gcn</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">trna_gcn</span><span class="op">)</span> <span class="op">!=</span> <span class="st">'NNN'</span><span class="op">]</span> <span class="co"># copy of each anticodon</span></span>
 <span></span>
 <span><span class="co"># calculate tRNA weight for each codon</span></span>

@@ -251,3 +251,54 @@ get_cscg <- function(cf, csc){
     cscg <- cp %*% as.matrix(csc$csc)
     stats::setNames(cscg[, 1], rownames(cscg))
 }
+#' Calculates enc, fop, gc, gc3s, gc4d, cai, tai and cscg of each CDS
+#'
+#'\code{get_cubar} calculates enc, fop, gc, gc3s, gc4d, cai, tai and cscg of each CDS
+#'
+get_cubar <- function(seqs, rscu = NULL, trna_w = NULL, csc = NULL){
+  seqs_cds_qc <- check_cds(seqs)
+  seqs_cf <- count_codons(seqs_cds_qc)
+  cf_all <- count_codons(seqs)
+  
+  enc <- get_enc(seqs_cf)
+  fop <- get_fop(seqs)
+  gc <- get_gc(cf_all)
+  gc3s <- get_gc3s(cf_all)
+  gc4d <- get_gc4d(cf_all)
+
+  lengths <- sapply(list(enc, fop, gc, gc3s, gc4d), length)
+
+  # Find the minimum length among columns
+  min_length <- min(lengths)
+
+  # Subset each column to the minimum length
+  enc <- enc[1:min_length]
+  fop <- fop[1:min_length]
+  gc <- gc[1:min_length]
+  gc3s <- gc3s[1:min_length]
+  gc4d <- gc4d[1:min_length]
+
+  # Combine columns
+  result <- data.table(enc, fop, gc, gc3s, gc4d)
+  
+  if (!is.null(rscu)) {
+    cai <- get_cai(seqs_cf, rscu)
+    cai <- cai[1:min_length]
+    result <- cbind(result, cai)
+  } 
+  
+  if (!is.null(trna_w)) {
+    tai <- get_tai(seqs_cf, trna_w)
+    tai <- tai[1:min_length]
+    result <- cbind(result, tai)
+  }
+  
+  if (!is.null(csc)) {
+    cscg <- get_cscg(cf_all, csc)
+    cscg <- cscg[1:min_length]
+    result <- cbind(result, cscg)
+  }
+  
+  result <- as.data.table(result, rn = "seq_id")
+  return(result)
+}

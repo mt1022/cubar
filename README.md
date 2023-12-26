@@ -56,8 +56,9 @@ devtools::install_github("mt1022/cubar", dependencies = TRUE)
 ### Usage
 - [Documentation](https://mt1022.github.io/cubar/)
 - Tutorials
-  - [Getting Started](https://mt1022.github.io/cubar/articles/introduction.html)
+  - [Get Start](https://mt1022.github.io/cubar/articles/cubar.html)
   - [Non-standard Genetic Code](https://mt1022.github.io/cubar/articles/non_standard_genetic_code.html)
+  - [Theories behind cubar](https://mt1022.github.io/cubar/articles/theory.html)
 
 ### Suggests
 - [Biostrings](https://bioconductor.org/packages/release/bioc/html/Biostrings.html) for sequence input/output and manipulation.

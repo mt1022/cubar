@@ -236,7 +236,7 @@ frequency of that codon and the mRNA half-lives across different genes
 coefficient (CSC) of codons in the CDS of a gene (Carneiro, et
 al. 2019):</p>
 <p><span class="math display">\[
-\text{CSC}_g = \frac{1}{L}\sum_{k=1}^L{\text{CSC}_k}= \frac{\sum_i\sum_j
+\text{CSCg} = \frac{1}{L}\sum_{k=1}^L{\text{CSC}_k}= \frac{\sum_i\sum_j
 {X_{ij} \text{CSC}_{ij}}}{\sum_i{\sum_j{X_{ij}}}}
 \]</span></p>
 </div>
@@ -258,9 +258,9 @@ R_{ij} = \frac{w_{ij}}{\sum_{i=1}^{n_i}{w_{ij}}}
 \]</span></p>
 <p>where <span class="math inline">\(w_{ij}\)</span> can be relative
 tRNA adaptiveness values as in the calculation of tAI or the RSCU of
-host protein-coding genes as in the calculation of CAI. The Euclidean
-distance between codon proportions of exogenous CDS and host tRNA
-availability is then for this codon family is defined as the:</p>
+host protein-coding genes as in the calculation of CAI. The discrepancy
+between codon proportions of exogenous CDS and host tRNA availability is
+then calculated as the Euclidean distance:</p>
 <p><span class="math display">\[
 D_i = \sqrt{\sum(Y_{ij} - R_{ij})^2}
 \]</span></p>

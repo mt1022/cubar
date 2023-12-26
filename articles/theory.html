@@ -262,7 +262,7 @@ host protein-coding genes as in the calculation of CAI. The discrepancy
 between codon proportions of exogenous CDS and host tRNA availability is
 then calculated as the Euclidean distance:</p>
 <p><span class="math display">\[
-D_i = \sqrt{\sum(Y_{ij} - R_{ij})^2}
+D_i = \sqrt{\sum_j(Y_{ij} - R_{ij})^2}
 \]</span></p>
 <p>Finally, <span class="math inline">\(D_p\)</span> is calculated as
 the geometric mean of distances for all codon families with at least two

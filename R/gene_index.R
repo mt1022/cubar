@@ -302,3 +302,76 @@ get_cubar <- function(seqs, rscu = NULL, trna_w = NULL, csc = NULL){
   result <- as.data.table(result, rn = "seq_id")
   return(result)
 }
+
+#' \code{sliding_window_analysis} performs sliding window analysis on CDS and calculates a series of metrics.
+#' @param seqs: DNA sequence data represented as a DNAStringSet object, containing DNA sequences of multiple genes.
+#' @param window_size: Window size, indicating the length of each sliding window.
+#' @param slide_frequency: Slide frequency, indicating the step size between windows.
+#' @param csc: Optional parameter to calculate Codon Usage Bias (CUB) related metrics. Default is NULL.
+#' @param rscu: Optional parameter to calculate Relative Synonymous Codon Usage (RSCU) related metrics. Default is NULL.
+#' @param trna_w: Optional parameter to calculate tRNA adaptation index (tAI) related metrics. Default is NULL.
+#' @returns A data frame containing the computed metrics.
+sliding_window_analysis <- function(seqs, window_size, slide_frequency, csc = NULL, rscu = NULL, trna_w = NULL) {
+  num_genes <- length(seqs)
+  result <- DNAStringSet()
+  
+  for (i in 1:num_genes) {
+    gene_data <- as.character(seqs[i])
+    num_elements <- nchar(gene_data)
+    num_windows <- floor((num_elements - window_size) / slide_frequency) + 1
+    
+    gene_name <- names(seqs)[i]
+    
+    if (num_windows <= 0) {
+      result <- c(result, DNAStringSet(gene_data))
+    } else {
+      start_indices <- seq(1, num_elements - window_size + 1, by = slide_frequency)
+      end_indices <- start_indices + window_size - 1
+      
+      windows <- DNAStringSet()
+      
+      for (j in 1:length(start_indices)) {
+        window_seq <- DNAStringSet(substr(gene_data, start_indices[j], end_indices[j]))
+        windows <- c(windows, window_seq)
+      }
+      
+      names(windows) <- paste(gene_name, seq_along(windows), sep = "_")
+      
+      result <- c(result, windows)
+    }
+  }
+  
+  result <- DNAStringSet(result)
+
+  result_cf <- count_codons(result)
+  gc <- get_gc(result_cf)
+  gc3s <- get_gc3s(result_cf)
+  gc4d <- get_gc4d(result_cf)
+  enc <- get_enc(result_cf)
+  
+  # To ensure that the fop value is meaningful, when the window size is greater than or equal to 1000, calculate get_fop
+  if (window_size >= 1000) {
+    fop <- get_fop(result)
+  } else {
+    fop <- NULL
+  }
+  
+  output <- cbind(gc, gc3s, gc4d, enc, fop)
+  
+  if (!is.null(csc)) {
+    cscg <- get_cscg(result_cf, csc)
+    output <- cbind(output, cscg)
+  }
+  
+  if (!is.null(rscu)) {
+    cai <- get_cai(result_cf, rscu)
+    output <- cbind(output, cai)
+  }
+  
+  if (!is.null(trna_w)) {
+    tai <- get_tai(result_cf, trna_w)
+    output <- cbind(output, tai)
+  }
+  
+  return(output)
+}

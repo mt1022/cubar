@@ -5,5 +5,6 @@
 ## revdepcheck results
 
 0 packages depends on this package currently.
-OK: 0
-BROKEN: 0
+
+* OK: 0
+* BROKEN: 0

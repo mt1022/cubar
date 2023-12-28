@@ -349,8 +349,8 @@ sliding_window_analysis <- function(seqs, window_size, slide_frequency, csc = NU
   gc4d <- get_gc4d(result_cf)
   enc <- get_enc(result_cf)
   
-  # To ensure that the fop value is meaningful, when the window size is greater than or equal to 1000, calculate get_fop
-  if (window_size >= 1000) {
+ # Only calculate when the gene sequence is greater than 100 to ensure it is meaningful
+  if (num_genes >=1000){
     fop <- get_fop(result)
   } else {
     fop <- NULL

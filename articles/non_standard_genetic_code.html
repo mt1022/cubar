@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">cubar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -118,13 +118,14 @@ codons (ENC) for human mitochondrial CDS sequences.</p>
 <span></span>
 <span><span class="va">ctab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_codon_table.html">get_codon_table</a></span><span class="op">(</span>gcid <span class="op">=</span> <span class="st">'2'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ctab</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    aa_code amino_acid codon subfam</span></span>
-<span><span class="co">#&gt; 1:       F        Phe   TTT Phe_TT</span></span>
-<span><span class="co">#&gt; 2:       F        Phe   TTC Phe_TT</span></span>
-<span><span class="co">#&gt; 3:       L        Leu   TTA Leu_TT</span></span>
-<span><span class="co">#&gt; 4:       L        Leu   TTG Leu_TT</span></span>
-<span><span class="co">#&gt; 5:       S        Ser   TCT Ser_TC</span></span>
-<span><span class="co">#&gt; 6:       S        Ser   TCC Ser_TC</span></span></code></pre></div>
+<span><span class="co">#&gt;    aa_code amino_acid  codon subfam</span></span>
+<span><span class="co">#&gt;     &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:       F        Phe    TTT Phe_TT</span></span>
+<span><span class="co">#&gt; 2:       F        Phe    TTC Phe_TT</span></span>
+<span><span class="co">#&gt; 3:       L        Leu    TTA Leu_TT</span></span>
+<span><span class="co">#&gt; 4:       L        Leu    TTG Leu_TT</span></span>
+<span><span class="co">#&gt; 5:       S        Ser    TCT Ser_TC</span></span>
+<span><span class="co">#&gt; 6:       S        Ser    TCC Ser_TC</span></span></code></pre></div>
 <p>We do not check CDS length and stop codons as incomplete stop codons
 are prevalent among MT CDSs.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -196,7 +197,7 @@ sequences.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Hong Zhang.</p>
+<p>Developed by Hong Zhang, Bu Zi.</p>
 </div>
 
 <div class="pkgdown-footer-right">

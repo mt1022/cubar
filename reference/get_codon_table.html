@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">cubar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,141 +81,143 @@
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Standard genetic code</span></span></span>
 <span class="r-in"><span><span class="fu">get_codon_table</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid codon subfam</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       F        Phe   TTT Phe_TT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       F        Phe   TTC Phe_TT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       L        Leu   TTA Leu_TT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       L        Leu   TTG Leu_TT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       S        Ser   TCT Ser_TC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:       S        Ser   TCC Ser_TC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       S        Ser   TCA Ser_TC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       S        Ser   TCG Ser_TC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       Y        Tyr   TAT Tyr_TA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       Y        Tyr   TAC Tyr_TA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       *          *   TAA   *_TA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:       *          *   TAG   *_TA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:       C        Cys   TGT Cys_TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:       C        Cys   TGC Cys_TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:       *          *   TGA   *_TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:       W        Trp   TGG Trp_TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:       L        Leu   CTT Leu_CT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:       L        Leu   CTC Leu_CT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:       L        Leu   CTA Leu_CT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:       L        Leu   CTG Leu_CT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21:       P        Pro   CCT Pro_CC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22:       P        Pro   CCC Pro_CC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23:       P        Pro   CCA Pro_CC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24:       P        Pro   CCG Pro_CC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25:       H        His   CAT His_CA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26:       H        His   CAC His_CA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27:       Q        Gln   CAA Gln_CA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28:       Q        Gln   CAG Gln_CA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29:       R        Arg   CGT Arg_CG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30:       R        Arg   CGC Arg_CG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31:       R        Arg   CGA Arg_CG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32:       R        Arg   CGG Arg_CG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33:       I        Ile   ATT Ile_AT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34:       I        Ile   ATC Ile_AT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35:       I        Ile   ATA Ile_AT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36:       M        Met   ATG Met_AT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37:       T        Thr   ACT Thr_AC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38:       T        Thr   ACC Thr_AC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39:       T        Thr   ACA Thr_AC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40:       T        Thr   ACG Thr_AC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41:       N        Asn   AAT Asn_AA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42:       N        Asn   AAC Asn_AA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43:       K        Lys   AAA Lys_AA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44:       K        Lys   AAG Lys_AA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45:       S        Ser   AGT Ser_AG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46:       S        Ser   AGC Ser_AG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47:       R        Arg   AGA Arg_AG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48:       R        Arg   AGG Arg_AG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49:       V        Val   GTT Val_GT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50:       V        Val   GTC Val_GT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51:       V        Val   GTA Val_GT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52:       V        Val   GTG Val_GT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53:       A        Ala   GCT Ala_GC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54:       A        Ala   GCC Ala_GC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55:       A        Ala   GCA Ala_GC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56:       A        Ala   GCG Ala_GC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57:       D        Asp   GAT Asp_GA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58:       D        Asp   GAC Asp_GA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59:       E        Glu   GAA Glu_GA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60:       E        Glu   GAG Glu_GA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61:       G        Gly   GGT Gly_GG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62:       G        Gly   GGC Gly_GG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63:       G        Gly   GGA Gly_GG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64:       G        Gly   GGG Gly_GG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid codon subfam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid  codon subfam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       F        Phe    TTT Phe_TT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       F        Phe    TTC Phe_TT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       L        Leu    TTA Leu_TT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       L        Leu    TTG Leu_TT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       S        Ser    TCT Ser_TC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:       S        Ser    TCC Ser_TC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       S        Ser    TCA Ser_TC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       S        Ser    TCG Ser_TC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       Y        Tyr    TAT Tyr_TA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       Y        Tyr    TAC Tyr_TA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       *          *    TAA   *_TA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:       *          *    TAG   *_TA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:       C        Cys    TGT Cys_TG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:       C        Cys    TGC Cys_TG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:       *          *    TGA   *_TG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:       W        Trp    TGG Trp_TG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:       L        Leu    CTT Leu_CT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:       L        Leu    CTC Leu_CT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:       L        Leu    CTA Leu_CT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:       L        Leu    CTG Leu_CT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:       P        Pro    CCT Pro_CC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:       P        Pro    CCC Pro_CC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:       P        Pro    CCA Pro_CC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:       P        Pro    CCG Pro_CC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:       H        His    CAT His_CA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:       H        His    CAC His_CA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:       Q        Gln    CAA Gln_CA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28:       Q        Gln    CAG Gln_CA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29:       R        Arg    CGT Arg_CG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30:       R        Arg    CGC Arg_CG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31:       R        Arg    CGA Arg_CG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32:       R        Arg    CGG Arg_CG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33:       I        Ile    ATT Ile_AT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34:       I        Ile    ATC Ile_AT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35:       I        Ile    ATA Ile_AT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36:       M        Met    ATG Met_AT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37:       T        Thr    ACT Thr_AC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38:       T        Thr    ACC Thr_AC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39:       T        Thr    ACA Thr_AC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40:       T        Thr    ACG Thr_AC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41:       N        Asn    AAT Asn_AA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42:       N        Asn    AAC Asn_AA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43:       K        Lys    AAA Lys_AA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44:       K        Lys    AAG Lys_AA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45:       S        Ser    AGT Ser_AG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46:       S        Ser    AGC Ser_AG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47:       R        Arg    AGA Arg_AG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48:       R        Arg    AGG Arg_AG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49:       V        Val    GTT Val_GT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50:       V        Val    GTC Val_GT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51:       V        Val    GTA Val_GT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52:       V        Val    GTG Val_GT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53:       A        Ala    GCT Ala_GC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54:       A        Ala    GCC Ala_GC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55:       A        Ala    GCA Ala_GC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56:       A        Ala    GCG Ala_GC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57:       D        Asp    GAT Asp_GA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58:       D        Asp    GAC Asp_GA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59:       E        Glu    GAA Glu_GA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60:       E        Glu    GAG Glu_GA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61:       G        Gly    GGT Gly_GG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62:       G        Gly    GGC Gly_GG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63:       G        Gly    GGA Gly_GG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64:       G        Gly    GGG Gly_GG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid  codon subfam</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Vertebrate Mitochondrial genetic code</span></span></span>
 <span class="r-in"><span><span class="fu">get_codon_table</span><span class="op">(</span>gcid <span class="op">=</span> <span class="st">'2'</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid codon subfam</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       F        Phe   TTT Phe_TT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       F        Phe   TTC Phe_TT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       L        Leu   TTA Leu_TT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       L        Leu   TTG Leu_TT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       S        Ser   TCT Ser_TC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:       S        Ser   TCC Ser_TC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       S        Ser   TCA Ser_TC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       S        Ser   TCG Ser_TC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       Y        Tyr   TAT Tyr_TA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       Y        Tyr   TAC Tyr_TA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       *          *   TAA   *_TA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:       *          *   TAG   *_TA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:       C        Cys   TGT Cys_TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:       C        Cys   TGC Cys_TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:       W        Trp   TGA Trp_TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:       W        Trp   TGG Trp_TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:       L        Leu   CTT Leu_CT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:       L        Leu   CTC Leu_CT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:       L        Leu   CTA Leu_CT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:       L        Leu   CTG Leu_CT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21:       P        Pro   CCT Pro_CC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22:       P        Pro   CCC Pro_CC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23:       P        Pro   CCA Pro_CC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24:       P        Pro   CCG Pro_CC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25:       H        His   CAT His_CA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26:       H        His   CAC His_CA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27:       Q        Gln   CAA Gln_CA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28:       Q        Gln   CAG Gln_CA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29:       R        Arg   CGT Arg_CG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30:       R        Arg   CGC Arg_CG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31:       R        Arg   CGA Arg_CG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32:       R        Arg   CGG Arg_CG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33:       I        Ile   ATT Ile_AT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34:       I        Ile   ATC Ile_AT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35:       M        Met   ATA Met_AT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36:       M        Met   ATG Met_AT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37:       T        Thr   ACT Thr_AC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38:       T        Thr   ACC Thr_AC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39:       T        Thr   ACA Thr_AC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40:       T        Thr   ACG Thr_AC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41:       N        Asn   AAT Asn_AA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42:       N        Asn   AAC Asn_AA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43:       K        Lys   AAA Lys_AA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44:       K        Lys   AAG Lys_AA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45:       S        Ser   AGT Ser_AG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46:       S        Ser   AGC Ser_AG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47:       *          *   AGA   *_AG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48:       *          *   AGG   *_AG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49:       V        Val   GTT Val_GT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50:       V        Val   GTC Val_GT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51:       V        Val   GTA Val_GT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52:       V        Val   GTG Val_GT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53:       A        Ala   GCT Ala_GC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54:       A        Ala   GCC Ala_GC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55:       A        Ala   GCA Ala_GC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56:       A        Ala   GCG Ala_GC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57:       D        Asp   GAT Asp_GA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58:       D        Asp   GAC Asp_GA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59:       E        Glu   GAA Glu_GA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60:       E        Glu   GAG Glu_GA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61:       G        Gly   GGT Gly_GG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62:       G        Gly   GGC Gly_GG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63:       G        Gly   GGA Gly_GG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64:       G        Gly   GGG Gly_GG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid codon subfam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid  codon subfam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       F        Phe    TTT Phe_TT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       F        Phe    TTC Phe_TT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       L        Leu    TTA Leu_TT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       L        Leu    TTG Leu_TT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       S        Ser    TCT Ser_TC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:       S        Ser    TCC Ser_TC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       S        Ser    TCA Ser_TC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       S        Ser    TCG Ser_TC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       Y        Tyr    TAT Tyr_TA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       Y        Tyr    TAC Tyr_TA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       *          *    TAA   *_TA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:       *          *    TAG   *_TA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:       C        Cys    TGT Cys_TG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:       C        Cys    TGC Cys_TG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:       W        Trp    TGA Trp_TG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:       W        Trp    TGG Trp_TG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:       L        Leu    CTT Leu_CT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:       L        Leu    CTC Leu_CT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:       L        Leu    CTA Leu_CT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:       L        Leu    CTG Leu_CT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:       P        Pro    CCT Pro_CC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:       P        Pro    CCC Pro_CC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:       P        Pro    CCA Pro_CC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:       P        Pro    CCG Pro_CC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:       H        His    CAT His_CA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:       H        His    CAC His_CA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:       Q        Gln    CAA Gln_CA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28:       Q        Gln    CAG Gln_CA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29:       R        Arg    CGT Arg_CG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30:       R        Arg    CGC Arg_CG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31:       R        Arg    CGA Arg_CG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32:       R        Arg    CGG Arg_CG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33:       I        Ile    ATT Ile_AT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34:       I        Ile    ATC Ile_AT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35:       M        Met    ATA Met_AT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36:       M        Met    ATG Met_AT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37:       T        Thr    ACT Thr_AC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38:       T        Thr    ACC Thr_AC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39:       T        Thr    ACA Thr_AC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40:       T        Thr    ACG Thr_AC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41:       N        Asn    AAT Asn_AA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42:       N        Asn    AAC Asn_AA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43:       K        Lys    AAA Lys_AA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44:       K        Lys    AAG Lys_AA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45:       S        Ser    AGT Ser_AG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46:       S        Ser    AGC Ser_AG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47:       *          *    AGA   *_AG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48:       *          *    AGG   *_AG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49:       V        Val    GTT Val_GT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50:       V        Val    GTC Val_GT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51:       V        Val    GTA Val_GT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52:       V        Val    GTG Val_GT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53:       A        Ala    GCT Ala_GC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54:       A        Ala    GCC Ala_GC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55:       A        Ala    GCA Ala_GC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56:       A        Ala    GCG Ala_GC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57:       D        Asp    GAT Asp_GA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58:       D        Asp    GAC Asp_GA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59:       E        Glu    GAA Glu_GA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60:       E        Glu    GAG Glu_GA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61:       G        Gly    GGT Gly_GG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62:       G        Gly    GGC Gly_GG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63:       G        Gly    GGA Gly_GG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64:       G        Gly    GGG Gly_GG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid  codon subfam</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -223,7 +225,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Hong Zhang.</p>
+  <p></p><p>Developed by Hong Zhang, Bu Zi.</p>
 </div>
 
 <div class="pkgdown-footer-right">

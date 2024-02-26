@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">cubar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -226,13 +226,14 @@ the <code>est_optimal_codons</code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">optimal_codons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/est_optimal_codons.html">est_optimal_codons</a></span><span class="op">(</span><span class="va">yeast_cds_qc</span>, codon_table <span class="op">=</span> <span class="va">ctab</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">optimal_codons</span><span class="op">[</span><span class="va">optimal_codons</span><span class="op">$</span><span class="va">coef</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">optimal_codons</span><span class="op">$</span><span class="va">qvalue</span> <span class="op">&lt;</span> <span class="fl">0.01</span>, <span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    aa_code amino_acid codon subfam        coef        pvalue        qvalue</span></span>
-<span><span class="co">#&gt; 1:       A        Ala   GCT Ala_GC -0.08702058  0.000000e+00  0.000000e+00</span></span>
-<span><span class="co">#&gt; 2:       A        Ala   GCC Ala_GC -0.01876569  2.164990e-40  2.401170e-40</span></span>
-<span><span class="co">#&gt; 3:       R        Arg   AGA Arg_AG -0.13023392  0.000000e+00  0.000000e+00</span></span>
-<span><span class="co">#&gt; 4:       R        Arg   CGT Arg_CG -0.21009663  0.000000e+00  0.000000e+00</span></span>
-<span><span class="co">#&gt; 5:       N        Asn   AAC Asn_AA -0.05752254 1.600668e-292 2.871787e-292</span></span>
-<span><span class="co">#&gt; 6:       D        Asp   GAC Asp_GA -0.01846525  4.298281e-36  4.599915e-36</span></span></code></pre></div>
+<span><span class="co">#&gt;    aa_code amino_acid  codon subfam        coef        pvalue        qvalue</span></span>
+<span><span class="co">#&gt;     &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;       &lt;num&gt;         &lt;num&gt;         &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:       A        Ala    GCT Ala_GC -0.08702058  0.000000e+00  0.000000e+00</span></span>
+<span><span class="co">#&gt; 2:       A        Ala    GCC Ala_GC -0.01876569  2.164990e-40  2.401170e-40</span></span>
+<span><span class="co">#&gt; 3:       R        Arg    AGA Arg_AG -0.13023392  0.000000e+00  0.000000e+00</span></span>
+<span><span class="co">#&gt; 4:       R        Arg    CGT Arg_CG -0.21009663  0.000000e+00  0.000000e+00</span></span>
+<span><span class="co">#&gt; 5:       N        Asn    AAC Asn_AA -0.05752254 1.600668e-292 2.871787e-292</span></span>
+<span><span class="co">#&gt; 6:       D        Asp    GAC Asp_GA -0.01846525  4.298281e-36  4.599915e-36</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="codon-adaptation-index-cai">Codon Adaptation Index (CAI)<a class="anchor" aria-label="anchor" href="#codon-adaptation-index-cai"></a>
@@ -292,7 +293,7 @@ code. <code>cubar</code> will break the six codons into two subfamilies:
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Hong Zhang.</p>
+<p>Developed by Hong Zhang, Bu Zi.</p>
 </div>
 
 <div class="pkgdown-footer-right">

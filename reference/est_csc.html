@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">cubar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,69 +102,70 @@
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># estimate yeast mRNA CSC</span></span></span>
 <span class="r-in"><span><span class="fu">est_csc</span><span class="op">(</span><span class="va">yeast_cds</span>, <span class="va">yeast_half_life</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     codon           csc       pvalue</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   TTT -0.0787283632 8.875234e-07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   TTC  0.0936332740 4.934393e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   TTA -0.0376998334 1.873266e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   TTG  0.1988622236 5.724661e-36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   TCT  0.1417985154 6.463819e-19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   TCC  0.1348394407 3.076104e-17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   TCA -0.1159288994 4.144862e-13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   TCG -0.1263538419 2.619266e-15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   TAT -0.0881160809 3.727148e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   TAC  0.0992062077 5.675264e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:   TGT -0.0327802019 4.096707e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   TGC -0.0808426979 4.476432e-07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:   TGG -0.0222377555 1.656447e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:   CTT -0.1291276840 6.325694e-16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:   CTC -0.1361863222 1.479116e-17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:   CTA -0.1294744450 5.284708e-16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:   CTG -0.1643147443 6.185476e-25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:   CCT  0.0002650952 9.868160e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:   CCC -0.0880401578 3.829159e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:   CCA  0.1558224407 1.473949e-22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21:   CCG -0.1804587973 8.134753e-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22:   CAT -0.0865936247 6.377939e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23:   CAC  0.0680092776 2.193847e-05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24:   CAA  0.0718391124 7.332632e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25:   CAG -0.1305086656 3.082292e-16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26:   CGT  0.0791013333 7.875633e-07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27:   CGC -0.1015374063 2.215377e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28:   CGA -0.1966457587 3.407156e-35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29:   CGG -0.1272088127 1.695961e-15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30:   ATT  0.0480969867 2.701542e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31:   ATC  0.1117000075 2.857699e-12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32:   ATA -0.2568927250 1.217191e-59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33:   ATG -0.0644903332 5.718986e-05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34:   ACT  0.1431269860 3.023536e-19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35:   ACC  0.1264144565 2.540030e-15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36:   ACA -0.1426175629 4.049665e-19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37:   ACG -0.1552369990 2.125992e-22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38:   AAT -0.1285588646 8.486818e-16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39:   AAC  0.0673723086 2.618359e-05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40:   AAA -0.1497286397 6.225878e-21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41:   AAG  0.1022785721 1.635387e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42:   AGT -0.1552420723 2.119267e-22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43:   AGC -0.1489732334 9.797090e-21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44:   AGA  0.0412850037 1.003712e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45:   AGG -0.1932809538 4.905373e-34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46:   GTT  0.1904668721 4.395850e-33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47:   GTC  0.1990981824 4.728645e-36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48:   GTA -0.1895276774 9.069717e-33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49:   GTG -0.0955719036 2.357610e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50:   GCT  0.2488397109 5.896098e-56</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51:   GCC  0.1754110472 3.075101e-28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52:   GCA -0.0849723268 1.119066e-07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53:   GCG -0.1019375045 1.881052e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54:   GAT -0.0544183892 6.872410e-04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55:   GAC  0.0603621379 1.658610e-04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56:   GAA  0.0903827731 1.647429e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57:   GAG -0.1193680732 8.181022e-14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58:   GGT  0.2131801918 3.377969e-41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59:   GGC -0.0116004256 4.696045e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60:   GGA -0.1229495155 1.435996e-14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61:   GGG -0.0934788330 5.230147e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     codon           csc       pvalue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      codon           csc       pvalue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt;         &lt;num&gt;        &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:    TTT -0.0787283632 8.875234e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:    TTC  0.0936332740 4.934393e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:    TTA -0.0376998334 1.873266e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:    TTG  0.1988622236 5.724661e-36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:    TCT  0.1417985154 6.463819e-19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:    TCC  0.1348394407 3.076104e-17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:    TCA -0.1159288994 4.144862e-13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    TCG -0.1263538419 2.619266e-15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:    TAT -0.0881160809 3.727148e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:    TAC  0.0992062077 5.675264e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:    TGT -0.0327802019 4.096707e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:    TGC -0.0808426979 4.476432e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:    TGG -0.0222377555 1.656447e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:    CTT -0.1291276840 6.325694e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:    CTC -0.1361863222 1.479116e-17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:    CTA -0.1294744450 5.284708e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:    CTG -0.1643147443 6.185476e-25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:    CCT  0.0002650952 9.868160e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:    CCC -0.0880401578 3.829159e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:    CCA  0.1558224407 1.473949e-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:    CCG -0.1804587973 8.134753e-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:    CAT -0.0865936247 6.377939e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:    CAC  0.0680092776 2.193847e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:    CAA  0.0718391124 7.332632e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:    CAG -0.1305086656 3.082292e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:    CGT  0.0791013333 7.875633e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:    CGC -0.1015374063 2.215377e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28:    CGA -0.1966457587 3.407156e-35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29:    CGG -0.1272088127 1.695961e-15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30:    ATT  0.0480969867 2.701542e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31:    ATC  0.1117000075 2.857699e-12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32:    ATA -0.2568927250 1.217191e-59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33:    ATG -0.0644903332 5.718986e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34:    ACT  0.1431269860 3.023536e-19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35:    ACC  0.1264144565 2.540030e-15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36:    ACA -0.1426175629 4.049665e-19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37:    ACG -0.1552369990 2.125992e-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38:    AAT -0.1285588646 8.486818e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39:    AAC  0.0673723086 2.618359e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40:    AAA -0.1497286397 6.225878e-21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41:    AAG  0.1022785721 1.635387e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42:    AGT -0.1552420723 2.119267e-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43:    AGC -0.1489732334 9.797090e-21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44:    AGA  0.0412850037 1.003712e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45:    AGG -0.1932809538 4.905373e-34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46:    GTT  0.1904668721 4.395850e-33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47:    GTC  0.1990981824 4.728645e-36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48:    GTA -0.1895276774 9.069717e-33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49:    GTG -0.0955719036 2.357610e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50:    GCT  0.2488397109 5.896098e-56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51:    GCC  0.1754110472 3.075101e-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52:    GCA -0.0849723268 1.119066e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53:    GCG -0.1019375045 1.881052e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54:    GAT -0.0544183892 6.872410e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55:    GAC  0.0603621379 1.658610e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56:    GAA  0.0903827731 1.647429e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57:    GAG -0.1193680732 8.181022e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58:    GGT  0.2131801918 3.377969e-41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59:    GGC -0.0116004256 4.696045e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60:    GGA -0.1229495155 1.435996e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61:    GGG -0.0934788330 5.230147e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      codon           csc       pvalue</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -173,7 +174,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Hong Zhang.</p>
+  <p></p><p>Developed by Hong Zhang, Bu Zi.</p>
 </div>
 
 <div class="pkgdown-footer-right">

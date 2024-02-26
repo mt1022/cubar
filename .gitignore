@@ -5,3 +5,6 @@ inst/doc
 .DS_Store
 docs
 test.R
+revdep/checks.noindex
+revdep/data.sqlite
+revdep/library.noindex

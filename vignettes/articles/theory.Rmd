@@ -1,5 +1,6 @@
 ---
 title: "Theories behind cubar"
+author: "Bu Zi (draft), Hong Zhang (revise)"
 ---
 
 ```{r, include = FALSE}

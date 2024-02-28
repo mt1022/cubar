@@ -219,10 +219,10 @@ get_gc4d <- function(cf, codon_table = get_codon_table()){
 #' head(fop)
 #' hist(fop)
 #'
-get_fop <- function(seqs, codon_table = get_codon_table()){
+get_fop <- function(seqs_cds_qc, codon_table = get_codon_table()){
     coef <- qvalue <- codon <- NULL
-    cf <- count_codons(seqs)
-    optimal_codons <- est_optimal_codons(seqs, codon_table = codon_table)
+    cf <- count_codons(seqs_cds_qc)
+    optimal_codons <- est_optimal_codons(seqs_cds_qc, codon_table = codon_table)
     op <- optimal_codons[coef < 0 & qvalue < 0.001, codon]
     rowSums(cf[, op]) / rowSums(cf)
 }
@@ -258,47 +258,33 @@ get_cscg <- function(cf, csc){
 get_cubar <- function(seqs, rscu = NULL, trna_w = NULL, csc = NULL){
   seqs_cds_qc <- check_cds(seqs)
   seqs_cf <- count_codons(seqs_cds_qc)
-  cf_all <- count_codons(seqs)
-  
+
   enc <- get_enc(seqs_cf)
-  fop <- get_fop(seqs)
-  gc <- get_gc(cf_all)
-  gc3s <- get_gc3s(cf_all)
-  gc4d <- get_gc4d(cf_all)
+  fop <- get_fop(seqs_cds_qc)
+  gc <- get_gc(seqs_cf)
+  gc3s <- get_gc3s(seqs_cf)
+  gc4d <- get_gc4d(seqs_cf)
 
   lengths <- sapply(list(enc, fop, gc, gc3s, gc4d), length)
 
-  # Find the minimum length among columns
-  min_length <- min(lengths)
-
-  # Subset each column to the minimum length
-  enc <- enc[1:min_length]
-  fop <- fop[1:min_length]
-  gc <- gc[1:min_length]
-  gc3s <- gc3s[1:min_length]
-  gc4d <- gc4d[1:min_length]
-
   # Combine columns
   result <- data.table(enc, fop, gc, gc3s, gc4d)
-  
+
   if (!is.null(rscu)) {
     cai <- get_cai(seqs_cf, rscu)
-    cai <- cai[1:min_length]
     result <- cbind(result, cai)
-  } 
-  
+  }
+
   if (!is.null(trna_w)) {
     tai <- get_tai(seqs_cf, trna_w)
-    tai <- tai[1:min_length]
     result <- cbind(result, tai)
   }
-  
+
   if (!is.null(csc)) {
-    cscg <- get_cscg(cf_all, csc)
-    cscg <- cscg[1:min_length]
+    cscg <- get_cscg(seqs_cf, csc)
     result <- cbind(result, cscg)
   }
-  
+
   result <- as.data.table(result, rn = "seq_id")
   return(result)
 }
@@ -312,35 +298,36 @@ get_cubar <- function(seqs, rscu = NULL, trna_w = NULL, csc = NULL){
 #' @param trna_w: Optional parameter to calculate tRNA adaptation index (tAI) related metrics. Default is NULL.
 #' @returns A data frame containing the computed metrics.
 sliding_window_analysis <- function(seqs, window_size, slide_frequency, csc = NULL, rscu = NULL, trna_w = NULL) {
+  seqs <- check_cds(seqs)
   num_genes <- length(seqs)
   result <- DNAStringSet()
-  
+
   for (i in 1:num_genes) {
     gene_data <- as.character(seqs[i])
     num_elements <- nchar(gene_data)
     num_windows <- floor((num_elements - window_size) / slide_frequency) + 1
-    
+
     gene_name <- names(seqs)[i]
-    
+
     if (num_windows <= 0) {
       result <- c(result, DNAStringSet(gene_data))
     } else {
       start_indices <- seq(1, num_elements - window_size + 1, by = slide_frequency)
       end_indices <- start_indices + window_size - 1
-      
+
       windows <- DNAStringSet()
-      
+
       for (j in 1:length(start_indices)) {
         window_seq <- DNAStringSet(substr(gene_data, start_indices[j], end_indices[j]))
         windows <- c(windows, window_seq)
       }
-      
+
       names(windows) <- paste(gene_name, seq_along(windows), sep = "_")
-      
+
       result <- c(result, windows)
     }
   }
-  
+
   result <- DNAStringSet(result)
 
   result_cf <- count_codons(result)
@@ -348,30 +335,33 @@ sliding_window_analysis <- function(seqs, window_size, slide_frequency, csc = NU
   gc3s <- get_gc3s(result_cf)
   gc4d <- get_gc4d(result_cf)
   enc <- get_enc(result_cf)
-  
+
  # Only calculate when the gene sequence is greater than 100 to ensure it is meaningful
   if (num_genes >=1000){
     fop <- get_fop(result)
   } else {
     fop <- NULL
   }
-  
+
   output <- cbind(gc, gc3s, gc4d, enc, fop)
-  
+
   if (!is.null(csc)) {
     cscg <- get_cscg(result_cf, csc)
     output <- cbind(output, cscg)
   }
-  
+
   if (!is.null(rscu)) {
     cai <- get_cai(result_cf, rscu)
     output <- cbind(output, cai)
   }
-  
+
   if (!is.null(trna_w)) {
     tai <- get_tai(result_cf, trna_w)
     output <- cbind(output, tai)
   }
-  
+
   return(output)
 }
+
+
+

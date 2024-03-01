@@ -251,9 +251,16 @@ get_cscg <- function(cf, csc){
     cscg <- cp %*% as.matrix(csc$csc)
     stats::setNames(cscg[, 1], rownames(cscg))
 }
+
+
 #' Calculates enc, fop, gc, gc3s, gc4d, cai, tai and cscg of each CDS
 #'
-#'\code{get_cubar} calculates enc, fop, gc, gc3s, gc4d, cai, tai and cscg of each CDS
+#' \code{get_cubar} calculates enc, fop, gc, gc3s, gc4d, cai, tai and cscg of each CDS
+#'
+#' @param rscu table containing CAI weight for each codon. This table could be
+#'   generated with `est_rscu` or prepared manually.
+#' @param trna_w tRNA weight for each codon, can be generated with `est_trna_weight()`.
+#' @param csc table of Codon Stabilization Coefficients as calculated by `est_csc()`.
 #'
 get_cubar <- function(seqs, rscu = NULL, trna_w = NULL, csc = NULL){
   seqs_cds_qc <- check_cds(seqs)
@@ -289,45 +296,83 @@ get_cubar <- function(seqs, rscu = NULL, trna_w = NULL, csc = NULL){
   return(result)
 }
 
-#' \code{sliding_window_analysis} performs sliding window analysis on CDS and calculates a series of metrics.
-#' @param seqs: DNA sequence data represented as a DNAStringSet object, containing DNA sequences of multiple genes.
-#' @param window_size: Window size, indicating the length of each sliding window.
-#' @param slide_frequency: Slide frequency, indicating the step size between windows.
-#' @param csc: Optional parameter to calculate Codon Usage Bias (CUB) related metrics. Default is NULL.
-#' @param rscu: Optional parameter to calculate Relative Synonymous Codon Usage (RSCU) related metrics. Default is NULL.
-#' @param trna_w: Optional parameter to calculate tRNA adaptation index (tAI) related metrics. Default is NULL.
+
+#' Plots the results obtained by get_cubar()
+#'
+#' \code{plot_cubar} displays the parameters calculated by get_cubar() in a histogram
+#' and visualizes the distribution of all numerical variables for each parameter
+#'
+#' @param df the parameters calculated by get_cubar().
+#' @param rscu table containing CAI weight for each codon. This table could be
+#'   generated with `est_rscu` or prepared manually.
+#' @param trna_w tRNA weight for each codon, can be generated with `est_trna_weight()`.
+#' @param csc table of Codon Stabilization Coefficients as calculated by `est_csc()`.
 #' @returns A data frame containing the computed metrics.
-sliding_window_analysis <- function(seqs, window_size, slide_frequency, csc = NULL, rscu = NULL, trna_w = NULL) {
+#' @examples
+#' df_1 <- get_cubar(yeast_cds)
+#' plot_cubar(df_1)
+#'
+#' df_2 <- get_cubar(yeast_cds,rscu = rscu_heg,trna_w = trna_w, csc = yeast_csc)
+#' plot_cubar(df_2)
+
+library(ggplot2)
+library(tidyr)
+plot_cubar <- function(df){
+    # Convert data frame from wide format to long format
+    long_df <- pivot_longer(df, cols = everything(), names_to = "variable", values_to = "value")
+
+    # Use ggplot2 to plot the histogram and facet_wrap to create a facet for each variable
+    p <- ggplot(long_df, aes(x = value)) +
+        geom_histogram(bins = 30) + #Adjust the number of bins as needed
+        facet_wrap(~ variable, scales = "free") +
+        labs(x = "values", y = "Number of genes") +
+        theme_minimal()
+
+    print(p)
+}
+
+
+#' Analyzes gene sequences with a sliding window to get parameters for each segment.
+#'
+#' \code{get_windowAnalysis} performs sliding window analysis on CDS
+#' and calculates enc, fop, gc, gc3s, gc4d, cai, tai and cscg of each CDS.
+#'
+#' @param seqs DNA sequence data represented as a DNAStringSet object, containing DNA sequences of multiple genes.
+#' @param window_size indicates the length of each sliding window.
+#' @param slide_frequency indicates the step size between windows.
+#' @param rscu table containing CAI weight for each codon. This table could be
+#'   generated with `est_rscu` or prepared manually.
+#' @param trna_w tRNA weight for each codon, can be generated with `est_trna_weight()`.
+#' @param csc table of Codon Stabilization Coefficients as calculated by `est_csc()`.
+#' @returns A data frame containing the computed metrics.
+
+get_windowAnalysis <- function(seqs, window_size, slide_frequency, csc = NULL, rscu = NULL, trna_w = NULL) {
   seqs <- check_cds(seqs)
   num_genes <- length(seqs)
-  result <- DNAStringSet()
+  result <- vector("list", num_genes)
 
   for (i in 1:num_genes) {
     gene_data <- as.character(seqs[i])
     num_elements <- nchar(gene_data)
     num_windows <- floor((num_elements - window_size) / slide_frequency) + 1
 
-    gene_name <- names(seqs)[i]
-
     if (num_windows <= 0) {
-      result <- c(result, DNAStringSet(gene_data))
+      result[[i]] <- DNAStringSet(gene_data)
     } else {
       start_indices <- seq(1, num_elements - window_size + 1, by = slide_frequency)
       end_indices <- start_indices + window_size - 1
 
-      windows <- DNAStringSet()
-
-      for (j in 1:length(start_indices)) {
-        window_seq <- DNAStringSet(substr(gene_data, start_indices[j], end_indices[j]))
-        windows <- c(windows, window_seq)
+      windows <- vector("list", length(start_indices))
+      for (j in seq_along(start_indices)) {
+        window_seq <- substr(gene_data, start_indices[j], end_indices[j])
+        windows[[j]] <- DNAString(window_seq)  # Ensure each element is a DNAString object
       }
-
-      names(windows) <- paste(gene_name, seq_along(windows), sep = "_")
-
-      result <- c(result, windows)
+      names(windows) <- paste(names(seqs)[i], seq_along(windows), sep = "_")
+      result[[i]] <- DNAStringSet(do.call(c, windows))  # Combine using DNAStringSet constructor
     }
   }
 
+    result <- do.call(c, result)
   result <- DNAStringSet(result)
 
   result_cf <- count_codons(result)
@@ -336,14 +381,13 @@ sliding_window_analysis <- function(seqs, window_size, slide_frequency, csc = NU
   gc4d <- get_gc4d(result_cf)
   enc <- get_enc(result_cf)
 
- # Only calculate when the gene sequence is greater than 100 to ensure it is meaningful
-  if (num_genes >=1000){
-    fop <- get_fop(result)
-  } else {
-    fop <- NULL
-  }
+  output <- data.frame(gc, gc3s, gc4d, enc)
 
-  output <- cbind(gc, gc3s, gc4d, enc, fop)
+  # Calculate FOP only if the number of genes is greater than or equal to 1000
+  if (num_genes >= 1000) {
+    fop <- get_fop(result)
+    output <- cbind(output, fop)
+  }
 
   if (!is.null(csc)) {
     cscg <- get_cscg(result_cf, csc)
@@ -363,5 +407,65 @@ sliding_window_analysis <- function(seqs, window_size, slide_frequency, csc = NU
   return(output)
 }
 
+#' Plots the results obtained by get_windowAnalysis()
+#'
+#' \code{plot_window} displays the parameters calculated by get_windowAnalysis() in a line chart.
+#'
+#' @param df the parameters calculated by get_windowAnalysis().
+#' @returns a line chart containing the computed metrics.
+#' @examples
+#' df_1 <- get_windowAnalysis(yeast_cds[1:10],30,30,rscu = rscu_heg,trna_w = trna_w, csc = yeast_csc )
+#' plot_window(df_1)
+#'
+#' df_2 <- get_windowAnalysis(yeast_cds,300,30 )
+#' plot_window(df_2)
+#'
+#' df_3 <- get_windowAnalysis(yeast_cds[1:20],300,30)
+#' plot_window(df_3)
 
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+plot_window <- function(df) {
+
+  df$fragment <- rownames(df)
+  df$fragment_number <- NA
+
+ # Find the fragments that end with a number and update fragment_number
+  numeric_fragments <- grepl(".*[_-]\\d+$", df$fragment)
+  df$fragment_number[numeric_fragments] <- as.numeric(sub(".*[_-](\\d+)$", "\\1", df$fragment[numeric_fragments]))
+
+  # For fragments that do not end with a number, append '_1' and update fragment_number
+  non_numeric_fragments <- !numeric_fragments
+  df$fragment[non_numeric_fragments] <- paste0(df$fragment[non_numeric_fragments], "_1")
+  df$fragment_number[non_numeric_fragments] <- 1
+
+  df <- df[!is.na(df$fragment_number), ]
+
+  # If no rows remain after filtering, stop the function and return a message
+  if (nrow(df) == 0) {
+    stop("All fragment identifiers are non-standard and have been removed.")
+  }
+
+  df <- df %>% select(-fragment)
+
+  df_long <- pivot_longer(df, cols = -fragment_number, names_to = "gene", values_to = "value")
+
+  if (!is.numeric(df_long$value)) {
+    stop("The 'value' column must be numeric.")
+  }
+
+  df_means <- df_long %>%
+    group_by(fragment_number, gene) %>%
+    summarise(value = mean(value, na.rm = TRUE), .groups = 'drop')
+
+  p <- ggplot(df_means, aes(x = fragment_number, y = value)) +
+    geom_line() +
+    facet_wrap(~ gene, scales = "free_y") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(x = "Fragment Number", y = "Average Value")
+  return(p)
+
+}
 

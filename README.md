@@ -66,3 +66,6 @@ Documentation can be found within R (by typing `?function_name`). The following 
 
 ### Getting help
 Please use GitHub [issues](https://github.com/mt1022/cubar/issues) for bug reports, questions, and feature requests.
+
+### Acknowledgements
+GitHub Copilot was used to suggest code snippets in the development of this package. Thanks the [GitHub Education](https://education.github.com/) teacher program for providing free access to GitHub Copilot.

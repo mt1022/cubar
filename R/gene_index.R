@@ -246,7 +246,7 @@ get_fop <- function(seqs, codon_table = get_codon_table()){
 #' hist(cscg)
 #'
 get_cscg <- function(cf, csc){
-    cf <- cf[, csc$codon]
+    cf <- cf[, csc$codon, drop = FALSE]
     cp <- cf / rowSums(cf)
     cscg <- cp %*% as.matrix(csc$csc)
     stats::setNames(cscg[, 1], rownames(cscg))

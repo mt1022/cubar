@@ -9,7 +9,7 @@
 #'   only a few sequences are available for RSCU calculation.
 #' @param codon_table a table of genetic code derived from `get_codon_table` or
 #'   `create_codon_table`.
-#' @returns a data.table of codon info and RSCU values
+#' @returns a data.table of codon info. RSCU values are reported in the last column.
 #' @importFrom data.table ':='
 #' @references Sharp PM, Tuohy TM, Mosurski KR. 1986. Codon usage in yeast: cluster analysis clearly differentiates highly and lowly expressed genes. Nucleic Acids Res 14:5125-5143.
 #' @export

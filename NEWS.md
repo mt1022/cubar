@@ -1,3 +1,5 @@
+# cubar (development version)
+
 # cubar 0.5.1
 
 * fix a bug in `get_cscg` that caused an error when the input codon frequency

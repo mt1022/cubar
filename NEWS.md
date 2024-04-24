@@ -1,4 +1,8 @@
-# cubar (development version)
+# cubar 0.5.1
+
+* fix a bug in `get_cscg` that caused an error when the input codon frequency
+  matrix has a single row.
+* finish unit tests for all functions and internal data.
 
 # cubar 0.5.0
 

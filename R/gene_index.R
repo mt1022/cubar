@@ -275,7 +275,7 @@ get_cubar <- function(seqs, rscu = NULL, trna_w = NULL, csc = NULL){
   lengths <- sapply(list(enc, fop, gc, gc3s, gc4d), length)
 
   # Combine columns
-  result <- data.table(enc, fop, gc, gc3s, gc4d)
+  result <- cbind(enc, fop, gc, gc3s, gc4d)
 
   if (!is.null(rscu)) {
     cai <- get_cai(seqs_cf, rscu)
@@ -292,7 +292,6 @@ get_cubar <- function(seqs, rscu = NULL, trna_w = NULL, csc = NULL){
     result <- cbind(result, cscg)
   }
 
-  result <- as.data.table(result, rn = "seq_id")
   return(result)
 }
 

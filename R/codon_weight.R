@@ -44,6 +44,7 @@ est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_tab
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @param plot whether to plot the pairing relationship
 #' @returns a data.table of codon info and RSCU values
+#' @importFrom data.table copy
 #' @importFrom data.table ':='
 #' @importFrom rlang .data
 #' @export
@@ -56,6 +57,7 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
     anticodon <- codon <- codon_b1 <- codon_b2 <- codon_b3 <- NULL # due to NSE notes in R CMD check
     . <- aa_code <- base_codon <- base_anti <- type <- NULL
     anticodon_aa <- codon_aa <- i.aa_code <- NULL
+    condon_table <- data.table::copy(codon_table)
     codon_table <- data.table::copy(codon_table)
     codon_table[, anticodon := as.character(rev_comp(codon_table$codon))]
     codon_table[, c('codon_b1', 'codon_b2', 'codon_b3') := data.table::tstrsplit(codon, '')]

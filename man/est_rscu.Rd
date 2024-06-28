@@ -19,7 +19,7 @@ only a few sequences are available for RSCU calculation.}
 `create_codon_table`.}
 }
 \value{
-a data.table of codon info and RSCU values
+a data.table of codon info. RSCU values are reported in the last column.
 }
 \description{
 \code{est_rscu} returns the RSCU value of codons

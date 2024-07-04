@@ -37,6 +37,12 @@
     <loc>https://mt1022.github.io/cubar/reference/check_cds.html</loc>
   </url>
   <url>
+    <loc>https://mt1022.github.io/cubar/reference/codon_diff.html</loc>
+  </url>
+  <url>
+    <loc>https://mt1022.github.io/cubar/reference/codon_optimize.html</loc>
+  </url>
+  <url>
     <loc>https://mt1022.github.io/cubar/reference/count_codons.html</loc>
   </url>
   <url>
@@ -107,6 +113,9 @@
   </url>
   <url>
     <loc>https://mt1022.github.io/cubar/reference/yeast_half_life.html</loc>
+  </url>
+  <url>
+    <loc>https://mt1022.github.io/cubar/reference/yeast_trna.html</loc>
   </url>
   <url>
     <loc>https://mt1022.github.io/cubar/reference/yeast_trna_gcn.html</loc>

@@ -66,6 +66,18 @@
 "yeast_trna_gcn"
 
 
+#' yeast tRNA sequences
+#'
+#' Yeast tRNA sequences obtained from gtRNAdb.
+#'
+#' @format a RNAStringSet with a length of 275.
+#' @source <http://gtrnadb.ucsc.edu/genomes/eukaryota/Scere3/sacCer3-mature-tRNAs.fa>
+#' @references Chan PP, Lowe TM. 2016. GtRNAdb 2.0: an expanded database of transfer RNA genes identified in complete and draft genomes. Nucleic Acids Res 44:D184-189.
+#' @examples
+#' yeast_trna
+"yeast_trna"
+
+
 #' amino acids to codons
 #'
 #'  A data.frame of mapping from amino acids to codons

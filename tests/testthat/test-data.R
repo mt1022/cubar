@@ -17,6 +17,10 @@ test_that("internal data is loaded correctly", {
     expect_equal(nrow(yeast_exp), 6685)
     expect_equal(colnames(yeast_exp), c("gene_id", "gene_name", "fpkm"))
 
+    # test yeast_cds is of class RNAStringSet and has a length of 275
+    expect_equal(class(yeast_trna), "RNAStringSet", ignore_attr = TRUE)
+    expect_equal(length(yeast_trna), 275)
+
     # test that yeast_trna_gcn is a named vector with 41 elements and
     # all names are valid codons
     expect_true(class(yeast_trna_gcn) %in% c("numeric", "integer", "table"))

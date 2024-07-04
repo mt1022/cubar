@@ -112,8 +112,10 @@ plot_dist(cai, xlab = 'CAI')
 ##### tRNA Adaptation Index (tAI)
 ```{r}
 # get tRNA gene copy number from GtRNADB
-path_gtrnadb <- 'http://gtrnadb.ucsc.edu/genomes/eukaryota/Scere3/sacCer3-mature-tRNAs.fa'
-yeast_trna <- Biostrings::readRNAStringSet(path_gtrnadb)
+#' Note
+#'  cubar has an internal copy of yeast_trna. You can also download it from the GtRNADB website:
+#'    path_gtrnadb <- 'http://gtrnadb.ucsc.edu/genomes/eukaryota/Scere3/sacCer3-mature-tRNAs.fa'
+#'    yeast_trna <- Biostrings::readRNAStringSet(path_gtrnadb)
 trna_gcn <- table(data.table::tstrsplit(sub(' .*', '', names(yeast_trna)), '-')[[3]])
 trna_gcn <- trna_gcn[names(trna_gcn) != 'NNN'] # copy of each anticodon
 

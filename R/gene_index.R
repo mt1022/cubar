@@ -17,6 +17,7 @@
 #' hist(enc)
 get_enc <- function(cf, codon_table = get_codon_table()){
     aa_code <- NULL # due to NSE notes in R CMD check
+    codon_table <- data.table::as.data.table(codon_table)
     codon_table <- codon_table[!aa_code == '*']
     codon_list <- split(codon_table$codon, codon_table$subfam)
 
@@ -162,6 +163,7 @@ get_gc <- function(cf){
 #'
 get_gc3s <- function(cf, codon_table = get_codon_table()){
     aa_code <- ss <- . <- subfam <- gc3s <- codon <- NULL
+    codon_table <- data.table::as.data.table(codon_table)
     codon_table[, ss := .N, by = .(subfam)]
     codon_table <- codon_table[aa_code != '*' & ss > 1]
     codon_table[, gc3s := substr(codon, 3, 3) %in% c('G', 'C')]
@@ -193,6 +195,7 @@ get_gc3s <- function(cf, codon_table = get_codon_table()){
 get_gc4d <- function(cf, codon_table = get_codon_table()){
     ss <- . <- subfam <- gc4d <- codon <- NULL
 
+    codon_table <- data.table::as.data.table(codon_table)
     codon_table[, ss := .N, by = .(subfam)]
     codon_table <- codon_table[ss == 4]
     codon_table[, gc4d := substr(codon, 3, 3) %in% c('G', 'C')]

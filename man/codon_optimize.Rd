@@ -24,4 +24,5 @@ each codon to the corresponding synonymous optimal codon.
 optimal_codons <- est_optimal_codons(yeast_cds)
 seq <- 'ATGCTACGA'
 codon_optimize(seq, optimal_codons)
+
 }

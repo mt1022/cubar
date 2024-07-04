@@ -12,6 +12,7 @@
 #' optimal_codons <- est_optimal_codons(yeast_cds)
 #' seq <- 'ATGCTACGA'
 #' codon_optimize(seq, optimal_codons)
+#'
 codon_optimize <- function(seq, optimal_codons, gcid='1'){
     . <- aa_code <- codon <- coef <- NULL
     if(!inherits(seq, 'DNAString')){
@@ -26,4 +27,74 @@ codon_optimize <- function(seq, optimal_codons, gcid='1'){
     names(a2c) <- optimal_codons$aa_code
     codons <- a2c[aas]
     return(Biostrings::DNAString(paste0(codons, collapse = '')))
+}
+
+#' Differential codon usage analysis
+#'
+#' \code{codon_diff} takes two set of coding sequences and
+#' perform differential codon usage analysis.
+#'
+#' @param seqs1 DNAStringSet, or an object that can be coerced to a DNAStringSet
+#' @param seqs2 DNAStringSet, or an object that can be coerced to a DNAStringSet
+#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @return a data.table of the differential codon usage analysis. Global tests examine wthether a codon
+#' is used differently relative to all the other codons. Family tests examine whether a codon is used
+#' differently relative to other codons that encode the same amino acid. Subfamily tests examine whether
+#' a codon is used differently relative to other synonymous codons that share the same first two nucleotides.
+#' @importFrom data.table ':='
+#' @export
+#' @examples
+#' yeast_exp_sorted <- yeast_exp[order(yeast_exp$fpkm),]
+#' seqs1 <- yeast_cds[names(yeast_cds) %in% head(yeast_exp_sorted$gene_id, 1000)]
+#' seqs2 <- yeast_cds[names(yeast_cds) %in% tail(yeast_exp_sorted$gene_id, 1000)]
+#' cudiff <- codon_diff(seqs1, seqs2)
+#'
+codon_diff <- function(seqs1, seqs2, codon_table = get_codon_table()){
+    . <- codon <- cnt1 <- cnt2 <- NULL
+    global_other1 <- global_other2 <- global_p <- global_padj <- NULL
+    amino_acid <- fam_other1 <- fam_other2 <- fam_p <- fam_padj <- NULL
+    subfam <- subfam_other1 <- subfam_other2 <- subfam_or <- subfam_p <- subfam_padj <- NULL
+    # count codons in the two sets of sequences
+    if(!inherits(seqs1, 'DNAStringSet')){
+        seqs1 <- Biostrings::DNAStringSet(seqs1)
+    }
+    if(!inherits(seqs2, 'DNAStringSet')){
+        seqs2 <- Biostrings::DNAStringSet(seqs2)
+    }
+    cf1 <- count_codons(seqs1)
+    cf2 <- count_codons(seqs2)
+    codon_table <- data.table::as.data.table(codon_table)
+    codon_table[, `:=`(cnt1 = colSums(cf1)[codon], cnt2 = colSums(cf2)[codon])]
+
+    # global test
+    codon_table[, `:=`(global_other1 = sum(cnt1) - cnt1,
+                       global_other2 = sum(cnt2) - cnt2)]
+    codon_table[, c('global_or', 'global_p') := {
+        m <- matrix(c(cnt1, global_other1, cnt2, global_other2), ncol = 2)
+        ft <- stats::fisher.test(m)
+        list(global_or = ft$estimate, global_p = ft$p.value)
+    }, by = .(codon)]
+    codon_table[, global_padj := stats::p.adjust(global_p, method = 'BH')]
+
+    # family (encoding the same AA)-level test
+    codon_table[, `:=`(fam_other1 = sum(cnt1) - cnt1,
+                       fam_other2 = sum(cnt2) - cnt2), by = .(amino_acid)]
+    codon_table[, c('fam_or', 'fam_p') := {
+        m <- matrix(c(cnt1, fam_other1, cnt2, fam_other2), ncol = 2)
+        ft <- stats::fisher.test(m)
+        list(ft$estimate, ft$p.value)
+    }, by = .(codon)]
+    codon_table[, fam_padj := stats::p.adjust(fam_p, method = 'BH')]
+
+    # subfamily (first two nucleotides are the same)-level test
+    codon_table[, `:=`(subfam_other1 = sum(cnt1) - cnt1,
+                       subfam_other2 = sum(cnt2) - cnt2), by = .(subfam)]
+    codon_table[, c('subfam_or', 'subfam_p') := {
+        m <- matrix(c(cnt1, subfam_other1, cnt2, subfam_other2), ncol = 2)
+        ft <- stats::fisher.test(m)
+        list(ft$estimate, ft$p.value)
+    }, by = .(codon)]
+    codon_table[, subfam_padj := stats::p.adjust(subfam_p, method = 'BH')]
+
+    return(codon_table[])
 }

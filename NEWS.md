@@ -1,3 +1,5 @@
+# cubar (development version)
+
 # cubar 0.6.0
 
 * Add util functions (`codon_optimize` & `codon_diff`)

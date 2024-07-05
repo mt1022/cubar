@@ -20,7 +20,7 @@ data.table with start, center, and end columns
 }
 \description{
 \code{slide_codon} generates a data.table with start, center, and end columns
-for a sliding window analysis of codons.
+  for a sliding window analysis of codons.
 }
 \examples{
 x <- Biostrings::DNAString('ATCTACATAGCTACGTAGCTCGATGCTAGCATGCATCGTACGATCGTCGATCGTAG')

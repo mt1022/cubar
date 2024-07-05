@@ -4,18 +4,21 @@
 \alias{slide_apply}
 \title{apply a cub index to a sliding window}
 \usage{
-slide_apply(seq, FUN, step = 1, before = 0, after = 0, ...)
+slide_apply(seq, .f, step = 1, before = 0, after = 0, ...)
 }
 \arguments{
 \item{seq}{DNAString, the sequence}
 
-\item{FUN}{function, the function to apply}
+\item{.f}{function, the codon index calculation function to apply, for
+example, `get_enc`.}
 
 \item{step}{integer, the step size in number of codons}
 
 \item{before}{integer, the number of codons before the center of a window}
 
 \item{after}{integer, the number of codons after the center of a window}
+
+\item{...}{additional arguments to pass to the function `.f`}
 }
 \value{
 data.table with start, center, end, and codon usage index columns
@@ -24,7 +27,6 @@ data.table with start, center, end, and codon usage index columns
 \code{slide_apply} applies a function to a sliding window of codons.
 }
 \examples{
-sw <- slide_apply(yeast_cds[[1]], get_enc, step = 1, before = 10, after = 10)
-ggplot(sw, aes(x = ceiling(center/3), y = enc)) + geom_line() + geom_point()
+slide_apply(yeast_cds[[1]], get_enc, step = 1, before = 10, after = 10)
 
 }

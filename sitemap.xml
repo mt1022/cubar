@@ -1,135 +1,47 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://mt1022.github.io/cubar/404.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/articles/cubar.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/articles/non_standard_genetic_code.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/articles/theory.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/aa2codon.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/check_cds.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/codon_diff.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/codon_optimize.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/count_codons.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/create_codon_table.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/est_csc.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/est_optimal_codons.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/est_rscu.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/est_trna_weight.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/get_cai.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/get_codon_table.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/get_cscg.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/get_enc.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/get_fop.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/get_gc.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/get_gc3s.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/get_gc4d.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/get_tai.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/human_mt.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/plot_ca_pairing.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/rev_comp.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/seq_to_codons.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/show_codon_tables.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/slide.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/slide_apply.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/slide_codon.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/slide_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/yeast_cds.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/yeast_exp.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/yeast_half_life.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/yeast_trna.html</loc>
-  </url>
-  <url>
-    <loc>https://mt1022.github.io/cubar/reference/yeast_trna_gcn.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://mt1022.github.io/cubar/404.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/LICENSE-text.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/LICENSE.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/articles/cubar.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/articles/index.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/articles/non_standard_genetic_code.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/articles/theory.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/authors.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/index.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/news/index.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/aa2codon.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/check_cds.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/codon_diff.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/codon_optimize.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/count_codons.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/create_codon_table.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/est_csc.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/est_optimal_codons.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/est_rscu.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/est_trna_weight.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/get_cai.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/get_codon_table.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/get_cscg.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/get_enc.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/get_fop.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/get_gc.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/get_gc3s.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/get_gc4d.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/get_tai.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/human_mt.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/index.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/plot_ca_pairing.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/rev_comp.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/seq_to_codons.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/show_codon_tables.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/slide.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/slide_apply.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/slide_codon.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/slide_plot.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/yeast_cds.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/yeast_exp.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/yeast_half_life.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/yeast_trna.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/yeast_trna_gcn.html</loc></url>
 </urlset>
+

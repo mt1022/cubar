@@ -63,9 +63,9 @@ devtools::install_github("mt1022/cubar", dependencies = TRUE)
 ### Usage
 Documentation can be found within R (by typing `?function_name`). The following tutorials are available from our [website](https://mt1022.github.io/cubar/):
 
-- [Get Started](https://mt1022.github.io/cubar/articles/cubar.html): An brief introduction demonstrating the basic usage of `cubar`;
+- [Get Started](https://mt1022.github.io/cubar/articles/cubar.html): A brief introduction demonstrating the basic usage of `cubar`;
 - [Non-standard Genetic Code](https://mt1022.github.io/cubar/articles/non_standard_genetic_code.html): How to use `cubar` with non-standard genetic codes;
-- [Theories behind cubar](https://mt1022.github.io/cubar/articles/theory.html): The implementation details behind the functions in `cubar`;
+- [Theories behind cubar](https://mt1022.github.io/cubar/articles/theory.html): The mathematical details behind the core functions in `cubar`;
 
 ### Getting help
 Please use GitHub [issues](https://github.com/mt1022/cubar/issues) for bug reports, questions, and feature requests.

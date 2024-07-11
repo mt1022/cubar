@@ -9,22 +9,29 @@
 <!-- badges: end -->
 
 ### Overview
-cubar is a package for codon usage bias analysis in R. Main features are listed as follows:
+cubar is a package for codon usage bias analysis in R. Main features are as follows:
 
 - Codon level analyses
-    - Support NCBI and custom genetic codes
-    - Calculate tRNA weights
-    - Calculate relative synonymous codon usage (RSCU)
-    - Machine learning-based inference of optimal codons
-    - Visualization codon-anticodon pairing relationships
+    - Calculate tRNA weights;
+    - Calculate relative synonymous codon usage (RSCU);
+    - Machine learning-based inference of optimal codons;
+    - Visualization codon-anticodon pairing relationships;
 - Gene level analyses
-    - Codon frequency matrix
-    - Codon Adaptation Index (CAI)
-    - Mean Codon Stabilization Coefficients (CSCg)
-    - Effective number of codons (ENC)
-    - Fraction of optimal codons (Fop)
-    - GC content at 4-fold degenerate sites (GC4d)
-    - tRNA Adaptation Index (tAI)
+    - Tabulate codon frequency of each coding sequence;
+    - Measure codon usage similarity to highly expressed genes with Codon Adaptation Index (CAI);
+    - Quantify the influnce of codon usage on mRNA stability with Mean Codon Stabilization Coefficients (CSCg);
+    - Measure codon usage bias with the nonparametric index Effective number of codons (ENC);
+    - Measure the fraction of pre-determined optimal codons (Fop) in each sequence;
+    - Overall GC content (GC) or that 3rd synonymous positions (GC3s) or 4-fold degenerate sites (GC4d);
+    - Quantify whether codon suage matches tRNA availability using tRNA Adaptation Index (tAI);
+- Utilities
+    - Sliding window analysis of codon usage within a coding sequence;
+    - Optimize codon usage based on optimal codons for heterologous expression;
+
+Main advantages of `cubar` are as follows:
+- Process large datasets (>10,0000 sequences) efficiently using the `Biostrings` and `data.table` backends;
+- Support genetic codes cataloged by [NCBI](https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi) as well as custom ones;
+- Integrate with other data analysis or bioinformatic packages in the R ecosystem;
 
 ### Dependencies
 Depends
@@ -56,16 +63,16 @@ devtools::install_github("mt1022/cubar", dependencies = TRUE)
 ### Usage
 Documentation can be found within R (by typing `?function_name`). The following tutorials are available from our [website](https://mt1022.github.io/cubar/):
 
-- [Get Started](https://mt1022.github.io/cubar/articles/cubar.html)
-- [Non-standard Genetic Code](https://mt1022.github.io/cubar/articles/non_standard_genetic_code.html)
-- [Theories behind cubar](https://mt1022.github.io/cubar/articles/theory.html)
-
-### Suggests
-- [Biostrings](https://bioconductor.org/packages/release/bioc/html/Biostrings.html) for sequence input/output and manipulation.
-- [Peptides](https://github.com/dosorio/Peptides) for peptide- or protein-related indices.
+- [Get Started](https://mt1022.github.io/cubar/articles/cubar.html): An brief introduction demonstrating the basic usage of `cubar`;
+- [Non-standard Genetic Code](https://mt1022.github.io/cubar/articles/non_standard_genetic_code.html): How to use `cubar` with non-standard genetic codes;
+- [Theories behind cubar](https://mt1022.github.io/cubar/articles/theory.html): The implementation details behind the functions in `cubar`;
 
 ### Getting help
 Please use GitHub [issues](https://github.com/mt1022/cubar/issues) for bug reports, questions, and feature requests.
+
+### Suggests
+- [Biostrings](https://bioconductor.org/packages/release/bioc/html/Biostrings.html) for sequence input/output and manipulation;
+- [Peptides](https://github.com/dosorio/Peptides) for peptide- or protein-related indices;
 
 ### Acknowledgements
 GitHub Copilot was used to suggest code snippets in the development of this package. Thanks the [GitHub Education](https://education.github.com/) teacher program for providing free access to GitHub Copilot.

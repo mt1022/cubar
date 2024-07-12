@@ -23,10 +23,11 @@ cubar is a package for codon usage bias analysis in R. Main features are as foll
     - Measure codon usage bias with the nonparametric index Effective number of codons (ENC);
     - Measure the fraction of pre-determined optimal codons (Fop) in each sequence;
     - Overall GC content (GC) or that 3rd synonymous positions (GC3s) or 4-fold degenerate sites (GC4d);
-    - Quantify whether codon suage matches tRNA availability using tRNA Adaptation Index (tAI);
+    - Quantify whether codon usage matches tRNA availability using tRNA Adaptation Index (tAI);
 - Utilities
     - Sliding window analysis of codon usage within a coding sequence;
     - Optimize codon usage based on optimal codons for heterologous expression;
+    - Test differential usage of codons between two sets of sequences;
 
 Main advantages of `cubar` are as follows:
 - Process large datasets (>10,0000 sequences) efficiently using the `Biostrings` and `data.table` backends;

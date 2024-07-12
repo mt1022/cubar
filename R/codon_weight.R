@@ -30,16 +30,16 @@ est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_tab
     codon_table <- codon_table[aa_code != '*']
     codon_table[, cts := codon_freq[codon]]
     codon_table[, `:=`(
-        rscu = (cts + pseudo_cnt) / sum(cts + pseudo_cnt),
+        prop = (cts + pseudo_cnt) / sum(cts + pseudo_cnt),
         w_cai = (cts + pseudo_cnt) / max(cts + pseudo_cnt)), by = .(subfam)]
-    codon_table[, RSCU := rscu / mean(rscu), by = .(subfam)]
+    codon_table[, rscu := prop / mean(prop), by = .(subfam)]
     return(codon_table[])
 }
 
 
 #' Plot codon-anticodon pairing relationship
 #'
-#' \code{plot_ca_pairing} returns the RSCU value of codons
+#' \code{plot_ca_pairing} show possible codon-anticodons pairings
 #'
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @param plot whether to plot the pairing relationship

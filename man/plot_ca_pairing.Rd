@@ -15,7 +15,7 @@ plot_ca_pairing(codon_table = get_codon_table(), plot = TRUE)
 a data.table of codon info and RSCU values
 }
 \description{
-\code{plot_ca_pairing} returns the RSCU value of codons
+\code{plot_ca_pairing} show possible codon-anticodons pairings
 }
 \examples{
 ctab <- get_codon_table(gcid = '2')

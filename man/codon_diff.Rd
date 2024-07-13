@@ -15,9 +15,10 @@ codon_diff(seqs1, seqs2, codon_table = get_codon_table())
 }
 \value{
 a data.table of the differential codon usage analysis. Global tests examine wthether a codon
-is used differently relative to all the other codons. Family tests examine whether a codon is used
-differently relative to other codons that encode the same amino acid. Subfamily tests examine whether
-a codon is used differently relative to other synonymous codons that share the same first two nucleotides.
+  is used differently relative to all the other codons. Family tests examine whether a codon is used
+  differently relative to other codons that encode the same amino acid. Subfamily tests examine whether
+  a codon is used differently relative to other synonymous codons that share the same first two nucleotides.
+  Odds ratio > 1 suggests a codon is used at higher frequency in \code{seqs1} than in \code{seqs2}.
 }
 \description{
 \code{codon_diff} takes two set of coding sequences and

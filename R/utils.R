@@ -38,9 +38,10 @@ codon_optimize <- function(seq, optimal_codons, gcid='1'){
 #' @param seqs2 DNAStringSet, or an object that can be coerced to a DNAStringSet
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @return a data.table of the differential codon usage analysis. Global tests examine wthether a codon
-#' is used differently relative to all the other codons. Family tests examine whether a codon is used
-#' differently relative to other codons that encode the same amino acid. Subfamily tests examine whether
-#' a codon is used differently relative to other synonymous codons that share the same first two nucleotides.
+#'   is used differently relative to all the other codons. Family tests examine whether a codon is used
+#'   differently relative to other codons that encode the same amino acid. Subfamily tests examine whether
+#'   a codon is used differently relative to other synonymous codons that share the same first two nucleotides.
+#'   Odds ratio > 1 suggests a codon is used at higher frequency in \code{seqs1} than in \code{seqs2}.
 #' @importFrom data.table ':='
 #' @export
 #' @examples

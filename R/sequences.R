@@ -123,6 +123,9 @@ check_cds <- function(seqs, codon_table = get_codon_table(), min_len = 6,
 #' count_codons(yeast_cds[1])
 #'
 count_codons <- function(seqs, ...){
+    if(!inherits(seqs, 'DNAStringSet')){
+        seqs <- Biostrings::DNAStringSet(seqs)
+    }
     cf <- Biostrings::trinucleotideFrequency(seqs, step = 3, ...)
     rownames(cf) <- names(seqs)
     return(cf)

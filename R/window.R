@@ -99,6 +99,7 @@ slide_plot <- function(windt, index_name='Index'){
     ggplot2::ggplot(windt, ggplot2::aes(x = ceiling(center/3), y = index)) +
         ggplot2::geom_line() +
         ggplot2::geom_point() +
+        ggplot2::geom_smooth(method = 'loess', formula = y ~ x) +
         ggplot2::geom_hline(yintercept = stats::median(windt$index), linetype = 2, color = 'red') +
         ggplot2::labs(x = 'Codon position', y = index_name) +
         ggplot2::theme_classic(base_size = 12) +

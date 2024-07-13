@@ -25,7 +25,7 @@
 #' est_rscu(cf_heg)
 #'
 est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_table()){
-    aa_code <- cts <- codon <- . <- subfam <- rscu <- RSCU <- NULL # due to NSE notes in R CMD check
+    aa_code <- cts <- codon <- . <- subfam <- rscu <- prop <- NULL # due to NSE notes in R CMD check
     codon_freq <- colSums(cf * weight)
     codon_table <- codon_table[aa_code != '*']
     codon_table[, cts := codon_freq[codon]]

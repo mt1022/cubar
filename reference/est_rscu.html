@@ -85,7 +85,7 @@ only a few sequences are available for RSCU calculation.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># compute RSCU of all yeast genes</span></span></span>
 <span class="r-in"><span><span class="va">cf_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="count_codons.html">count_codons</a></span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">est_rscu</span><span class="op">(</span><span class="va">cf_all</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid  codon subfam    cts      rscu     w_cai      RSCU</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid  codon subfam    cts      prop     w_cai      rscu</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;  &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:       F        Phe    TTT Phe_TT  79149 0.5946835 1.0000000 1.1893671</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:       F        Phe    TTC Phe_TT  53945 0.4053165 0.6815666 0.8106329</span>
@@ -148,13 +148,13 @@ only a few sequences are available for RSCU calculation.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 59:       G        Gly    GGC Gly_GG  28880 0.1984253 0.4394486 0.7937012</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 60:       G        Gly    GGA Gly_GG  32779 0.2252132 0.4987751 0.9008526</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 61:       G        Gly    GGG Gly_GG  18168 0.1248291 0.2764565 0.4993164</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid  codon subfam    cts      rscu     w_cai      RSCU</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid  codon subfam    cts      prop     w_cai      rscu</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># compute RSCU of highly expressed (top 500) yeast genes</span></span></span>
 <span class="r-in"><span><span class="va">heg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">yeast_exp</span><span class="op">$</span><span class="va">fpkm</span><span class="op">)</span>, <span class="op">]</span>, n <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cf_heg</span> <span class="op">&lt;-</span> <span class="fu"><a href="count_codons.html">count_codons</a></span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">[</span><span class="va">heg</span><span class="op">$</span><span class="va">gene_id</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">est_rscu</span><span class="op">(</span><span class="va">cf_heg</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid  codon subfam   cts       rscu      w_cai       RSCU</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid  codon subfam   cts       prop      w_cai       rscu</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;num&gt;      &lt;num&gt;      &lt;num&gt;      &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:       F        Phe    TTT Phe_TT  2681 0.40005967 0.66683242 0.80011933</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:       F        Phe    TTC Phe_TT  4021 0.59994033 1.00000000 1.19988067</span>
@@ -217,7 +217,7 @@ only a few sequences are available for RSCU calculation.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 59:       G        Gly    GGC Gly_GG  1194 0.11328088 0.14765847 0.45312352</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 60:       G        Gly    GGA Gly_GG   778 0.07384586 0.09625602 0.29538345</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 61:       G        Gly    GGG Gly_GG   481 0.04569153 0.05955764 0.18276614</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid  codon subfam   cts       rscu      w_cai       RSCU</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     aa_code amino_acid  codon subfam   cts       prop      w_cai       rscu</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

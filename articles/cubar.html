@@ -86,10 +86,19 @@ example.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biostrings" class="external-link">Biostrings</a></span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mt1022/cubar" class="external-link">cubar</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
-<div class="section level4">
-<h4 id="sequences-and-the-genetic-code">Sequences and the Genetic Code<a class="anchor" aria-label="anchor" href="#sequences-and-the-genetic-code"></a>
-</h4>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'data.table'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:IRanges':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     shift</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:S4Vectors':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     first, second</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="sequences-and-the-genetic-code">Sequences and the Genetic Code<a class="anchor" aria-label="anchor" href="#sequences-and-the-genetic-code"></a>
+</h3>
 <p>First, quality control was performed on the provided Yeast CDS
 sequences to ensure that each sequence had the correct start codon, stop
 codon, and no internal stop codons. Additionally, the length of each
@@ -150,29 +159,62 @@ calculated easily by the function <code>count_codons</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get codon frequency</span></span>
 <span><span class="va">yeast_cf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/count_codons.html">count_codons</a></span><span class="op">(</span><span class="va">yeast_cds_qc</span><span class="op">)</span></span></code></pre></div>
+<p>In the resulting matrix, each row represents a gene, and each column
+represents a codon. The values in the matrix represent the frequency of
+each codon in the corresponding gene.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">yeast_cf</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
+<span><span class="co">#&gt;         AAA AAC AAG</span></span>
+<span><span class="co">#&gt; YPL071C  10   4   5</span></span>
+<span><span class="co">#&gt; YLL050C   6   3   5</span></span>
+<span><span class="co">#&gt; YMR172W  16  37  25</span></span></code></pre></div>
 <p>To interact with the genetic code, <code>cubar</code> provided a
 helpful function to convert genetic code in <code>Biostrings</code> to a
 handy table and an option to visualize possible codon-anticodon
 pairing.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get codon table for the standard genetic code</span></span>
 <span><span class="va">ctab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_codon_table.html">get_codon_table</a></span><span class="op">(</span>gcid <span class="op">=</span> <span class="st">'1'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot possible codon and anticodon pairings</span></span>
 <span><span class="fu"><a href="../reference/plot_ca_pairing.html">plot_ca_pairing</a></span><span class="op">(</span><span class="va">ctab</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cubar_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p><img src="cubar_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p>Alternatively, user can create a custom genetic code table by
+providing a mapping between amino acids and codons.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># example of a custom mapping</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">aa2codon</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   amino_acid codon</span></span>
+<span><span class="co">#&gt; 1          *   TAA</span></span>
+<span><span class="co">#&gt; 2          *   TAG</span></span>
+<span><span class="co">#&gt; 3          *   TGA</span></span>
+<span><span class="co">#&gt; 4        Ala   GCT</span></span>
+<span><span class="co">#&gt; 5        Ala   GCC</span></span>
+<span><span class="co">#&gt; 6        Ala   GCA</span></span>
+<span></span>
+<span><span class="co"># create a custom codon table</span></span>
+<span><span class="va">custom_ctab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_codon_table.html">create_codon_table</a></span><span class="op">(</span><span class="va">aa2codon</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">custom_ctab</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    aa_code amino_acid  codon subfam</span></span>
+<span><span class="co">#&gt;     &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:       *          *    TAA   *_TA</span></span>
+<span><span class="co">#&gt; 2:       *          *    TAG   *_TA</span></span>
+<span><span class="co">#&gt; 3:       *          *    TGA   *_TG</span></span>
+<span><span class="co">#&gt; 4:       A        Ala    GCT Ala_GC</span></span>
+<span><span class="co">#&gt; 5:       A        Ala    GCC Ala_GC</span></span>
+<span><span class="co">#&gt; 6:       A        Ala    GCA Ala_GC</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="codon-usage-indices">Codon usage indices<a class="anchor" aria-label="anchor" href="#codon-usage-indices"></a>
-</h4>
+<div class="section level3">
+<h3 id="codon-usage-indices">Codon usage indices<a class="anchor" aria-label="anchor" href="#codon-usage-indices"></a>
+</h3>
 <p>Most indices can be calculate with <code>get_*</code> series
 functions and the return value is usually a vector with value names
 identical to the names of sequences. Here we demonstrate how to
 calculate various indices with the above yeast CDS data.</p>
-<div class="section level5">
-<h5 id="effective-number-of-codons-enc">Effective Number of Codons (ENC)<a class="anchor" aria-label="anchor" href="#effective-number-of-codons-enc"></a>
-</h5>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="section level4">
+<h4 id="effective-number-of-codons-enc">Effective Number of Codons (ENC)<a class="anchor" aria-label="anchor" href="#effective-number-of-codons-enc"></a>
+</h4>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get enc</span></span>
 <span><span class="va">enc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_enc.html">get_enc</a></span><span class="op">(</span><span class="va">yeast_cf</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">enc</span><span class="op">)</span></span>
@@ -182,23 +224,23 @@ calculate various indices with the above yeast CDS data.</p>
 <span><span class="va">plot_dist</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">xlab</span> <span class="op">=</span> <span class="st">'values'</span><span class="op">)</span><span class="op">{</span></span>
 <span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">values</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">xlab</span>, y <span class="op">=</span> <span class="st">'Number of genes'</span><span class="op">)</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">40</span>, fill <span class="op">=</span> <span class="st">'#88CCEE'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">xlab</span>, y <span class="op">=</span> <span class="st">'Number of genes'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op">+</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu">plot_dist</span><span class="op">(</span><span class="va">enc</span>, <span class="st">'ENC'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code></pre></div>
-<p><img src="cubar_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<span><span class="fu">plot_dist</span><span class="op">(</span><span class="va">enc</span>, <span class="st">'ENC'</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cubar_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
-<div class="section level5">
-<h5 id="fraction-of-optimal-codons-fop">Fraction of optimal codons (Fop)<a class="anchor" aria-label="anchor" href="#fraction-of-optimal-codons-fop"></a>
-</h5>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="section level4">
+<h4 id="fraction-of-optimal-codons-fop">Fraction of optimal codons (Fop)<a class="anchor" aria-label="anchor" href="#fraction-of-optimal-codons-fop"></a>
+</h4>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get fop</span></span>
-<span><span class="va">fop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_fop.html">get_fop</a></span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">)</span></span>
-<span><span class="fu">plot_dist</span><span class="op">(</span><span class="va">fop</span>, <span class="st">'Fop'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code></pre></div>
-<p><img src="cubar_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+<span><span class="va">fop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_fop.html">get_fop</a></span><span class="op">(</span><span class="va">yeast_cds_qc</span><span class="op">)</span></span>
+<span><span class="fu">plot_dist</span><span class="op">(</span><span class="va">fop</span>, <span class="st">'Fop'</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cubar_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 <p><code>cubar</code> provides a method to determine the optimal (or
 “preferred”) codon for each codon subfamily based on regression of codon
 usage against ENC. Preferred codons are more likely to be used in genes
@@ -206,9 +248,18 @@ that exhibit strong codon usage bias and tend to have lower ENC values.
 Consequently, preferred codons will have negative coefficients in the
 regression analysis. To view the optimal codons, you can manually run
 the <code>est_optimal_codons</code> function.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">optimal_codons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/est_optimal_codons.html">est_optimal_codons</a></span><span class="op">(</span><span class="va">yeast_cds_qc</span>, codon_table <span class="op">=</span> <span class="va">ctab</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">optimal_codons</span><span class="op">[</span><span class="va">optimal_codons</span><span class="op">$</span><span class="va">coef</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">optimal_codons</span><span class="op">$</span><span class="va">qvalue</span> <span class="op">&lt;</span> <span class="fl">0.01</span>, <span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">optimal_codons</span><span class="op">[</span><span class="va">coef</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">qvalue</span> <span class="op">&lt;</span> <span class="fl">0.001</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    aa_code amino_acid  codon subfam        coef        pvalue        qvalue</span></span>
+<span><span class="co">#&gt;     &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;       &lt;num&gt;         &lt;num&gt;         &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:       A        Ala    GCT Ala_GC -0.08702058  0.000000e+00  0.000000e+00</span></span>
+<span><span class="co">#&gt; 2:       A        Ala    GCC Ala_GC -0.01876569  2.164990e-40  2.401170e-40</span></span>
+<span><span class="co">#&gt; 3:       R        Arg    AGA Arg_AG -0.13023392  0.000000e+00  0.000000e+00</span></span>
+<span><span class="co">#&gt; 4:       R        Arg    CGT Arg_CG -0.21009663  0.000000e+00  0.000000e+00</span></span>
+<span><span class="co">#&gt; 5:       N        Asn    AAC Asn_AA -0.05752254 1.600668e-292 2.871787e-292</span></span>
+<span><span class="co">#&gt; 6:       D        Asp    GAC Asp_GA -0.01846525  4.298281e-36  4.599915e-36</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">optimal_codons</span><span class="op">[</span><span class="va">optimal_codons</span><span class="op">$</span><span class="va">coef</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">optimal_codons</span><span class="op">$</span><span class="va">qvalue</span> <span class="op">&lt;</span> <span class="fl">0.001</span>, <span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    aa_code amino_acid  codon subfam        coef        pvalue        qvalue</span></span>
 <span><span class="co">#&gt;     &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;       &lt;num&gt;         &lt;num&gt;         &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1:       A        Ala    GCT Ala_GC -0.08702058  0.000000e+00  0.000000e+00</span></span>
@@ -218,31 +269,35 @@ the <code>est_optimal_codons</code> function.</p>
 <span><span class="co">#&gt; 5:       N        Asn    AAC Asn_AA -0.05752254 1.600668e-292 2.871787e-292</span></span>
 <span><span class="co">#&gt; 6:       D        Asp    GAC Asp_GA -0.01846525  4.298281e-36  4.599915e-36</span></span></code></pre></div>
 </div>
-<div class="section level5">
-<h5 id="codon-adaptation-index-cai">Codon Adaptation Index (CAI)<a class="anchor" aria-label="anchor" href="#codon-adaptation-index-cai"></a>
-</h5>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="section level4">
+<h4 id="codon-adaptation-index-cai">Codon Adaptation Index (CAI)<a class="anchor" aria-label="anchor" href="#codon-adaptation-index-cai"></a>
+</h4>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># estimate RSCU of highly expressed genes</span></span>
 <span><span class="va">yeast_heg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">yeast_exp</span><span class="op">$</span><span class="va">fpkm</span><span class="op">)</span>, <span class="op">]</span>, n <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
 <span><span class="va">yeast_heg</span> <span class="op">&lt;-</span> <span class="va">yeast_heg</span><span class="op">[</span><span class="va">yeast_heg</span><span class="op">$</span><span class="va">gene_id</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">yeast_cf</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">rscu_heg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/est_rscu.html">est_rscu</a></span><span class="op">(</span><span class="va">yeast_cf</span><span class="op">[</span><span class="va">yeast_heg</span><span class="op">$</span><span class="va">gene_id</span>, <span class="op">]</span>, codon_table <span class="op">=</span> <span class="va">ctab</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rscu_heg</span><span class="op">)</span> <span class="co"># RSCU values are shown in the column `RSCU`</span></span>
+<span><span class="co">#&gt;    aa_code amino_acid  codon subfam   cts      prop     w_cai      rscu</span></span>
+<span><span class="co">#&gt;     &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:       F        Phe    TTT Phe_TT  2675 0.4003591 0.6676647 0.8007181</span></span>
+<span><span class="co">#&gt; 2:       F        Phe    TTC Phe_TT  4007 0.5996409 1.0000000 1.1992819</span></span>
+<span><span class="co">#&gt; 3:       L        Leu    TTA Leu_TT  3173 0.3214177 0.4736606 0.6428354</span></span>
+<span><span class="co">#&gt; 4:       L        Leu    TTG Leu_TT  6700 0.6785823 1.0000000 1.3571646</span></span>
+<span><span class="co">#&gt; 5:       S        Ser    TCT Ser_TC  4591 0.4892393 1.0000000 1.9569572</span></span>
+<span><span class="co">#&gt; 6:       S        Ser    TCC Ser_TC  2875 0.3064138 0.6263066 1.2256552</span></span>
 <span></span>
 <span><span class="co"># calculate CAI of all genes</span></span>
 <span><span class="co"># note: CAI values are usually calculated based RSCU of highly expressed genes.</span></span>
 <span><span class="va">cai</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_cai.html">get_cai</a></span><span class="op">(</span><span class="va">yeast_cf</span>, rscu <span class="op">=</span> <span class="va">rscu_heg</span><span class="op">)</span></span>
-<span><span class="fu">plot_dist</span><span class="op">(</span><span class="va">cai</span>, xlab <span class="op">=</span> <span class="st">'CAI'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code></pre></div>
-<p><img src="cubar_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<span><span class="fu">plot_dist</span><span class="op">(</span><span class="va">cai</span>, xlab <span class="op">=</span> <span class="st">'CAI'</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cubar_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 </div>
-<div class="section level5">
-<h5 id="trna-adaptation-index-tai">tRNA Adaptation Index (tAI)<a class="anchor" aria-label="anchor" href="#trna-adaptation-index-tai"></a>
-</h5>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="section level4">
+<h4 id="trna-adaptation-index-tai">tRNA Adaptation Index (tAI)<a class="anchor" aria-label="anchor" href="#trna-adaptation-index-tai"></a>
+</h4>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get tRNA gene copy number from GtRNADB</span></span>
-<span><span class="co">#' Note</span></span>
-<span><span class="co">#'  cubar has an internal copy of yeast_trna. You can also download it from the GtRNADB website:</span></span>
-<span><span class="co">#'    path_gtrnadb &lt;- 'http://gtrnadb.ucsc.edu/genomes/eukaryota/Scere3/sacCer3-mature-tRNAs.fa'</span></span>
-<span><span class="co">#'    yeast_trna &lt;- Biostrings::readRNAStringSet(path_gtrnadb)</span></span>
 <span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/tstrsplit.html" class="external-link">tstrsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">' .*'</span>, <span class="st">''</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">yeast_trna</span><span class="op">)</span><span class="op">)</span>, <span class="st">'-'</span><span class="op">)</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="va">trna_gcn</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">trna_gcn</span><span class="op">)</span> <span class="op">!=</span> <span class="st">'NNN'</span><span class="op">]</span> <span class="co"># copy of each anticodon</span></span>
 <span></span>
@@ -251,14 +306,117 @@ the <code>est_optimal_codons</code> function.</p>
 <span></span>
 <span><span class="co"># get tAI</span></span>
 <span><span class="va">tai</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_tai.html">get_tai</a></span><span class="op">(</span><span class="va">yeast_cf</span>, trna_w <span class="op">=</span> <span class="va">trna_w</span><span class="op">)</span></span>
-<span><span class="fu">plot_dist</span><span class="op">(</span><span class="va">tai</span>, <span class="st">'tAI'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code></pre></div>
-<p><img src="cubar_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
-</div>
+<span><span class="fu">plot_dist</span><span class="op">(</span><span class="va">tai</span>, <span class="st">'tAI'</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cubar_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p>Note that cubar has an internal copy of yeast_trna. You can also
+download mature tRNA sequences from the GtRNADB website (if you are
+lucky to have good internet connection) and read them into R using the
+following code:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># path_gtrnadb &lt;- 'http://gtrnadb.ucsc.edu/genomes/eukaryota/Scere3/sacCer3-mature-tRNAs.fa'</span></span>
+<span><span class="co"># yeast_trna &lt;- Biostrings::readRNAStringSet(path_gtrnadb)</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="faq">FAQ<a class="anchor" aria-label="anchor" href="#faq"></a>
+<h4 id="correlation-between-indices">Correlation between indices<a class="anchor" aria-label="anchor" href="#correlation-between-indices"></a>
 </h4>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>CAI <span class="op">=</span> <span class="va">cai</span>, ENC <span class="op">=</span> <span class="va">enc</span>, Fop <span class="op">=</span> <span class="va">fop</span>, TAI <span class="op">=</span> <span class="va">tai</span><span class="op">)</span>,</span>
+<span>      cex <span class="op">=</span> <span class="fl">0.5</span>, col <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html" class="external-link">alpha</a></span><span class="op">(</span><span class="st">'black'</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cubar_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="utilities">Utilities<a class="anchor" aria-label="anchor" href="#utilities"></a>
+</h3>
+<div class="section level4">
+<h4 id="test-of-differential-usage">Test of differential usage<a class="anchor" aria-label="anchor" href="#test-of-differential-usage"></a>
+</h4>
+<p><code>cubar</code> provides a function to test for differential codon
+usage between two sets of sequences. The function
+<code>codon_diff</code> calculates the odds ratio and p-value for each
+codon, comparing the usage in the two sets of sequences. The function
+returns a data table with the results of the global, family, and
+subfamily tests.</p>
+<p>Here, we compare the codon usage of lowly expressed genes with highly
+expressed genes in yeast.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># get lowly expressed genes</span></span>
+<span><span class="va">yeast_leg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">$</span><span class="va">fpkm</span><span class="op">)</span>, <span class="op">]</span>, n <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
+<span><span class="va">yeast_leg</span> <span class="op">&lt;-</span> <span class="va">yeast_leg</span><span class="op">[</span><span class="va">yeast_leg</span><span class="op">$</span><span class="va">gene_id</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">yeast_cf</span><span class="op">)</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="co"># differetial usage test</span></span>
+<span><span class="va">du_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codon_diff.html">codon_diff</a></span><span class="op">(</span><span class="va">yeast_cds_qc</span><span class="op">[</span><span class="va">yeast_heg</span><span class="op">$</span><span class="va">gene_id</span><span class="op">]</span>, <span class="va">yeast_cds_qc</span><span class="op">[</span><span class="va">yeast_leg</span><span class="op">$</span><span class="va">gene_id</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">du_test</span> <span class="op">&lt;-</span> <span class="va">du_test</span><span class="op">[</span><span class="va">du_test</span><span class="op">$</span><span class="va">amino_acid</span> <span class="op">!=</span> <span class="st">'*'</span>, <span class="op">]</span></span></code></pre></div>
+<p>The results of the differential usage test can be visualized using a
+bar plot of the odds ratios for each codon. Codons with odds ratios
+greater than 1 are used more frequently in the highly expressed genes,
+while codons with odds ratios less than 1 are used more frequently in
+the lowly expressed genes.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">du_test</span><span class="op">$</span><span class="va">codon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">du_test</span><span class="op">$</span><span class="va">codon</span>, levels <span class="op">=</span> <span class="va">du_test</span><span class="op">$</span><span class="va">codon</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">du_test</span><span class="op">$</span><span class="va">global_or</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">du_test</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">codon</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="va">global_or</span><span class="op">)</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">du_test</span><span class="op">$</span><span class="va">global_padj</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">'log2(OR)'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html" class="external-link">scale_fill_discrete</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">F</span>, <span class="cn">T</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'NS'</span>, <span class="st">'Significant'</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span>,</span>
+<span>          axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>          legend.position <span class="op">=</span> <span class="st">'inside'</span>,</span>
+<span>          legend.justification <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cubar_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
+<p><code>cubar</code> also tests for differences in codon usage at the
+family and subfamily levels.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">du_test2</span> <span class="op">&lt;-</span> <span class="va">du_test</span><span class="op">[</span><span class="op">!</span><span class="va">du_test</span><span class="op">$</span><span class="va">amino_acid</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Met'</span>, <span class="st">'Trp'</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">du_test2</span><span class="op">$</span><span class="va">codon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">du_test2</span><span class="op">$</span><span class="va">codon</span>, levels <span class="op">=</span> <span class="va">du_test2</span><span class="op">$</span><span class="va">codon</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">du_test2</span><span class="op">$</span><span class="va">fam_or</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">du_test2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">codon</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="va">fam_or</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">'log2(OR)'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">amino_acid</span><span class="op">)</span>, space <span class="op">=</span> <span class="st">'free'</span>, scales <span class="op">=</span> <span class="st">'free'</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_light</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cubar_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="codon-usage-optimization">Codon usage optimization<a class="anchor" aria-label="anchor" href="#codon-usage-optimization"></a>
+</h4>
+<p><code>cubar</code> provides a function to optimize codon usage for
+heterologous expression. Here is an example of optimizing the codon
+usage of the yeast gene YFR025C (HIS2) based on the optimal codons
+calculated earlier.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># optimize codon usage based on optimal codons</span></span>
+<span><span class="va">seq_optimized</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codon_optimize.html">codon_optimize</a></span><span class="op">(</span><span class="va">yeast_cds_qc</span><span class="op">[[</span><span class="st">'YFR025C'</span><span class="op">]</span><span class="op">]</span>, <span class="va">optimal_codons</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># CAI before and after optimization</span></span>
+<span><span class="fu">plot_dist</span><span class="op">(</span><span class="va">cai</span>, <span class="st">'CAI'</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">cai</span><span class="op">[</span><span class="st">'YFR025C'</span><span class="op">]</span>, linetype <span class="op">=</span> <span class="st">'dashed'</span>, color <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># before</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="../reference/get_cai.html">get_cai</a></span><span class="op">(</span><span class="fu"><a href="../reference/count_codons.html">count_codons</a></span><span class="op">(</span><span class="va">seq_optimized</span><span class="op">)</span>, <span class="va">rscu_heg</span><span class="op">)</span>,</span>
+<span>               linetype <span class="op">=</span> <span class="st">'dashed'</span>, color <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span>  <span class="co"># after</span></span></code></pre></div>
+<p><img src="cubar_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="sliding-window-analysis">Sliding-window analysis<a class="anchor" aria-label="anchor" href="#sliding-window-analysis"></a>
+</h4>
+<p><code>cubar</code> provides a function to perform a sliding-window
+analysis of codon usage bias. This analysis can be useful for
+identifying regions of a gene that exhibit distinct codon usage
+patterns. Here, we demonstrate how to perform a sliding-window analysis
+on the longest yeast gene YLR106C.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">swa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slide_apply.html">slide_apply</a></span><span class="op">(</span><span class="va">yeast_cds_qc</span><span class="op">[[</span><span class="st">'YHR099W'</span><span class="op">]</span><span class="op">]</span>, .f <span class="op">=</span> <span class="va">get_cai</span>,</span>
+<span>                   step <span class="op">=</span> <span class="fl">30</span>, before <span class="op">=</span> <span class="fl">20</span>, after <span class="op">=</span> <span class="fl">20</span>, rscu <span class="op">=</span> <span class="va">rscu_heg</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># plot the results</span></span>
+<span><span class="fu"><a href="../reference/slide_plot.html">slide_plot</a></span><span class="op">(</span><span class="va">swa</span>, <span class="st">'CAI'</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cubar_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="faq">FAQ<a class="anchor" aria-label="anchor" href="#faq"></a>
+</h3>
 <ol style="list-style-type: decimal">
 <li>What is subfamily in <code>cubar</code>? For large codon family that
 has more than four synonymous codons, <code>cubar</code> will break it

@@ -22,7 +22,7 @@ cubar is a package for codon usage bias analysis in R. Main features are as foll
     - Quantify the influnce of codon usage on mRNA stability with Mean Codon Stabilization Coefficients (CSCg);
     - Measure codon usage bias with the nonparametric index Effective number of codons (ENC);
     - Measure the fraction of pre-determined optimal codons (Fop) in each sequence;
-    - Overall GC content (GC) or that 3rd synonymous positions (GC3s) or 4-fold degenerate sites (GC4d);
+    - Overall GC content (GC) or that of 3rd synonymous positions (GC3s) or 4-fold degenerate sites (GC4d);
     - Quantify whether codon usage matches tRNA availability using tRNA Adaptation Index (tAI);
 - Utilities
     - Sliding window analysis of codon usage within a coding sequence;

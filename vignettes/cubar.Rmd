@@ -112,14 +112,14 @@ plot_dist(fop, 'Fop')
 ```{r}
 optimal_codons <- est_optimal_codons(yeast_cds_qc, codon_table = ctab)
 head(optimal_codons[coef < 0 & qvalue < 0.001])
-head(optimal_codons[optimal_codons$coef < 0 & optimal_codons$qvalue < 0.001, ])
 ```
 
 #### Codon Adaptation Index (CAI)
 ```{r}
 # estimate RSCU of highly expressed genes
-yeast_heg <- head(yeast_exp[order(-yeast_exp$fpkm), ], n = 500)
-yeast_heg <- yeast_heg[yeast_heg$gene_id %in% rownames(yeast_cf), ]
+yeast_exp <- as.data.table(yeast_exp)
+yeast_heg <- head(yeast_exp[order(fpkm), ], n = 500)
+yeast_heg <- yeast_heg[gene_id %in% rownames(yeast_cf), ]
 rscu_heg <- est_rscu(yeast_cf[yeast_heg$gene_id, ], codon_table = ctab)
 head(rscu_heg) # RSCU values are shown in the column `RSCU`
 
@@ -153,7 +153,7 @@ Note that cubar has an internal copy of yeast_trna. You can also download mature
 
 ```{r}
 pairs(cbind(CAI = cai, ENC = enc, Fop = fop, TAI = tai),
-      cex = 0.5, col = alpha('black', 0.5))
+      cex = 0.5, col = alpha('black', 0.2))
 ```
 
 ### Utilities
@@ -164,33 +164,30 @@ pairs(cbind(CAI = cai, ENC = enc, Fop = fop, TAI = tai),
 Here, we compare the codon usage of lowly expressed genes with highly expressed genes in yeast.
 ```{r}
 # get lowly expressed genes
-yeast_leg <- head(yeast_exp[order(yeast_exp$fpkm), ], n = 500)
-yeast_leg <- yeast_leg[yeast_leg$gene_id %in% rownames(yeast_cf), ]
+yeast_leg <- head(yeast_exp[order(fpkm), ], n = 500)
+yeast_leg <- yeast_leg[gene_id %in% rownames(yeast_cf), ]
 
 # differetial usage test
 du_test <- codon_diff(yeast_cds_qc[yeast_heg$gene_id], yeast_cds_qc[yeast_leg$gene_id])
-du_test <- du_test[du_test$amino_acid != '*', ]
+du_test <- du_test[amino_acid != '*', ]
 ```
 
 The results of the differential usage test can be visualized using a bar plot of the odds ratios for each codon. Codons with odds ratios greater than 1 are used more frequently in the highly expressed genes, while codons with odds ratios less than 1 are used more frequently in the lowly expressed genes.
 ```{r}
-du_test$codon <- factor(du_test$codon, levels = du_test$codon[order(-du_test$global_or)])
+du_test$codon <- factor(du_test$codon, levels = du_test[order(-global_or), codon])
 
-ggplot(du_test, aes(x = codon, y = log2(global_or), fill = factor(du_test$global_padj < 0.05))) +
+ggplot(du_test, aes(x = codon, y = log2(global_or))) +
     geom_col() +
     labs(x = NULL, y = 'log2(OR)') +
-    scale_fill_discrete(name = NULL, breaks = c(F, T), labels = c('NS', 'Significant')) +
     theme_classic(base_size = 12) +
     theme(axis.text = element_text(color = 'black'),
-          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
-          legend.position = 'inside',
-          legend.justification = c(0.05, 0.05))
+          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 
 `cubar` also tests for differences in codon usage at the family and subfamily levels.
 ```{r}
-du_test2 <- du_test[!du_test$amino_acid %in% c('Met', 'Trp'), ]
-du_test2$codon <- factor(du_test2$codon, levels = du_test2$codon[order(-du_test2$fam_or)])
+du_test2 <- du_test[!amino_acid %in% c('Met', 'Trp'), ]
+du_test2$codon <- factor(du_test2$codon, levels = du_test2[order(-fam_or), codon])
 
 ggplot(du_test2, aes(x = codon, y = log2(fam_or))) +
     geom_col() +
@@ -215,7 +212,7 @@ plot_dist(cai, 'CAI') +
 ```
 
 #### Sliding-window analysis
-`cubar` provides a function to perform a sliding-window analysis of codon usage bias. This analysis can be useful for identifying regions of a gene that exhibit distinct codon usage patterns. Here, we demonstrate how to perform a sliding-window analysis on the longest yeast gene YLR106C.
+`cubar` provides a function to perform a sliding-window analysis of codon usage bias. This analysis can be useful for identifying regions of a gene that exhibit distinct codon usage patterns. Here, we demonstrate how to perform a sliding-window analysis on YLR106C, one of the longest yeast genes.
 
 ```{r}
 swa <- slide_apply(yeast_cds_qc[['YHR099W']], .f = get_cai,

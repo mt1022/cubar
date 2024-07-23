@@ -60,7 +60,7 @@ $$
 
 It should be noted that throughout cubar, codon families with more than four synomymous codons are divided into different subfamilies based on the first two nucleotides of codons.
 
-#### The fraction of optimal codons ($F_{op}$)
+#### The fraction of optimal codons (Fop)
 
 $F_{op}$ measures the fraction of optimal codons in the CDS of a gene given a list of optimal codons (Ikemura 1981). It is calculated as follows:
 
@@ -110,7 +110,7 @@ $$
 \text{CSCg} = \frac{1}{L}\sum_{k=1}^L{\text{CSC}_k}= \frac{\sum_i\sum_j {X_{ij} \text{CSC}_{ij}}}{\sum_i{\sum_j{X_{ij}}}}
 $$
 
-#### The deviation from proportionality ($D_p$)
+#### The deviation from proportionality (Dp)
 
 $D_p$ measures the departure of the codon usage of an exogenous CDS from the tRNA pool of the host organism (Chen, et al. 2020; Chen and Yang 2022). For a codon family $i$ with $n_i$ synonymous codons ($n_i>1$), the fraction of codon $j$ among all occurrences of this family in the exogenous CDS is:
 

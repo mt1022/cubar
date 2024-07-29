@@ -4,15 +4,28 @@
 \alias{est_optimal_codons}
 \title{Estimate optimal codons}
 \usage{
-est_optimal_codons(seqs, codon_table = get_codon_table())
+est_optimal_codons(
+  cf,
+  codon_table = get_codon_table(),
+  level = "subfam",
+  gene_score = NULL,
+  fdr = 0.001
+)
 }
 \arguments{
-\item{seqs}{CDS sequences of all protein-coding genes. One for each gene.}
+\item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
 
 \item{codon_table}{a table of genetic code derived from `get_codon_table` or `create_codon_table`.}
+
+\item{level}{"subfam" (default) or "amino_acid". For which level to determine optimal codons.}
+
+\item{gene_score}{scores of genes to be used in regression. Could be log-transformed gene expression
+levels (RPKM or TPM). Negative ENC will be used by default if `gene_score` is not provided.}
+
+\item{fdr}{false discovery rate used to determine optimal codons.}
 }
 \value{
-data.table of optimal codons
+data.table of optimal codons.
 }
 \description{
 \code{est_toptimal_codons} determine optimal codon of each codon family with binomial regression.
@@ -20,9 +33,9 @@ data.table of optimal codons
 }
 \examples{
 # perform binomial regression for optimal codon estimation
-codons_opt <- est_optimal_codons(yeast_cds)
-# select optimal codons with a fdr of 0.001
-codons_opt <- codons_opt[qvalue < 0.001 & coef < 0]
+cf_all <- count_codons(yeast_cds)
+codons_opt <- est_optimal_codons(cf_all)
+codons_opt <- codons_opt[optimal == TRUE]
 codons_opt
 
 }

@@ -211,22 +211,29 @@ get_gc4d <- function(cf, codon_table = get_codon_table()){
 #'
 #' \code{get_fop} calculates the fraction of optimal codons (Fop) of each CDS.
 #'
-#' @param seqs CDS sequences of all protein-coding genes. One for each gene.
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @param op a character vector of optimal codons. Can be determined automatically by running
+#'   `est_optimal_codons`.
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @param ... other arguments passed to `est_optimal_codons`.
 #' @returns a named vector of fop values.
-#' @references Ikemura T. 1981. Correlation between the abundance of Escherichia coli transfer RNAs and the occurrence of the respective codons in its protein genes: a proposal for a synonymous codon choice that is optimal for the E. coli translational system. J Mol Biol 151:389-409.
+#' @references Ikemura T. 1981. Correlation between the abundance of Escherichia coli transfer RNAs
+#'   and the occurrence of the respective codons in its protein genes: a proposal for a synonymous
+#'   codon choice that is optimal for the E. coli translational system. J Mol Biol 151:389-409.
 #' @export
 #' @examples
 #' # estimate Fop of yeast genes
-#' fop <- get_fop(yeast_cds)
+#' cf_all <- count_codons(yeast_cds)
+#' fop <- get_fop(cf_all)
 #' head(fop)
 #' hist(fop)
 #'
-get_fop <- function(seqs, codon_table = get_codon_table()){
-    coef <- qvalue <- codon <- NULL
-    cf <- count_codons(seqs)
-    optimal_codons <- est_optimal_codons(seqs, codon_table = codon_table)
-    op <- optimal_codons[coef < 0 & qvalue < 0.001, codon]
+get_fop <- function(cf, op = NULL, codon_table = get_codon_table(), ...){
+    coef <- qvalue <- codon <- optimal <- NULL
+    if(is.null(op)){
+        optimal_codons <- est_optimal_codons(cf, codon_table = codon_table, ...)
+        op <- optimal_codons[optimal == TRUE, codon]
+    }
     rowSums(cf[, op]) / rowSums(cf)
 }
 

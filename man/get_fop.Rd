@@ -4,12 +4,17 @@
 \alias{get_fop}
 \title{Fraction of optimal codons (Fop)}
 \usage{
-get_fop(seqs, codon_table = get_codon_table())
+get_fop(cf, op = NULL, codon_table = get_codon_table(), ...)
 }
 \arguments{
-\item{seqs}{CDS sequences of all protein-coding genes. One for each gene.}
+\item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
+
+\item{op}{a character vector of optimal codons. Can be determined automatically by running
+`est_optimal_codons`.}
 
 \item{codon_table}{a table of genetic code derived from `get_codon_table` or `create_codon_table`.}
+
+\item{...}{other arguments passed to `est_optimal_codons`.}
 }
 \value{
 a named vector of fop values.
@@ -19,11 +24,14 @@ a named vector of fop values.
 }
 \examples{
 # estimate Fop of yeast genes
-fop <- get_fop(yeast_cds)
+cf_all <- count_codons(yeast_cds)
+fop <- get_fop(cf_all)
 head(fop)
 hist(fop)
 
 }
 \references{
-Ikemura T. 1981. Correlation between the abundance of Escherichia coli transfer RNAs and the occurrence of the respective codons in its protein genes: a proposal for a synonymous codon choice that is optimal for the E. coli translational system. J Mol Biol 151:389-409.
+Ikemura T. 1981. Correlation between the abundance of Escherichia coli transfer RNAs
+  and the occurrence of the respective codons in its protein genes: a proposal for a synonymous
+  codon choice that is optimal for the E. coli translational system. J Mol Biol 151:389-409.
 }

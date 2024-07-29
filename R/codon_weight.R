@@ -177,38 +177,50 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
 #' \code{est_toptimal_codons} determine optimal codon of each codon family with binomial regression.
 #'   Usage of optimal codons should correlate negatively with enc.
 #'
-#' @param seqs CDS sequences of all protein-coding genes. One for each gene.
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
-#' @returns data.table of optimal codons
+#' @param level "subfam" (default) or "amino_acid". For which level to determine optimal codons.
+#' @param gene_score scores of genes to be used in regression. Could be log-transformed gene expression
+#'   levels (RPKM or TPM). Negative ENC will be used by default if `gene_score` is not provided.
+#' @param fdr false discovery rate used to determine optimal codons.
+#' @returns data.table of optimal codons.
 #' @importFrom data.table ':='
 #' @export
 #' @examples
 #' # perform binomial regression for optimal codon estimation
-#' codons_opt <- est_optimal_codons(yeast_cds)
-#' # select optimal codons with a fdr of 0.001
-#' codons_opt <- codons_opt[qvalue < 0.001 & coef < 0]
+#' cf_all <- count_codons(yeast_cds)
+#' codons_opt <- est_optimal_codons(cf_all)
+#' codons_opt <- codons_opt[optimal == TRUE]
 #' codons_opt
 #'
-est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
-    aa_code <- qvalue <- pvalue <- . <- codon <- subfam <- NULL # due to NSE notes in R CMD check
-    cf_all <- count_codons(seqs)
-    enc <- get_enc(cf_all, codon_table = codon_table)
+est_optimal_codons <- function(cf, codon_table = get_codon_table(), level = 'subfam',
+                               gene_score = NULL, fdr = 0.001){
+    aa_code <- . <- codon <- subfam <- NULL # due to NSE notes in R CMD check
+    qvalue <- pvalue <- optimal <- coef <- NULL
+    if(!level %in% c('amino_acid', 'subfam')){
+        stop('Possible values for `level` are "amino_acid" and "subfam"')
+    }
+    if(is.null(gene_score)){
+        enc <- get_enc(cf, codon_table = codon_table)
+        # larger values correlate with stronger bias like gene expression levels
+        gene_score <- -enc
+    }
 
     # exclude stop codons
     codon_table <- codon_table[aa_code != '*']
-    cf_all <- cf_all[, colnames(cf_all) %in% codon_table$codon]
+    cf <- cf[, colnames(cf) %in% codon_table$codon]
 
     # regression analysis for each codon sub-family
-    binreg <- lapply(split(codon_table$codon, f = codon_table$subfam), function(x){
-        cf <- cf_all[, x, drop = FALSE]
-        if(ncol(cf) == 1){
+    binreg <- lapply(split(codon_table$codon, f = codon_table[[level]]), function(x){
+        cf_grp <- cf[, x, drop = FALSE]
+        if(ncol(cf_grp) == 1){
             data.table::data.table(
-                codon = colnames(cf), coef = 0, se = 0, zvalue = 0, pvalue = 0)
+                codon = colnames(cf_grp), coef = 0, se = 0, zvalue = 0, pvalue = 0)
         }else{
-            total <- rowSums(cf)
-            res <- apply(cf, 2, function(x){
+            total <- rowSums(cf_grp)
+            res <- apply(cf_grp, 2, function(x){
                 x
-                fit <- stats::glm(cbind(x, total - x) ~ enc, family = 'binomial')
+                fit <- stats::glm(cbind(x, total - x) ~ gene_score, family = 'binomial')
                 summary(fit)$coefficients[-1, ]
             })
             res <- data.table::as.data.table(
@@ -216,10 +228,11 @@ est_optimal_codons <- function(seqs, codon_table = get_codon_table()){
             data.table::setnames(res, c('codon', 'coef', 'se', 'zvalue', 'pvalue'))
         }
     })
-    bingreg <- data.table::rbindlist(binreg, idcol = 'subfam')
+    bingreg <- data.table::rbindlist(binreg, idcol = level)
     bingreg[, qvalue := stats::p.adjust(pvalue, method = 'BH')]
-    bingreg <- codon_table[bingreg, on = .(codon, subfam)]
+    bingreg <- codon_table[bingreg, on = c('codon', level)]
     bingreg[, c('se', 'zvalue') := NULL]
+    bingreg[, optimal := coef > 0 & qvalue < fdr]
     return(bingreg)
 }
 

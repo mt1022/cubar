@@ -45,19 +45,28 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_fop</span><span class="op">(</span><span class="va">seqs</span>, codon_table <span class="op">=</span> <span class="fu"><a href="get_codon_table.html">get_codon_table</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_fop</span><span class="op">(</span><span class="va">cf</span>, op <span class="op">=</span> <span class="cn">NULL</span>, codon_table <span class="op">=</span> <span class="fu"><a href="get_codon_table.html">get_codon_table</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-seqs">seqs<a class="anchor" aria-label="anchor" href="#arg-seqs"></a></dt>
-<dd><p>CDS sequences of all protein-coding genes. One for each gene.</p></dd>
+<dl><dt id="arg-cf">cf<a class="anchor" aria-label="anchor" href="#arg-cf"></a></dt>
+<dd><p>matrix of codon frequencies as calculated by `count_codons()`.</p></dd>
+
+
+<dt id="arg-op">op<a class="anchor" aria-label="anchor" href="#arg-op"></a></dt>
+<dd><p>a character vector of optimal codons. Can be determined automatically by running
+`est_optimal_codons`.</p></dd>
 
 
 <dt id="arg-codon-table">codon_table<a class="anchor" aria-label="anchor" href="#arg-codon-table"></a></dt>
 <dd><p>a table of genetic code derived from `get_codon_table` or `create_codon_table`.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>other arguments passed to `est_optimal_codons`.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -66,13 +75,16 @@
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Ikemura T. 1981. Correlation between the abundance of Escherichia coli transfer RNAs and the occurrence of the respective codons in its protein genes: a proposal for a synonymous codon choice that is optimal for the E. coli translational system. J Mol Biol 151:389-409.</p>
+    <p>Ikemura T. 1981. Correlation between the abundance of Escherichia coli transfer RNAs
+  and the occurrence of the respective codons in its protein genes: a proposal for a synonymous
+  codon choice that is optimal for the E. coli translational system. J Mol Biol 151:389-409.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># estimate Fop of yeast genes</span></span></span>
-<span class="r-in"><span><span class="va">fop</span> <span class="op">&lt;-</span> <span class="fu">get_fop</span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cf_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="count_codons.html">count_codons</a></span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fop</span> <span class="op">&lt;-</span> <span class="fu">get_fop</span><span class="op">(</span><span class="va">cf_all</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fop</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   YPL071C   YLL050C   YMR172W   YOR185C   YLL032C   YBR225W </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.4012739 0.7569444 0.4611111 0.5791855 0.4963680 0.4716981 </span>

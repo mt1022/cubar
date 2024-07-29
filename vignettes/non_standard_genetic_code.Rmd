@@ -2,7 +2,7 @@
 title: "Non-standard genetic code"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Non_standard_genetic_code}
+  %\VignetteIndexEntry{Non-standard genetic code}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

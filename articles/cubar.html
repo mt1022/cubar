@@ -85,17 +85,9 @@ by analyzing the coding sequences (CDSs) of brewer’s yeast as an
 example.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biostrings" class="external-link">Biostrings</a></span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mt1022/cubar" class="external-link">cubar</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'data.table'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:IRanges':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     shift</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:S4Vectors':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     first, second</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="sequences-and-the-genetic-code">Sequences and the Genetic Code<a class="anchor" aria-label="anchor" href="#sequences-and-the-genetic-code"></a>
 </h3>
@@ -243,11 +235,15 @@ calculate various indices with the above yeast CDS data.</p>
 <p><img src="cubar_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 <p><code>cubar</code> provides a method to determine the optimal (or
 “preferred”) codon for each codon subfamily based on regression of codon
-usage against ENC. Preferred codons are more likely to be used in genes
-that exhibit strong codon usage bias and tend to have lower ENC values.
-Consequently, preferred codons will have negative coefficients in the
-regression analysis. To view the optimal codons, you can manually run
-the <code>est_optimal_codons</code> function.</p>
+usage against scores for genes. Preferred codons are more likely to be
+used in genes with high scores. Consequently, preferred codons will have
+positive coefficients in the regression analysis. Users can provide
+their own gene scores, for example, <code>log1p</code>-transformed gene
+expression levels (RPKM or TPM). If no gene scores are provided,
+<code>cubar</code> will use <code>-ENC</code> (so that genes with
+stronger codon usage bias have larger scores) by default.</p>
+<p>To view the optimal codons, you can manually run the
+<code>est_optimal_codons</code> function.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">optimal_codons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/est_optimal_codons.html">est_optimal_codons</a></span><span class="op">(</span><span class="va">yeast_cf</span>, codon_table <span class="op">=</span> <span class="va">ctab</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">optimal_codons</span><span class="op">[</span><span class="va">optimal</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">]</span><span class="op">)</span></span>
@@ -274,18 +270,18 @@ the <code>est_optimal_codons</code> function.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># estimate RSCU of highly expressed genes</span></span>
 <span><span class="va">yeast_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">)</span></span>
-<span><span class="va">yeast_heg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">fpkm</span><span class="op">)</span>, <span class="op">]</span>, n <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
-<span><span class="va">yeast_heg</span> <span class="op">&lt;-</span> <span class="va">yeast_heg</span><span class="op">[</span><span class="va">gene_id</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">yeast_cf</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">yeast_exp</span> <span class="op">&lt;-</span> <span class="va">yeast_exp</span><span class="op">[</span><span class="va">gene_id</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">yeast_cf</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">yeast_heg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">fpkm</span><span class="op">)</span>, <span class="op">]</span>, n <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
 <span><span class="va">rscu_heg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/est_rscu.html">est_rscu</a></span><span class="op">(</span><span class="va">yeast_cf</span><span class="op">[</span><span class="va">yeast_heg</span><span class="op">$</span><span class="va">gene_id</span>, <span class="op">]</span>, codon_table <span class="op">=</span> <span class="va">ctab</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rscu_heg</span><span class="op">)</span> <span class="co"># RSCU values are shown in the column `RSCU`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rscu_heg</span><span class="op">)</span> <span class="co"># RSCU values are shown in the column `rscu`</span></span>
 <span><span class="co">#&gt;    aa_code amino_acid  codon subfam   cts      prop     w_cai      rscu</span></span>
 <span><span class="co">#&gt;     &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:       F        Phe    TTT Phe_TT  2663 0.6110092 1.0000000 1.2220183</span></span>
-<span><span class="co">#&gt; 2:       F        Phe    TTC Phe_TT  1695 0.3889908 0.6366366 0.7779817</span></span>
-<span><span class="co">#&gt; 3:       L        Leu    TTA Leu_TT  1461 0.4394349 0.7839142 0.8788699</span></span>
-<span><span class="co">#&gt; 4:       L        Leu    TTG Leu_TT  1864 0.5605651 1.0000000 1.1211301</span></span>
-<span><span class="co">#&gt; 5:       S        Ser    TCT Ser_TC  1613 0.3502604 1.0000000 1.4010417</span></span>
-<span><span class="co">#&gt; 6:       S        Ser    TCC Ser_TC  1157 0.2513021 0.7174721 1.0052083</span></span>
+<span><span class="co">#&gt; 1:       F        Phe    TTT Phe_TT  2710 0.4013918 0.6705417 0.8027835</span></span>
+<span><span class="co">#&gt; 2:       F        Phe    TTC Phe_TT  4042 0.5986082 1.0000000 1.1972165</span></span>
+<span><span class="co">#&gt; 3:       L        Leu    TTA Leu_TT  3231 0.3234264 0.4780358 0.6468528</span></span>
+<span><span class="co">#&gt; 4:       L        Leu    TTG Leu_TT  6760 0.6765736 1.0000000 1.3531472</span></span>
+<span><span class="co">#&gt; 5:       S        Ser    TCT Ser_TC  4646 0.4897249 1.0000000 1.9588998</span></span>
+<span><span class="co">#&gt; 6:       S        Ser    TCC Ser_TC  2892 0.3048793 0.6225522 1.2195173</span></span>
 <span></span>
 <span><span class="co"># calculate CAI of all genes</span></span>
 <span><span class="co"># note: CAI values are usually calculated based RSCU of highly expressed genes.</span></span>
@@ -415,16 +411,19 @@ on YLR106C, one of the longest yeast genes.</p>
 <div class="section level3">
 <h3 id="faq">FAQ<a class="anchor" aria-label="anchor" href="#faq"></a>
 </h3>
-<ol style="list-style-type: decimal">
-<li>What is subfamily in <code>cubar</code>? For large codon family that
-has more than four synonymous codons, <code>cubar</code> will break it
-into two subfamilies depending on the first two nucleotides of codons.
-For example, leucine is encoded by six codons in the standard genetic
-code. <code>cubar</code> will break the six codons into two subfamilies:
-<code>Leu_UU</code> for <code>UUA</code> and <code>UUG</code>;
-<code>Leu_CU</code> for <code>CUU</code>, <code>CUC</code>,
-<code>CUA</code>, and <code>CUG</code>.</li>
-</ol>
+<p>What do families and subfamilies mean in <code>cubar</code>? &gt; A
+codon family is the set of codons encoding the same amino acid. For a
+large codon family that has more than four synonymous codons,
+<code>cubar</code> will break it into two subfamilies depending on the
+first two nucleotides of codons. For example, leucine is encoded by six
+codons in the standard genetic code. <code>cubar</code> will break the
+six codons into two subfamilies: <code>Leu_UU</code> for
+<code>UUA</code> and <code>UUG</code>; <code>Leu_CU</code> for
+<code>CUU</code>, <code>CUC</code>, <code>CUA</code>, and
+<code>CUG</code>. Unless otherwise stated, codon weights for most
+indices are calculated at the subfamily level. However, there are
+options to estimate optimal codons and perform codon optimization at the
+family level to suit different user needs.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -104,14 +104,14 @@ plot_dist(enc, 'ENC')
 #### Fraction of optimal codons (Fop)
 ```{r}
 # get fop
-fop <- get_fop(yeast_cds_qc)
+fop <- get_fop(yeast_cf)
 plot_dist(fop, 'Fop')
 ```
 
 `cubar` provides a method to determine the optimal (or "preferred") codon for each codon subfamily based on regression of codon usage against ENC. Preferred codons are more likely to be used in genes that exhibit strong codon usage bias and tend to have lower ENC values. Consequently, preferred codons will have negative coefficients in the regression analysis. To view the optimal codons, you can manually run the `est_optimal_codons` function.
 ```{r}
-optimal_codons <- est_optimal_codons(yeast_cds_qc, codon_table = ctab)
-head(optimal_codons[coef < 0 & qvalue < 0.001])
+optimal_codons <- est_optimal_codons(yeast_cf, codon_table = ctab)
+head(optimal_codons[optimal == TRUE])
 ```
 
 #### Codon Adaptation Index (CAI)
@@ -201,8 +201,9 @@ ggplot(du_test2, aes(x = codon, y = log2(fam_or))) +
 `cubar` provides a function to optimize codon usage for heterologous expression. Here is an example of optimizing the codon usage of the yeast gene YFR025C (HIS2) based on the optimal codons calculated earlier.
 
 ```{r}
-# optimize codon usage based on optimal codons
-seq_optimized <- codon_optimize(yeast_cds_qc[['YFR025C']], optimal_codons)
+# optimize codon usage to the optimal codon of each amino acid
+opc_aa <- est_optimal_codons(yeast_cf, codon_table = ctab, level = 'amino_acid')
+seq_optimized <- codon_optimize(yeast_cds_qc[['YFR025C']], optimal_codons, level = 'amino_acid')
 
 # CAI before and after optimization
 plot_dist(cai, 'CAI') + 

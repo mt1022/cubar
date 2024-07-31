@@ -27,5 +27,7 @@ hist(cscg)
 
 }
 \references{
-Presnyak V, Alhusaini N, Chen YH, Martin S, Morris N, Kline N, Olson S, Weinberg D, Baker KE, Graveley BR, et al. 2015. Codon optimality is a major determinant of mRNA stability. Cell 160:1111-1124.
+Presnyak V, Alhusaini N, Chen YH, Martin S, Morris N, Kline N, Olson S, Weinberg D,
+  Baker KE, Graveley BR, et al. 2015. Codon optimality is a major determinant of mRNA stability.
+  Cell 160:1111-1124.
 }

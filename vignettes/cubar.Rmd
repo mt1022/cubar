@@ -108,7 +108,7 @@ fop <- get_fop(yeast_cf)
 plot_dist(fop, 'Fop')
 ```
 
-`cubar` provides a method to determine the optimal (or "preferred") codon for each codon subfamily based on regression of codon usage against scores for genes. Preferred codons are more likely to be used in genes with high scores. Consequently, preferred codons will have positive coefficients in the regression analysis. Users can provide their own gene scores, for example, `log1p`-transformed gene expression levels (RPKM or TPM). If no gene scores are provided, `cubar` will use `-ENC` (so that genes with stronger codon usage bias have larger scores) by default.
+`cubar` provides a method to determine the optimal (or "preferred") codon for each codon subfamily based on regression of codon usage against scores for genes. Preferred codons are more likely to be used in genes with high scores. Consequently, preferred codons will have positive coefficients in the regression analysis. Users can provide a vector of their own gene scores, for example, `log1p`-transformed gene expression levels (RPKM or TPM). It worthy noting that the order of gene scores should match the order of genes in the codon frequency matrix. Otherwise, the results will be meaningless. If gene scores were not provided, `cubar` will use the opposite of ENC by default (so that genes with stronger codon usage bias have larger scores).
 
 To view the optimal codons, you can manually run the `est_optimal_codons` function.
 ```{r}

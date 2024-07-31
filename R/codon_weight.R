@@ -180,8 +180,11 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
 #' @param cf matrix of codon frequencies as calculated by `count_codons()`.
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
 #' @param level "subfam" (default) or "amino_acid". For which level to determine optimal codons.
-#' @param gene_score scores of genes to be used in regression. Could be log-transformed gene expression
-#'   levels (RPKM or TPM). Negative ENC will be used by default if `gene_score` is not provided.
+#' @param gene_score a numeric vector of scores for genes. The order of values should match with
+#'   gene orders in the codon frequency matrix. The length of the vector should be equal to the
+#'   number of rows in the matrix. The scores could be gene expression levels (RPKM or TPM) that are
+#'   optionally log-transformed (for example, with `log1p`). The opposite of ENC will be used by
+#'   default if `gene_score` is not provided.
 #' @param fdr false discovery rate used to determine optimal codons.
 #' @returns data.table of optimal codons.
 #' @importFrom data.table ':='

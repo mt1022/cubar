@@ -74,8 +74,11 @@
 
 
 <dt id="arg-gene-score">gene_score<a class="anchor" aria-label="anchor" href="#arg-gene-score"></a></dt>
-<dd><p>scores of genes to be used in regression. Could be log-transformed gene expression
-levels (RPKM or TPM). Negative ENC will be used by default if `gene_score` is not provided.</p></dd>
+<dd><p>a numeric vector of scores for genes. The order of values should match with
+gene orders in the codon frequency matrix. The length of the vector should be equal to the
+number of rows in the matrix. The scores could be gene expression levels (RPKM or TPM) that are
+optionally log-transformed (for example, with `log1p`). The opposite of ENC will be used by
+default if `gene_score` is not provided.</p></dd>
 
 
 <dt id="arg-fdr">fdr<a class="anchor" aria-label="anchor" href="#arg-fdr"></a></dt>

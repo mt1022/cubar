@@ -279,7 +279,6 @@ get_cscg <- function(cf, csc){
 #' @references Chen F, Wu P, Deng S, Zhang H, Hou Y, Hu Z, Zhang J, Chen X, Yang JR. 2020.
 #'   Dissimilation of synonymous codon usage bias in virus-host coevolution due to translational
 #'   selection. Nat Ecol Evol 4:589-600.
-#'
 #' @export
 #' @examples
 #' # estimate DP of yeast genes
@@ -289,7 +288,6 @@ get_cscg <- function(cf, csc){
 #' dp <- get_dp(cf_all, host_weights = trna_weight)
 #' head(dp)
 #' hist(dp)
-#' @importFrom data.table ':='
 #'
 get_dp <- function(cf, host_weights, codon_table = get_codon_table()){
     aa_code <- NULL # due to NSE notes in R CMD check

@@ -28,6 +28,7 @@ trna_weight <- setNames(trna_weight$w, trna_weight$codon)
 dp <- get_dp(cf_all, host_weights = trna_weight)
 head(dp)
 hist(dp)
+
 }
 \references{
 Chen F, Wu P, Deng S, Zhang H, Hou Y, Hu Z, Zhang J, Chen X, Yang JR. 2020.

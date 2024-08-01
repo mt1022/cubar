@@ -1,3 +1,5 @@
+# cubar (development version)
+
 # cubar 1.0.0
 
 * `est_optimal_codons` and `get_fop` now work on codon frequency matrix like

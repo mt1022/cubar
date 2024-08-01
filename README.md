@@ -4,8 +4,8 @@
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/cubar)](https://CRAN.R-project.org/package=cubar)
 [![](https://cranlogs.r-pkg.org/badges/cubar)](https://cran.r-project.org/package=cubar)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10155990.svg)](https://doi.org/10.5281/zenodo.10155990)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
 ### Overview

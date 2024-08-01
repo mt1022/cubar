@@ -1,4 +1,22 @@
-# cubar (development version)
+# cubar 1.0.0
+
+* `est_optimal_codons` and `get_fop` now work on codon frequency matrix like
+  other cubar functions.
+  
+* codon optimization can be done at both family(amino acid) or subfamily level
+  now and optimal codons can be estimated for each level using either codon
+  bias or gene expression levels (Thanks @maltesemike for valuable suggestions
+  and feedback). The false discovery rate is controlled by the `fdr` argument.
+  
+* There were two RSCU columns (`RSCU` and `rscu`) in the output of
+  `est_optimal_codons` and `get_fop`. Now only `rscu` is kept and represents
+  the RSCU values.
+  
+* New functions to perform sliding window analysis on codon usage: `slide`,
+  `slide_codon`, `slide_apply` and `slide_plot`.
+
+* New function to calculate the deviation from proportionality (Dp) of host
+  tRNA availability: `get_dp`.
 
 # cubar 0.6.0
 

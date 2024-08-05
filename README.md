@@ -12,7 +12,7 @@
 cubar is a package for codon usage bias analysis in R. Main features are as follows:
 
 - Codon level analyses
-    - Calculate tRNA weights;
+    - Calculate codon weights based on gene expression, tRNA availability, and mRNA stability;
     - Calculate relative synonymous codon usage (RSCU);
     - Machine learning-based inference of optimal codons;
     - Visualization codon-anticodon pairing relationships;
@@ -24,6 +24,7 @@ cubar is a package for codon usage bias analysis in R. Main features are as foll
     - Measure the fraction of pre-determined optimal codons (Fop) in each sequence;
     - Overall GC content (GC) or that of 3rd synonymous positions (GC3s) or 4-fold degenerate sites (GC4d);
     - Quantify whether codon usage matches tRNA availability using tRNA Adaptation Index (tAI);
+    - Measure the deviation from porportionality (Dp) of viral synonymous codon usage from host tRNA supply;
 - Utilities
     - Sliding window analysis of codon usage within a coding sequence;
     - Optimize codon usage based on optimal codons for heterologous expression;

@@ -4,7 +4,13 @@
 \alias{get_dp}
 \title{Deviaiton from Proportionality}
 \usage{
-get_dp(cf, host_weights, codon_table = get_codon_table())
+get_dp(
+  cf,
+  host_weights,
+  codon_table = get_codon_table(),
+  level = "amino_acid",
+  missing_action = "ignore"
+)
 }
 \arguments{
 \item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
@@ -13,6 +19,12 @@ get_dp(cf, host_weights, codon_table = get_codon_table())
 availability of tRNAs in the host organism.}
 
 \item{codon_table}{a table of genetic code derived from `get_codon_table` or `create_codon_table`.}
+
+\item{level}{"subfam" or "amino_acid" (default). If "subfam", the deviation is calculated at
+the codon subfamily level. Otherwise, the deviation is calculated at the amino acid level.}
+
+\item{missing_action}{Actions to take when no codon of a group were found in a CDS. Options are
+"ignore" (default), or "zero" (set codon proportions to 0).}
 }
 \value{
 a named vector of dp values.

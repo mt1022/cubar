@@ -275,6 +275,10 @@ get_cscg <- function(cf, csc){
 #' @param host_weights a named vector of tRNA weights for each codon that reflects the relative
 #'  availability of tRNAs in the host organism.
 #' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @param level "subfam" or "amino_acid" (default). If "subfam", the deviation is calculated at
+#'   the codon subfamily level. Otherwise, the deviation is calculated at the amino acid level.
+#' @param missing_action Actions to take when no codon of a group were found in a CDS. Options are
+#'   "ignore" (default), or "zero" (set codon proportions to 0).
 #' @returns a named vector of dp values.
 #' @references Chen F, Wu P, Deng S, Zhang H, Hou Y, Hu Z, Zhang J, Chen X, Yang JR. 2020.
 #'   Dissimilation of synonymous codon usage bias in virus-host coevolution due to translational
@@ -289,17 +293,21 @@ get_cscg <- function(cf, csc){
 #' head(dp)
 #' hist(dp)
 #'
-get_dp <- function(cf, host_weights, codon_table = get_codon_table()){
+get_dp <- function(cf, host_weights, codon_table = get_codon_table(),
+                   level = 'amino_acid', missing_action = 'ignore'){
     aa_code <- NULL # due to NSE notes in R CMD check
     codon_table <- data.table::as.data.table(codon_table)
     codon_table <- codon_table[!aa_code == '*']
-    codon_list <- split(codon_table$codon, codon_table$subfam)
-    codon_list <- codon_list[lengths(codon_list) > 1]  # exclude single codon sub-family
+    codon_list <- split(codon_table$codon, codon_table[[level]])
+    codon_list <- codon_list[lengths(codon_list) > 1]  # exclude single codon groups
 
     d <- sapply(codon_list, function(codons){
         # get codon proportions
         cf_grp <- cf[, codons, drop = FALSE]
         codon_prop <- cf_grp / rowSums(cf_grp)
+        if(missing_action == 'zero'){
+            codon_prop[is.na(codon_prop)] <- 0
+        }
         # get relative codon availability in the host organisms
         w <- host_weights[codons]
         rel_avail <- w / sum(w)
@@ -307,5 +315,8 @@ get_dp <- function(cf, host_weights, codon_table = get_codon_table()){
         sqrt(rowSums(sweep(codon_prop, 2, rel_avail)^2))
     })
     # geometric mean across subfamilies
+    # remove NA values due to following causes:
+    # 1. no codon of a group were found in a CDS when missing_action = "ignore";
+    # 2. exact match to the host tRNA pool. (very rare)
     dp <- exp(rowMeans(log(d), na.rm = TRUE))
 }

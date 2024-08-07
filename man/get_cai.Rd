@@ -7,10 +7,10 @@
 get_cai(cf, rscu)
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
+\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
 
 \item{rscu}{rscu table containing CAI weight for each codon. This table could be
-generated with `est_rscu` or prepared manually.}
+generated with \code{est_rscu} or prepared manually.}
 }
 \value{
 a named vector of CAI values

@@ -7,16 +7,16 @@
 est_rscu(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_table())
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
+\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
 
-\item{weight}{a vector of the same length as `seqs` that gives different weights
+\item{weight}{a vector of the same length as \code{seqs} that gives different weights
 to CDSs when count codons. for example, it could be gene expression levels.}
 
 \item{pseudo_cnt}{pseudo count to avoid dividing by zero. This may occur when
 only a few sequences are available for RSCU calculation.}
 
-\item{codon_table}{a table of genetic code derived from `get_codon_table` or
-`create_codon_table`.}
+\item{codon_table}{a table of genetic code derived from \code{get_codon_table} or
+\code{create_codon_table}.}
 }
 \value{
 a data.table of codon info. RSCU values are reported in the last column.

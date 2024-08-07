@@ -7,10 +7,10 @@
 get_codon_table(gcid = "1")
 }
 \arguments{
-\item{gcid}{a string of genetic code id. run `show_codon_tables()` to see available codon tables.}
+\item{gcid}{a string of genetic code id. run \code{show_codon_tables()} to see available codon tables.}
 }
 \value{
-a `data.table` with four columns: aa_code, amino_acid, codon, and subfam.
+a \code{data.table} with four columns: aa_code, amino_acid, codon, and subfam.
 }
 \description{
 \code{get_codon_table} creates a codon table based on the given id of genetic code in NCBI.

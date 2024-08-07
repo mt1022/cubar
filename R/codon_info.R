@@ -2,8 +2,8 @@
 #'
 #' \code{get_codon_table} creates a codon table based on the given id of genetic code in NCBI.
 #'
-#' @param gcid a string of genetic code id. run `show_codon_tables()` to see available codon tables.
-#' @returns a `data.table` with four columns: aa_code, amino_acid, codon, and subfam.
+#' @param gcid a string of genetic code id. run \code{show_codon_tables()} to see available codon tables.
+#' @returns a \code{data.table} with four columns: aa_code, amino_acid, codon, and subfam.
 #' @importFrom data.table ':='
 #' @export
 #'
@@ -30,7 +30,7 @@ get_codon_table <- function(gcid = '1'){
 #' \code{create_codon_table} creates codon table from data frame of aa to codon mapping.
 #'
 #' @param aa2codon a data frame with two columns: amino_acid (Ala, Arg, etc.) and codon.
-#' @returns a `data.table` with four columns: aa_code, amino_acid, codon, and subfam.
+#' @returns a \code{data.table} with four columns: aa_code, amino_acid, codon, and subfam.
 #' @importFrom data.table ':='
 #' @export
 #'
@@ -54,7 +54,7 @@ create_codon_table <- function(aa2codon){
 #' show available codon tables
 #'
 #' \code{show_codon_tables} print a table of available genetic code from NCBI through
-#' `Biostrings::GENETIC_CODE_TABLE`.
+#' \code{Biostrings::GENETIC_CODE_TABLE}.
 #' @returns No return value (NULL). Available codon tables will be printed out directly.
 #' @export
 #'

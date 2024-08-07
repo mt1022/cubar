@@ -10,7 +10,7 @@ slide_apply(seq, .f, step = 1, before = 0, after = 0, ...)
 \item{seq}{DNAString, the sequence}
 
 \item{.f}{function, the codon index calculation function to apply, for
-example, `get_enc`.}
+example, \code{get_enc}.}
 
 \item{step}{integer, the step size in number of codons}
 
@@ -18,7 +18,7 @@ example, `get_enc`.}
 
 \item{after}{integer, the number of codons after the center of a window}
 
-\item{...}{additional arguments to pass to the function `.f`}
+\item{...}{additional arguments to pass to the function \code{.f}}
 }
 \value{
 data.table with start, center, end, and codon usage index columns

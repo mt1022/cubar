@@ -7,9 +7,9 @@
 get_cscg(cf, csc)
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
+\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
 
-\item{csc}{table of Codon Stabilization Coefficients as calculated by `est_csc()`.}
+\item{csc}{table of Codon Stabilization Coefficients as calculated by \code{est_csc()}.}
 }
 \value{
 a named vector of cscg values.

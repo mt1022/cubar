@@ -7,14 +7,15 @@
 get_fop(cf, op = NULL, codon_table = get_codon_table(), ...)
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
+\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
 
 \item{op}{a character vector of optimal codons. Can be determined automatically by running
-`est_optimal_codons`.}
+\code{est_optimal_codons}.}
 
-\item{codon_table}{a table of genetic code derived from `get_codon_table` or `create_codon_table`.}
+\item{codon_table}{a table of genetic code derived from \code{get_codon_table} or
+\code{create_codon_table}.}
 
-\item{...}{other arguments passed to `est_optimal_codons`.}
+\item{...}{other arguments passed to \code{est_optimal_codons}.}
 }
 \value{
 a named vector of fop values.

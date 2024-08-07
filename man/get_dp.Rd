@@ -2,7 +2,7 @@
 % Please edit documentation in R/gene_index.R
 \name{get_dp}
 \alias{get_dp}
-\title{Deviaiton from Proportionality}
+\title{Deviation from Proportionality}
 \usage{
 get_dp(
   cf,
@@ -13,12 +13,13 @@ get_dp(
 )
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
+\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
 
 \item{host_weights}{a named vector of tRNA weights for each codon that reflects the relative
 availability of tRNAs in the host organism.}
 
-\item{codon_table}{a table of genetic code derived from `get_codon_table` or `create_codon_table`.}
+\item{codon_table}{a table of genetic code derived from \code{get_codon_table} or
+\code{create_codon_table}.}
 
 \item{level}{"subfam" or "amino_acid" (default). If "subfam", the deviation is calculated at
 the codon subfamily level. Otherwise, the deviation is calculated at the amino acid level.}

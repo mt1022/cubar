@@ -7,7 +7,8 @@
 plot_ca_pairing(codon_table = get_codon_table(), plot = TRUE)
 }
 \arguments{
-\item{codon_table}{a table of genetic code derived from `get_codon_table` or `create_codon_table`.}
+\item{codon_table}{a table of genetic code derived from \code{get_codon_table} or
+\code{create_codon_table}.}
 
 \item{plot}{whether to plot the pairing relationship}
 }

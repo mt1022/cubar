@@ -112,7 +112,7 @@ check_cds <- function(seqs, codon_table = get_codon_table(), min_len = 6,
 #' \code{count_codons} tabulates the occurrences of all the 64 codons in input CDSs
 #'
 #' @param seqs CDS sequences, DNAStringSet.
-#' @param ... additional arguments passed to `Biostrings::trinucleotideFrequency`.
+#' @param ... additional arguments passed to \code{Biostrings::trinucleotideFrequency}.
 #' @returns matrix of codon (column) frequencies of each CDS (row).
 #' @export
 #' @examples

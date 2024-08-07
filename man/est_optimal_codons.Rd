@@ -13,17 +13,17 @@ est_optimal_codons(
 )
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
+\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
 
-\item{codon_table}{a table of genetic code derived from `get_codon_table` or `create_codon_table`.}
+\item{codon_table}{a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.}
 
 \item{level}{"subfam" (default) or "amino_acid". For which level to determine optimal codons.}
 
 \item{gene_score}{a numeric vector of scores for genes. The order of values should match with
 gene orders in the codon frequency matrix. The length of the vector should be equal to the
 number of rows in the matrix. The scores could be gene expression levels (RPKM or TPM) that are
-optionally log-transformed (for example, with `log1p`). The opposite of ENC will be used by
-default if `gene_score` is not provided.}
+optionally log-transformed (for example, with \code{log1p}). The opposite of ENC will be used by
+default if \code{gene_score} is not provided.}
 
 \item{fdr}{false discovery rate used to determine optimal codons.}
 }

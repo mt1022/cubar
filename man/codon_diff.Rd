@@ -11,7 +11,8 @@ codon_diff(seqs1, seqs2, codon_table = get_codon_table())
 
 \item{seqs2}{DNAStringSet, or an object that can be coerced to a DNAStringSet}
 
-\item{codon_table}{a table of genetic code derived from `get_codon_table` or `create_codon_table`.}
+\item{codon_table}{a table of genetic code derived from \code{get_codon_table} or
+\code{create_codon_table}.}
 }
 \value{
 a data.table of the differential codon usage analysis. Global tests examine wthether a codon

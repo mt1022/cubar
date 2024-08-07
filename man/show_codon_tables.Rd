@@ -11,7 +11,7 @@ No return value (NULL). Available codon tables will be printed out directly.
 }
 \description{
 \code{show_codon_tables} print a table of available genetic code from NCBI through
-`Biostrings::GENETIC_CODE_TABLE`.
+\code{Biostrings::GENETIC_CODE_TABLE}.
 }
 \examples{
 # print available NCBI codon table IDs and descriptions.

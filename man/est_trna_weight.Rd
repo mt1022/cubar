@@ -14,7 +14,7 @@ est_trna_weight(
 \item{trna_level, }{named vector of tRNA level (or gene copy numbers), one value for each anticodon.
 vector names are anticodons.}
 
-\item{codon_table}{a table of genetic code derived from `get_codon_table` or `create_codon_table`.}
+\item{codon_table}{a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.}
 
 \item{s}{list of non-Waston-Crick pairing panelty.}
 }

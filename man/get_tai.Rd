@@ -7,9 +7,9 @@
 get_tai(cf, trna_w)
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
+\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
 
-\item{trna_w}{tRNA weight for each codon, can be generated with `est_trna_weight()`.}
+\item{trna_w}{tRNA weight for each codon, can be generated with \code{est_trna_weight()}.}
 }
 \value{
 a named vector of TAI values

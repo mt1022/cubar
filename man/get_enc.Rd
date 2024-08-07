@@ -7,9 +7,10 @@
 get_enc(cf, codon_table = get_codon_table())
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
+\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
 
-\item{codon_table}{codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.}
+\item{codon_table}{codon_table a table of genetic code derived from \code{get_codon_table} or
+\code{create_codon_table}.}
 }
 \value{
 vector of ENC values, sequence names are used as vector names

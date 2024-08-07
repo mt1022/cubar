@@ -10,7 +10,7 @@ create_codon_table(aa2codon)
 \item{aa2codon}{a data frame with two columns: amino_acid (Ala, Arg, etc.) and codon.}
 }
 \value{
-a `data.table` with four columns: aa_code, amino_acid, codon, and subfam.
+a \code{data.table} with four columns: aa_code, amino_acid, codon, and subfam.
 }
 \description{
 \code{create_codon_table} creates codon table from data frame of aa to codon mapping.

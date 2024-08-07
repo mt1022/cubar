@@ -9,7 +9,7 @@ count_codons(seqs, ...)
 \arguments{
 \item{seqs}{CDS sequences, DNAStringSet.}
 
-\item{...}{additional arguments passed to `Biostrings::trinucleotideFrequency`.}
+\item{...}{additional arguments passed to \code{Biostrings::trinucleotideFrequency}.}
 }
 \value{
 matrix of codon (column) frequencies of each CDS (row).

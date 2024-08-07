@@ -16,7 +16,7 @@ est_csc(
 
 \item{half_life}{data.frame of mRNA half life (gene_id & half_life are column names).}
 
-\item{codon_table}{a table of genetic code derived from `get_codon_table` or `create_codon_table`.}
+\item{codon_table}{a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.}
 
 \item{cor_method}{method name passed to `cor.test` used for calculating correlation coefficients.}
 }

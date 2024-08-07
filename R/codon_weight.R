@@ -2,13 +2,13 @@
 #'
 #' \code{est_rscu} returns the RSCU value of codons
 #'
-#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
-#' @param weight a vector of the same length as `seqs` that gives different weights
+#' @param cf matrix of codon frequencies as calculated by \code{count_codons()}.
+#' @param weight a vector of the same length as \code{seqs} that gives different weights
 #'   to CDSs when count codons. for example, it could be gene expression levels.
 #' @param pseudo_cnt pseudo count to avoid dividing by zero. This may occur when
 #'   only a few sequences are available for RSCU calculation.
-#' @param codon_table a table of genetic code derived from `get_codon_table` or
-#'   `create_codon_table`.
+#' @param codon_table a table of genetic code derived from \code{get_codon_table} or
+#'   \code{create_codon_table}.
 #' @returns a data.table of codon info. RSCU values are reported in the last column.
 #' @importFrom data.table ':='
 #' @references Sharp PM, Tuohy TM, Mosurski KR. 1986. Codon usage in yeast: cluster analysis clearly differentiates highly and lowly expressed genes. Nucleic Acids Res 14:5125-5143.
@@ -41,7 +41,8 @@ est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_tab
 #'
 #' \code{plot_ca_pairing} show possible codon-anticodons pairings
 #'
-#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @param codon_table a table of genetic code derived from \code{get_codon_table} or
+#'   \code{create_codon_table}.
 #' @param plot whether to plot the pairing relationship
 #' @returns a data.table of codon info and RSCU values
 #' @importFrom data.table ':='
@@ -133,7 +134,7 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
 #'
 #' @param trna_level, named vector of tRNA level (or gene copy numbers), one value for each anticodon.
 #'   vector names are anticodons.
-#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @param codon_table a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.
 #' @param s list of non-Waston-Crick pairing panelty.
 #' @returns data.table of tRNA expression information.
 #' @importFrom data.table ':='
@@ -177,14 +178,14 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
 #' \code{est_toptimal_codons} determine optimal codon of each codon family with binomial regression.
 #'   Usage of optimal codons should correlate negatively with enc.
 #'
-#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
-#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @param cf matrix of codon frequencies as calculated by \code{count_codons()}.
+#' @param codon_table a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.
 #' @param level "subfam" (default) or "amino_acid". For which level to determine optimal codons.
 #' @param gene_score a numeric vector of scores for genes. The order of values should match with
 #'   gene orders in the codon frequency matrix. The length of the vector should be equal to the
 #'   number of rows in the matrix. The scores could be gene expression levels (RPKM or TPM) that are
-#'   optionally log-transformed (for example, with `log1p`). The opposite of ENC will be used by
-#'   default if `gene_score` is not provided.
+#'   optionally log-transformed (for example, with \code{log1p}). The opposite of ENC will be used by
+#'   default if \code{gene_score} is not provided.
 #' @param fdr false discovery rate used to determine optimal codons.
 #' @returns data.table of optimal codons.
 #' @importFrom data.table ':='
@@ -246,7 +247,7 @@ est_optimal_codons <- function(cf, codon_table = get_codon_table(), level = 'sub
 #'
 #' @param seqs CDS sequences of all protein-coding genes. One for each gene.
 #' @param half_life data.frame of mRNA half life (gene_id & half_life are column names).
-#' @param codon_table a table of genetic code derived from `get_codon_table` or `create_codon_table`.
+#' @param codon_table a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.
 #' @param cor_method method name passed to `cor.test` used for calculating correlation coefficients.
 #' @returns data.table of optimal codons.
 #' @references Presnyak V, Alhusaini N, Chen YH, Martin S, Morris N, Kline N, Olson S, Weinberg D, Baker KE, Graveley BR, et al. 2015. Codon optimality is a major determinant of mRNA stability. Cell 160:1111-1124.

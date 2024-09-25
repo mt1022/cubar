@@ -8,7 +8,7 @@ get_dp(
   cf,
   host_weights,
   codon_table = get_codon_table(),
-  level = "amino_acid",
+  level = "subfam",
   missing_action = "ignore"
 )
 }
@@ -21,7 +21,7 @@ availability of tRNAs in the host organism.}
 \item{codon_table}{a table of genetic code derived from \code{get_codon_table} or
 \code{create_codon_table}.}
 
-\item{level}{"subfam" or "amino_acid" (default). If "subfam", the deviation is calculated at
+\item{level}{"subfam" (default) or "amino_acid". If "subfam", the deviation is calculated at
 the codon subfamily level. Otherwise, the deviation is calculated at the amino acid level.}
 
 \item{missing_action}{Actions to take when no codon of a group were found in a CDS. Options are

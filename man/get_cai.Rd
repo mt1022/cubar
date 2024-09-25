@@ -4,13 +4,15 @@
 \alias{get_cai}
 \title{Calculate CAI}
 \usage{
-get_cai(cf, rscu)
+get_cai(cf, rscu, level = "subfam")
 }
 \arguments{
 \item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
 
 \item{rscu}{rscu table containing CAI weight for each codon. This table could be
 generated with \code{est_rscu} or prepared manually.}
+
+\item{level}{"subfam" (default) or "amino_acid". For which level to determine CAI.}
 }
 \value{
 a named vector of CAI values

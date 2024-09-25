@@ -4,13 +4,15 @@
 \alias{get_enc}
 \title{Calculate ENC}
 \usage{
-get_enc(cf, codon_table = get_codon_table())
+get_enc(cf, codon_table = get_codon_table(), level = "subfam")
 }
 \arguments{
 \item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
 
 \item{codon_table}{codon_table a table of genetic code derived from \code{get_codon_table} or
 \code{create_codon_table}.}
+
+\item{level}{"subfam" (default) or "amino_acid". For which level to determine ENC.}
 }
 \value{
 vector of ENC values, sequence names are used as vector names

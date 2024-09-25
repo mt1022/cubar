@@ -9,6 +9,7 @@
 #'   only a few sequences are available for RSCU calculation.
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or
 #'   \code{create_codon_table}.
+#' @param level "subfam" (default) or "amino_acid". For which level to determine RSCU.
 #' @returns a data.table of codon info. RSCU values are reported in the last column.
 #' @importFrom data.table ':='
 #' @references Sharp PM, Tuohy TM, Mosurski KR. 1986. Codon usage in yeast: cluster analysis clearly differentiates highly and lowly expressed genes. Nucleic Acids Res 14:5125-5143.
@@ -24,15 +25,19 @@
 #' cf_heg <- count_codons(yeast_cds[heg$gene_id])
 #' est_rscu(cf_heg)
 #'
-est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_table()){
-    aa_code <- cts <- codon <- . <- subfam <- rscu <- prop <- NULL # due to NSE notes in R CMD check
+est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_table(),
+                     level = 'subfam'){
+    aa_code <- cts <- codon <- . <- rscu <- prop <- NULL # due to NSE notes in R CMD check
+    if(!level %in% c('amino_acid', 'subfam')){
+      stop('Possible values for `level` are "amino_acid" and "subfam"')
+    }
     codon_freq <- colSums(cf * weight)
     codon_table <- codon_table[aa_code != '*']
     codon_table[, cts := codon_freq[codon]]
     codon_table[, `:=`(
         prop = (cts + pseudo_cnt) / sum(cts + pseudo_cnt),
-        w_cai = (cts + pseudo_cnt) / max(cts + pseudo_cnt)), by = .(subfam)]
-    codon_table[, rscu := prop / mean(prop), by = .(subfam)]
+        w_cai = (cts + pseudo_cnt) / max(cts + pseudo_cnt)), by = level]
+    codon_table[, rscu := prop / mean(prop), by = level]
     return(codon_table[])
 }
 
@@ -199,7 +204,7 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
 #'
 est_optimal_codons <- function(cf, codon_table = get_codon_table(), level = 'subfam',
                                gene_score = NULL, fdr = 0.001){
-    aa_code <- . <- codon <- subfam <- NULL # due to NSE notes in R CMD check
+    aa_code <- . <- codon <- NULL # due to NSE notes in R CMD check
     qvalue <- pvalue <- optimal <- coef <- NULL
     if(!level %in% c('amino_acid', 'subfam')){
         stop('Possible values for `level` are "amino_acid" and "subfam"')

@@ -4,13 +4,16 @@
 \alias{get_gc4d}
 \title{GC contents at 4-fold degenerate sites}
 \usage{
-get_gc4d(cf, codon_table = get_codon_table())
+get_gc4d(cf, codon_table = get_codon_table(), level = "subfam")
 }
 \arguments{
 \item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
 
 \item{codon_table}{a table of genetic code derived from \code{get_codon_table} or
 \code{create_codon_table}.}
+
+\item{level}{"subfam" (default) or "amino_acid". For which level to determine 
+GC contents at 4-fold degenerate sites.}
 }
 \value{
 a named vector of GC4d values.

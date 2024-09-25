@@ -49,7 +49,7 @@
 <span>  <span class="va">cf</span>,</span>
 <span>  <span class="va">host_weights</span>,</span>
 <span>  codon_table <span class="op">=</span> <span class="fu"><a href="get_codon_table.html">get_codon_table</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  level <span class="op">=</span> <span class="st">"amino_acid"</span>,</span>
+<span>  level <span class="op">=</span> <span class="st">"subfam"</span>,</span>
 <span>  missing_action <span class="op">=</span> <span class="st">"ignore"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -73,7 +73,7 @@ availability of tRNAs in the host organism.</p></dd>
 
 
 <dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>
-<dd><p>"subfam" or "amino_acid" (default). If "subfam", the deviation is calculated at
+<dd><p>"subfam" (default) or "amino_acid". If "subfam", the deviation is calculated at
 the codon subfamily level. Otherwise, the deviation is calculated at the amino acid level.</p></dd>
 
 
@@ -102,7 +102,7 @@ the codon subfamily level. Otherwise, the deviation is calculated at the amino a
 <span class="r-in"><span><span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu">get_dp</span><span class="op">(</span><span class="va">cf_all</span>, host_weights <span class="op">=</span> <span class="va">trna_weight</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dp</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   YPL071C   YLL050C   YMR172W   YOR185C   YLL032C   YBR225W </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.4318441 0.4101489 0.2807039 0.3063594 0.3170921 0.3199694 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.3994734 0.3997561 0.2949640 0.3086534 0.3079175 0.3265945 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">dp</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="get_dp-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
@@ -117,7 +117,7 @@ the codon subfamily level. Otherwise, the deviation is calculated at the amino a
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer></div>

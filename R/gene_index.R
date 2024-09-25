@@ -5,6 +5,7 @@
 #' @param cf matrix of codon frequencies as calculated by \code{count_codons()}.
 #' @param codon_table codon_table a table of genetic code derived from \code{get_codon_table} or
 #'   \code{create_codon_table}.
+#' @param level "subfam" (default) or "amino_acid". For which level to determine ENC.
 #' @return vector of ENC values, sequence names are used as vector names
 #' @export
 #' @references
@@ -17,11 +18,14 @@
 #' enc <- get_enc(cf_all)
 #' head(enc)
 #' hist(enc)
-get_enc <- function(cf, codon_table = get_codon_table()){
+get_enc <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
     aa_code <- NULL # due to NSE notes in R CMD check
+    if(!level %in% c('amino_acid', 'subfam')){
+      stop('Possible values for `level` are "amino_acid" and "subfam"')
+    }
     codon_table <- data.table::as.data.table(codon_table)
     codon_table <- codon_table[!aa_code == '*']
-    codon_list <- split(codon_table$codon, codon_table$subfam)
+    codon_list <- split(codon_table$codon, codon_table[[level]])
 
     f_cf <- sapply(codon_list, function(x){
         mx <- cf[, x, drop = FALSE]
@@ -68,6 +72,7 @@ get_enc <- function(cf, codon_table = get_codon_table()){
 #' @param cf matrix of codon frequencies as calculated by \code{count_codons()}.
 #' @param rscu rscu table containing CAI weight for each codon. This table could be
 #'   generated with \code{est_rscu} or prepared manually.
+#' @param level "subfam" (default) or "amino_acid". For which level to determine CAI.
 #' @returns a named vector of CAI values
 #' @importFrom data.table ':='
 #' @importFrom data.table .N
@@ -84,11 +89,14 @@ get_enc <- function(cf, codon_table = get_codon_table()){
 #' head(cai)
 #' hist(cai)
 #'
-get_cai <- function(cf, rscu){
-    ss <- . <- subfam <- NULL
+get_cai <- function(cf, rscu, level = 'subfam'){
+    ss <- . <- NULL
+    if(!level %in% c('amino_acid', 'subfam')){
+      stop('Possible values for `level` are "amino_acid" and "subfam"')
+    }
     # exclude single codon sub-family
     rscu <- data.table::as.data.table(rscu)
-    rscu[, ss := .N, by = .(subfam)]
+    rscu[, ss := .N, by = level]
     rscu <- rscu[ss > 1]
     # codon frequency per CDS
     cf <- cf[, rscu$codon, drop = FALSE]
@@ -153,6 +161,8 @@ get_gc <- function(cf){
 #'
 #' @param cf matrix of codon frequencies as calculated by \code{count_codons()}.
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.
+#' @param level "subfam" (default) or "amino_acid". For which level to determine 
+#'   GC content at synonymous 3rd codon positions.
 #' @returns a named vector of GC3s values.
 #' @importFrom data.table ':='
 #' @importFrom data.table .N
@@ -165,10 +175,10 @@ get_gc <- function(cf){
 #' head(gc3s)
 #' hist(gc3s)
 #'
-get_gc3s <- function(cf, codon_table = get_codon_table()){
-    aa_code <- ss <- . <- subfam <- gc3s <- codon <- NULL
+get_gc3s <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
+    aa_code <- ss <- . <- gc3s <- codon <- NULL
     codon_table <- data.table::as.data.table(codon_table)
-    codon_table[, ss := .N, by = .(subfam)]
+    codon_table[, ss := .N, by = level]
     codon_table <- codon_table[aa_code != '*' & ss > 1]
     codon_table[, gc3s := substr(codon, 3, 3) %in% c('G', 'C')]
 
@@ -186,6 +196,8 @@ get_gc3s <- function(cf, codon_table = get_codon_table()){
 #' @param cf matrix of codon frequencies as calculated by \code{count_codons()}.
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or
 #'   \code{create_codon_table}.
+#' @param level "subfam" (default) or "amino_acid". For which level to determine 
+#'   GC contents at 4-fold degenerate sites.
 #' @returns a named vector of GC4d values.
 #' @importFrom data.table ':='
 #' @importFrom data.table .N
@@ -197,11 +209,13 @@ get_gc3s <- function(cf, codon_table = get_codon_table()){
 #' head(gc4d)
 #' hist(gc4d)
 #'
-get_gc4d <- function(cf, codon_table = get_codon_table()){
-    ss <- . <- subfam <- gc4d <- codon <- NULL
-
+get_gc4d <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
+    ss <- . <- gc4d <- codon <- NULL
+    if(!level %in% c('amino_acid', 'subfam')){
+      stop('Possible values for `level` are "amino_acid" and "subfam"')
+    }
     codon_table <- data.table::as.data.table(codon_table)
-    codon_table[, ss := .N, by = .(subfam)]
+    codon_table[, ss := .N, by = level]
     codon_table <- codon_table[ss == 4]
     codon_table[, gc4d := substr(codon, 3, 3) %in% c('G', 'C')]
 
@@ -279,7 +293,7 @@ get_cscg <- function(cf, csc){
 #'  availability of tRNAs in the host organism.
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or
 #'   \code{create_codon_table}.
-#' @param level "subfam" or "amino_acid" (default). If "subfam", the deviation is calculated at
+#' @param level "subfam" (default) or "amino_acid". If "subfam", the deviation is calculated at
 #'   the codon subfamily level. Otherwise, the deviation is calculated at the amino acid level.
 #' @param missing_action Actions to take when no codon of a group were found in a CDS. Options are
 #'   "ignore" (default), or "zero" (set codon proportions to 0).
@@ -298,8 +312,11 @@ get_cscg <- function(cf, csc){
 #' hist(dp)
 #'
 get_dp <- function(cf, host_weights, codon_table = get_codon_table(),
-                   level = 'amino_acid', missing_action = 'ignore'){
+                   level = 'subfam', missing_action = 'ignore'){
     aa_code <- NULL # due to NSE notes in R CMD check
+    if(!level %in% c('amino_acid', 'subfam')){
+      stop('Possible values for `level` are "amino_acid" and "subfam"')
+    }
     codon_table <- data.table::as.data.table(codon_table)
     codon_table <- codon_table[!aa_code == '*']
     codon_list <- split(codon_table$codon, codon_table[[level]])

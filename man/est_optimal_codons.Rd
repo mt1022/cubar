@@ -31,7 +31,7 @@ default if \code{gene_score} is not provided.}
 data.table of optimal codons.
 }
 \description{
-\code{est_toptimal_codons} determine optimal codon of each codon family with binomial regression.
+\code{est_optimal_codons} determine optimal codon of each codon family with binomial regression.
   Usage of optimal codons should correlate negatively with enc.
 }
 \examples{

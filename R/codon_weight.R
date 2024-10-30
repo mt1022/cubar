@@ -180,7 +180,7 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
 
 #' Estimate optimal codons
 #'
-#' \code{est_toptimal_codons} determine optimal codon of each codon family with binomial regression.
+#' \code{est_optimal_codons} determine optimal codon of each codon family with binomial regression.
 #'   Usage of optimal codons should correlate negatively with enc.
 #'
 #' @param cf matrix of codon frequencies as calculated by \code{count_codons()}.

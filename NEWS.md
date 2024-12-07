@@ -1,4 +1,8 @@
-# cubar (development version)
+# cubar 1.1.0
+
+* Added options for codon-family level analysis (default, subfamily).
+
+* Improved documentation and GitHub workflow.
 
 # cubar 1.0.0
 

@@ -1,3 +1,5 @@
+# cubar (development version)
+
 # cubar 1.1.0
 
 * Added options for codon-family level analysis (default, subfamily).

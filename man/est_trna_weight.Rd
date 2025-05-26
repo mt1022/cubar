@@ -7,7 +7,7 @@
 est_trna_weight(
   trna_level,
   codon_table = get_codon_table(),
-  s = list(WC = 0, IU = 0, IC = 0.4659, IA = 0.9075, GU = 0.7861, UG = 0.6295)
+  s = list(IC = 0.28, IA = 0.9999, GU = 0.41, UG = 0.68, LA = 0.89)
 )
 }
 \arguments{

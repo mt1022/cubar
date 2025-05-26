@@ -34,6 +34,7 @@ est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_tab
     codon_freq <- colSums(cf * weight)
     codon_table <- codon_table[aa_code != '*']
     codon_table[, cts := codon_freq[codon]]
+    
     codon_table[, `:=`(
         prop = (cts + pseudo_cnt) / sum(cts + pseudo_cnt),
         w_cai = (cts + pseudo_cnt) / max(cts + pseudo_cnt)), by = level]
@@ -149,10 +150,11 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
 #' # estimate codon tRNA weight for yeasts
 #' est_trna_weight(yeast_trna_gcn)
 #'
-est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
-                            s = list(WC=0, IU=0, IC=0.4659, IA=0.9075, GU=0.7861, UG=0.6295)){
+est_trna_weight <- function(trna_level, codon_table0 = get_codon_table(),
+                            s = list(IC=0.28, IA=0.9999, GU=0.41, UG=0.68, LA=0.89)){
     anticodon <- aa_code <- ac_level <- penality <- NULL # due to NSE notes in R CMD check
     i.values <- . <- ind <- codon <- W <- i.W <- w <- NULL # due to NSE notes in R CMD check
+    codon_table <- data.table::copy(codon_table0)
     codon_table[, anticodon := as.character(Biostrings::reverseComplement(
         Biostrings::DNAStringSet(codon_table$codon)))]
     codon_table <- codon_table[aa_code != '*']
@@ -160,20 +162,22 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
     codon_table[, ac_level := trna_level[anticodon]]
     codon_table[is.na(ac_level), ac_level := 0]
 
-    ca_pairs <- plot_ca_pairing(codon_table = codon_table, plot = FALSE)
-    s <- utils::stack(s)
-    ca_pairs[s, penality := i.values, on = .(type = ind)]
-    ca_pairs <- ca_pairs[anticodon %in% names(trna_level)]
+    ca_pairs <- plot_ca_pairing(codon_table = codon_table0, plot = FALSE)
+    ss <- utils::stack(s)
+    ca_pairs[ss, penality := i.values, on = .(type = ind)]
+    ca_pairs[is.na(penality), penality := 0]
+   # ca_pairs <- ca_pairs[anticodon %in% names(trna_level)]
     ca_pairs[, ac_level := trna_level[anticodon]]
+    ca_pairs[is.na(ac_level), ac_level := 0]
     dtt_W <- ca_pairs[, .(W = sum(ac_level * (1 - penality))), by = .(codon)]
     codon_table[dtt_W, W := i.W, on = .(codon)]
     codon_table[, w := W/max(W, na.rm = TRUE)]
 
     # using geometric mean of w for rare cases that a codon has no matching tRNA
     # probably due to incomplete tRNA annotation
-    w0 <- codon_table[!is.na(w), w]
+    w0 <- codon_table[w != 0 & !is.na(w), w]
     mean_w <- exp(mean(log(w0)))
-    codon_table[is.na(w), w := mean_w]
+    codon_table[w == 0 | is.na(w), w := mean_w]
     return(codon_table)
 }
 
@@ -278,4 +282,31 @@ est_csc <- function(seqs, half_life, codon_table = get_codon_table(), cor_method
     csc <- data.table::data.table(t(csc), keep.rownames = TRUE)
     data.table::setnames(csc, c('codon', 'csc', 'pvalue'))
     return(csc)
+}
+
+
+#' Estimate Amino Acid Usage Frequencies of the gene set.
+#'
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @param codon_table codon_table a table of genetic code derived from \code{get_codon_table} or
+#'   \code{create_codon_table}.
+#' @param digits reserved decimal places, default: 5.
+#' @returns a named vector of amino acid frequencies of the gene set.
+#' @export
+#' @examples
+#' # estimate amino acid frequencies of yeast genes
+#' cf_all <- count_codons(yeast_cds)
+#' aau <- est_aau(cf_all)
+#' print(aau)
+est_aau <- function(cf, codon_table = get_codon_table(), digits = 5){
+  aa_code <- cts <- codon <- . <- aas <- aaf <- NULL # due to NSE notes in R CMD check
+  codon_table <- data.table::as.data.table(codon_table)
+  codon_freq <- colSums(cf)
+  codon_table <- codon_table[aa_code != '*']
+  codon_table[, cts := codon_freq[codon]]
+  ctss <- codon_table[, .(aas = sum(cts)), by = aa_code]
+  total_aas <- sum(ctss$aas)  
+  ctss[, aaf := round(aas/total_aas, 5)]
+  aau <- setNames(ctss$aaf, ctss$aa_code)
+  return(aau)
 }

@@ -238,13 +238,17 @@ get_gc4d <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
 #' hist(fop)
 #'
 get_fop <- function(cf, op = NULL, codon_table = get_codon_table(), ...){
-    coef <- qvalue <- codon <- optimal <- NULL
+    coef <- qvalue <- codon <- optimal <- amino_acid <- N <- . <- NULL
     excluded_codon <- codon_table[
-      , if (.N == 1 | amino_acid == "*") .SD, by = amino_acid
-    ][,codon]
+      , .(codon = codon, .N), by = amino_acid
+    ][
+      (N == 1 | amino_acid == "*"),
+      .(codon)
+    ]
     cf <- cf[, !colnames(cf) %in% excluded_codon]
+    codon_table <- codon_table[!codon %in% excluded_codon,]
     if(is.null(op)){
-        optimal_codons <- est_optimal_codons(cf, codon_table = filtered_table, ...)
+        optimal_codons <- est_optimal_codons(cf, codon_table = codon_table, ...)
         op <- optimal_codons[optimal == TRUE, codon]
     }
     rowSums(cf[, op]) / rowSums(cf)
@@ -299,7 +303,7 @@ get_cscg <- function(cf, csc){
 #' # estimate DP of yeast genes
 #' cf_all <- count_codons(yeast_cds)
 #' trna_weight <- est_trna_weight(yeast_trna_gcn)
-#' trna_weight <- setNames(trna_weight$w, trna_weight$codon)
+#' trna_weight <- stats::setNames(trna_weight$w, trna_weight$codon)
 #' dp <- get_dp(cf_all, host_weights = trna_weight)
 #' head(dp)
 #' hist(dp)
@@ -360,10 +364,10 @@ get_aau <- function(cf, codon_table = get_codon_table(), digits = 5){
     ctss <- codon_table[, .(aas = sum(cts)), by = aa_code]
     total_aas <- sum(ctss$aas)  
     ctss[, aaf := round(aas/total_aas, 5)]
-    aau <- setNames(ctss$aaf, ctss$aa_code)
+    aau <- stats::setNames(ctss$aaf, ctss$aa_code)
     return(aau)
   }
-  aau_gene <- setNames(vector("list", nrow(cf)), rownames(cf))
+  aau_gene <- stats::setNames(vector("list", nrow(cf)), rownames(cf))
   for(gene in rownames(cf)){
     codon_freq <- cf[gene,]
     aau_gene[[gene]] <- aau_f(codon_table, codon_freq)

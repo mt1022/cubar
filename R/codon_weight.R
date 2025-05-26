@@ -150,19 +150,19 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
 #' # estimate codon tRNA weight for yeasts
 #' est_trna_weight(yeast_trna_gcn)
 #'
-est_trna_weight <- function(trna_level, codon_table0 = get_codon_table(),
+est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
                             s = list(IC=0.28, IA=0.9999, GU=0.41, UG=0.68, LA=0.89)){
     anticodon <- aa_code <- ac_level <- penality <- NULL # due to NSE notes in R CMD check
     i.values <- . <- ind <- codon <- W <- i.W <- w <- NULL # due to NSE notes in R CMD check
-    codon_table <- data.table::copy(codon_table0)
-    codon_table[, anticodon := as.character(Biostrings::reverseComplement(
-        Biostrings::DNAStringSet(codon_table$codon)))]
-    codon_table <- codon_table[aa_code != '*']
+    codon_table1 <- data.table::copy(codon_table)
+    codon_table1[, anticodon := as.character(Biostrings::reverseComplement(
+        Biostrings::DNAStringSet(codon_table1$codon)))]
+    codon_table1 <- codon_table1[aa_code != '*']
 
-    codon_table[, ac_level := trna_level[anticodon]]
-    codon_table[is.na(ac_level), ac_level := 0]
+    codon_table1[, ac_level := trna_level[anticodon]]
+    codon_table1[is.na(ac_level), ac_level := 0]
 
-    ca_pairs <- plot_ca_pairing(codon_table = codon_table0, plot = FALSE)
+    ca_pairs <- plot_ca_pairing(codon_table = codon_table, plot = FALSE)
     ss <- utils::stack(s)
     ca_pairs[ss, penality := i.values, on = .(type = ind)]
     ca_pairs[is.na(penality), penality := 0]
@@ -170,15 +170,15 @@ est_trna_weight <- function(trna_level, codon_table0 = get_codon_table(),
     ca_pairs[, ac_level := trna_level[anticodon]]
     ca_pairs[is.na(ac_level), ac_level := 0]
     dtt_W <- ca_pairs[, .(W = sum(ac_level * (1 - penality))), by = .(codon)]
-    codon_table[dtt_W, W := i.W, on = .(codon)]
-    codon_table[, w := W/max(W, na.rm = TRUE)]
+    codon_table1[dtt_W, W := i.W, on = .(codon)]
+    codon_table1[, w := W/max(W, na.rm = TRUE)]
 
     # using geometric mean of w for rare cases that a codon has no matching tRNA
     # probably due to incomplete tRNA annotation
-    w0 <- codon_table[w != 0 & !is.na(w), w]
+    w0 <- codon_table1[w != 0 & !is.na(w), w]
     mean_w <- exp(mean(log(w0)))
-    codon_table[w == 0 | is.na(w), w := mean_w]
-    return(codon_table)
+    codon_table1[w == 0 | is.na(w), w := mean_w]
+    return(codon_table1)
 }
 
 
@@ -307,6 +307,6 @@ est_aau <- function(cf, codon_table = get_codon_table(), digits = 5){
   ctss <- codon_table[, .(aas = sum(cts)), by = aa_code]
   total_aas <- sum(ctss$aas)  
   ctss[, aaf := round(aas/total_aas, 5)]
-  aau <- setNames(ctss$aaf, ctss$aa_code)
+  aau <- stats::setNames(ctss$aaf, ctss$aa_code)
   return(aau)
 }

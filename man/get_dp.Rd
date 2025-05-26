@@ -37,7 +37,7 @@ a named vector of dp values.
 # estimate DP of yeast genes
 cf_all <- count_codons(yeast_cds)
 trna_weight <- est_trna_weight(yeast_trna_gcn)
-trna_weight <- setNames(trna_weight$w, trna_weight$codon)
+trna_weight <- stats::setNames(trna_weight$w, trna_weight$codon)
 dp <- get_dp(cf_all, host_weights = trna_weight)
 head(dp)
 hist(dp)

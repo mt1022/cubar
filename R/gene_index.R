@@ -36,7 +36,7 @@ get_enc <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
     })
     n_cf <- sapply(codon_list, function(x){
         mx <- cf[, x, drop = FALSE]
-        return(rowSums(mx + 1))
+        return(rowSums(mx))
     })
 
     if(nrow(cf) == 1){
@@ -44,22 +44,12 @@ get_enc <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
         n_cf <- t(n_cf)
     }
     ss <- lengths(codon_list)
-
-    Nc <- N_single <- sum(ss == 1)
-    if(sum(ss == 2) > 0){
-        N_double <- sum(ss == 2) * rowSums(n_cf[, ss == 2, drop = F]) /
-            rowSums(n_cf[, ss == 2, drop = F] * f_cf[, ss == 2, drop = F])
-        Nc <- Nc + N_double
-    }
-    if(sum(ss == 3) > 0){
-        N_triple <- sum(ss == 3) * rowSums(n_cf[, ss == 3, drop = F]) /
-            rowSums(n_cf[, ss == 3, drop = F] * f_cf[, ss == 3, drop = F])
-        Nc <- Nc + N_triple
-    }
-    if(sum(ss == 4) > 0){
-        N_quad <- sum(ss == 4) * rowSums(n_cf[, ss == 4, drop = F]) /
-            rowSums(n_cf[, ss == 4, drop = F] * f_cf[, ss == 4, drop = F])
-        Nc <- Nc + N_quad
+    unique_deg <- unique(ss)
+    Nc <- sum(ss == 1)
+    for (deg in unique_deg[unique_deg > 1]) {
+        N_deg <- sum(ss == deg) * rowSums(n_cf[, ss == deg, drop = FALSE]) /
+          rowSums(n_cf[, ss == deg, drop = FALSE] * f_cf[, ss == deg, drop = FALSE])
+        Nc <- Nc + N_deg
     }
     return(Nc)
 }
@@ -126,10 +116,9 @@ get_cai <- function(cf, rscu, level = 'subfam'){
 #'
 get_tai <- function(cf, trna_w){
     # codon frequency per CDS
-    cf <- cf[, trna_w$codon, drop = FALSE]
-
+    cf <- cf[, trna_w$codon[trna_w$codon %in% colnames(cf)], drop = FALSE]
     # tai
-    tai <- exp(cf %*% matrix(log(trna_w$w)) / rowSums(cf))
+    tai <- exp(cf %*% matrix(log(trna_w$w[trna_w$codon %in% colnames(cf)])) / rowSums(cf))
     return(tai[, 1])
 }
 
@@ -249,7 +238,15 @@ get_gc4d <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
 #' hist(fop)
 #'
 get_fop <- function(cf, op = NULL, codon_table = get_codon_table(), ...){
-    coef <- qvalue <- codon <- optimal <- NULL
+    coef <- qvalue <- codon <- optimal <- amino_acid <- N <- . <- NULL
+    excluded_codon <- codon_table[
+      , .(codon = codon, .N), by = amino_acid
+    ][
+      (N == 1 | amino_acid == "*"),
+      .(codon)
+    ]
+    cf <- cf[, !colnames(cf) %in% excluded_codon]
+    codon_table <- codon_table[!codon %in% excluded_codon,]
     if(is.null(op)){
         optimal_codons <- est_optimal_codons(cf, codon_table = codon_table, ...)
         op <- optimal_codons[optimal == TRUE, codon]
@@ -306,7 +303,7 @@ get_cscg <- function(cf, csc){
 #' # estimate DP of yeast genes
 #' cf_all <- count_codons(yeast_cds)
 #' trna_weight <- est_trna_weight(yeast_trna_gcn)
-#' trna_weight <- setNames(trna_weight$w, trna_weight$codon)
+#' trna_weight <- stats::setNames(trna_weight$w, trna_weight$codon)
 #' dp <- get_dp(cf_all, host_weights = trna_weight)
 #' head(dp)
 #' hist(dp)
@@ -340,4 +337,40 @@ get_dp <- function(cf, host_weights, codon_table = get_codon_table(),
     # 1. no codon of a group were found in a CDS when missing_action = "ignore";
     # 2. exact match to the host tRNA pool. (very rare)
     dp <- exp(rowMeans(log(d), na.rm = TRUE))
+}
+
+
+#' Amino Acid Usage
+#'
+#' Calculate Amino Acid Usage Frequencies of the gene.
+#'
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @param codon_table codon_table a table of genetic code derived from \code{get_codon_table} or
+#'   \code{create_codon_table}.
+#' @param digits reserved decimal places, default: 5.
+#' @returns a named list of amino acid frequencies for each gene in the gene set.
+#' @export
+#' @examples
+#' # estimate amino acid frequencies of yeast genes
+#' cf_all <- count_codons(yeast_cds)
+#' aau_gene <- get_aau(cf_all)
+#' head(aau_gene)
+get_aau <- function(cf, codon_table = get_codon_table(), digits = 5){
+  aa_code <- cts <- codon <- . <- aas <- aaf <- NULL # due to NSE notes in R CMD check
+  codon_table <- data.table::as.data.table(codon_table)
+  codon_table <- codon_table[aa_code != '*']
+  aau_f <- function(codon_table, codon_freq){
+    codon_table[, cts := codon_freq[codon]]
+    ctss <- codon_table[, .(aas = sum(cts)), by = aa_code]
+    total_aas <- sum(ctss$aas)  
+    ctss[, aaf := round(aas/total_aas, 5)]
+    aau <- stats::setNames(ctss$aaf, ctss$aa_code)
+    return(aau)
+  }
+  aau_gene <- stats::setNames(vector("list", nrow(cf)), rownames(cf))
+  for(gene in rownames(cf)){
+    codon_freq <- cf[gene,]
+    aau_gene[[gene]] <- aau_f(codon_table, codon_freq)
+  }
+  return(aau_gene)
 }

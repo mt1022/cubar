@@ -211,7 +211,7 @@ calculate various indices with the above yeast CDS data.</p>
 <span><span class="va">enc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_enc.html">get_enc</a></span><span class="op">(</span><span class="va">yeast_cf</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">enc</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  YPL071C  YLL050C  YMR172W  YOR185C  YLL032C  YBR225W </span></span>
-<span><span class="co">#&gt; 53.00343 45.06356 56.01914 50.84984 53.29440 53.82957</span></span>
+<span><span class="co">#&gt; 52.93616 44.57694 56.03833 50.82037 53.34254 53.85807</span></span>
 <span></span>
 <span><span class="va">plot_dist</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">xlab</span> <span class="op">=</span> <span class="st">'values'</span><span class="op">)</span><span class="op">{</span></span>
 <span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -252,12 +252,12 @@ usage bias have larger scores).</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">optimal_codons</span><span class="op">[</span><span class="va">optimal</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    aa_code amino_acid  codon subfam       coef        pvalue        qvalue</span></span>
 <span><span class="co">#&gt;     &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;      &lt;num&gt;         &lt;num&gt;         &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:       A        Ala    GCT Ala_GC 0.08702058  0.000000e+00  0.000000e+00</span></span>
-<span><span class="co">#&gt; 2:       A        Ala    GCC Ala_GC 0.01876569  2.164990e-40  2.401170e-40</span></span>
-<span><span class="co">#&gt; 3:       R        Arg    AGA Arg_AG 0.13023392  0.000000e+00  0.000000e+00</span></span>
-<span><span class="co">#&gt; 4:       R        Arg    CGT Arg_CG 0.21009663  0.000000e+00  0.000000e+00</span></span>
-<span><span class="co">#&gt; 5:       N        Asn    AAC Asn_AA 0.05752254 1.600668e-292 2.871787e-292</span></span>
-<span><span class="co">#&gt; 6:       D        Asp    GAC Asp_GA 0.01846525  4.298281e-36  4.599915e-36</span></span>
+<span><span class="co">#&gt; 1:       A        Ala    GCT Ala_GC 0.08568964  0.000000e+00  0.000000e+00</span></span>
+<span><span class="co">#&gt; 2:       A        Ala    GCC Ala_GC 0.01832810  3.668732e-40  4.068957e-40</span></span>
+<span><span class="co">#&gt; 3:       R        Arg    AGA Arg_AG 0.12797761  0.000000e+00  0.000000e+00</span></span>
+<span><span class="co">#&gt; 4:       R        Arg    CGT Arg_CG 0.20166334  0.000000e+00  0.000000e+00</span></span>
+<span><span class="co">#&gt; 5:       N        Asn    AAC Asn_AA 0.05713515 8.995130e-298 1.770009e-297</span></span>
+<span><span class="co">#&gt; 6:       D        Asp    GAC Asp_GA 0.01870822  4.222671e-38  4.518999e-38</span></span>
 <span><span class="co">#&gt;    optimal</span></span>
 <span><span class="co">#&gt;     &lt;lgcl&gt;</span></span>
 <span><span class="co">#&gt; 1:    TRUE</span></span>
@@ -272,7 +272,7 @@ usage bias have larger scores).</p>
 </h4>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># estimate RSCU of highly expressed genes</span></span>
-<span><span class="va">yeast_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">)</span></span>
+<span><span class="va">yeast_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">)</span></span>
 <span><span class="va">yeast_exp</span> <span class="op">&lt;-</span> <span class="va">yeast_exp</span><span class="op">[</span><span class="va">gene_id</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">yeast_cf</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">yeast_heg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">fpkm</span><span class="op">)</span>, <span class="op">]</span>, n <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
 <span><span class="va">rscu_heg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/est_rscu.html">est_rscu</a></span><span class="op">(</span><span class="va">yeast_cf</span><span class="op">[</span><span class="va">yeast_heg</span><span class="op">$</span><span class="va">gene_id</span>, <span class="op">]</span>, codon_table <span class="op">=</span> <span class="va">ctab</span><span class="op">)</span></span>
@@ -297,7 +297,7 @@ usage bias have larger scores).</p>
 </h4>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get tRNA gene copy number from GtRNADB</span></span>
-<span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/tstrsplit.html" class="external-link">tstrsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">' .*'</span>, <span class="st">''</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">yeast_trna</span><span class="op">)</span><span class="op">)</span>, <span class="st">'-'</span><span class="op">)</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/tstrsplit.html" class="external-link">tstrsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">' .*'</span>, <span class="st">''</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">yeast_trna</span><span class="op">)</span><span class="op">)</span>, <span class="st">'-'</span><span class="op">)</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="va">trna_gcn</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">trna_gcn</span><span class="op">)</span> <span class="op">!=</span> <span class="st">'NNN'</span><span class="op">]</span> <span class="co"># copy of each anticodon</span></span>
 <span></span>
 <span><span class="co"># calculate tRNA weight for each codon</span></span>
@@ -439,7 +439,7 @@ family level to suit different user needs.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

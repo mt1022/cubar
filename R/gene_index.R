@@ -36,7 +36,7 @@ get_enc <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
     })
     n_cf <- sapply(codon_list, function(x){
         mx <- cf[, x, drop = FALSE]
-        return(rowSums(mx + 1))
+        return(rowSums(mx))
     })
 
     if(nrow(cf) == 1){
@@ -44,22 +44,13 @@ get_enc <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
         n_cf <- t(n_cf)
     }
     ss <- lengths(codon_list)
-
-    Nc <- N_single <- sum(ss == 1)
-    if(sum(ss == 2) > 0){
-        N_double <- sum(ss == 2) * rowSums(n_cf[, ss == 2, drop = F]) /
-            rowSums(n_cf[, ss == 2, drop = F] * f_cf[, ss == 2, drop = F])
-        Nc <- Nc + N_double
-    }
-    if(sum(ss == 3) > 0){
-        N_triple <- sum(ss == 3) * rowSums(n_cf[, ss == 3, drop = F]) /
-            rowSums(n_cf[, ss == 3, drop = F] * f_cf[, ss == 3, drop = F])
-        Nc <- Nc + N_triple
-    }
-    if(sum(ss == 4) > 0){
-        N_quad <- sum(ss == 4) * rowSums(n_cf[, ss == 4, drop = F]) /
-            rowSums(n_cf[, ss == 4, drop = F] * f_cf[, ss == 4, drop = F])
-        Nc <- Nc + N_quad
+    unique_deg <- unique(ss)
+    Nc <- sum(ss == 1)
+    for (deg in unique_deg[unique_deg > 1]) {
+      N_deg <- sum(ss == deg) * rowSums(n_cf[, ss == deg, drop = FALSE]) /
+        rowSums(n_cf[, ss == deg, drop = FALSE] * f_cf[, ss == deg, drop = FALSE])
+      N_deg[rowSums(n_cf[, ss == deg, drop = FALSE]) == 0] <- sum(ss == deg)* deg
+      Nc <- Nc + N_deg
     }
     return(Nc)
 }
@@ -249,12 +240,15 @@ get_gc4d <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
 #' hist(fop)
 #'
 get_fop <- function(cf, op = NULL, codon_table = get_codon_table(), ...){
-    coef <- qvalue <- codon <- optimal <- NULL
-    if(is.null(op)){
-        optimal_codons <- est_optimal_codons(cf, codon_table = codon_table, ...)
-        op <- optimal_codons[optimal == TRUE, codon]
-    }
-    rowSums(cf[, op]) / rowSums(cf)
+  coef <- qvalue <- codon <- optimal <- amino_acid <- N <- . <- NULL
+  excluded_codon <- codon_table[, .(codon = codon, .N), .(by = amino_acid)][(N == 1 | amino_acid == "*"),.(codon)]
+  cf <- cf[, !colnames(cf) %in% excluded_codon]
+  codon_table <- codon_table[!codon %in% excluded_codon,]
+  if(is.null(op)){
+    optimal_codons <- est_optimal_codons(cf, codon_table = codon_table, ...)
+    op <- optimal_codons[optimal == TRUE, codon]
+  }
+  rowSums(cf[, op]) / rowSums(cf)
 }
 
 

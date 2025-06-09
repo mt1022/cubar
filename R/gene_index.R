@@ -240,12 +240,15 @@ get_gc4d <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
 #' hist(fop)
 #'
 get_fop <- function(cf, op = NULL, codon_table = get_codon_table(), ...){
-    coef <- qvalue <- codon <- optimal <- NULL
-    if(is.null(op)){
-        optimal_codons <- est_optimal_codons(cf, codon_table = codon_table, ...)
-        op <- optimal_codons[optimal == TRUE, codon]
-    }
-    rowSums(cf[, op]) / rowSums(cf)
+  coef <- qvalue <- codon <- optimal <- amino_acid <- N <- . <- NULL
+  excluded_codon <- codon_table[, .(codon = codon, .N), .(by = amino_acid)][(N == 1 | amino_acid == "*"),.(codon)]
+  cf <- cf[, !colnames(cf) %in% excluded_codon]
+  codon_table <- codon_table[!codon %in% excluded_codon,]
+  if(is.null(op)){
+    optimal_codons <- est_optimal_codons(cf, codon_table = codon_table, ...)
+    op <- optimal_codons[optimal == TRUE, codon]
+  }
+  rowSums(cf[, op]) / rowSums(cf)
 }
 
 

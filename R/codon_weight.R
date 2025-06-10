@@ -63,6 +63,11 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
     . <- aa_code <- base_codon <- base_anti <- type <- NULL
     anticodon_aa <- codon_aa <- i.aa_code <- NULL
     codon_table <- data.table::copy(codon_table)
+    if(nrow(codon_table) < 64){
+      message("Warning: the input codon table is incomplete, and the missing codons are filled in as termination codons.")
+      codon_table <- codon_table[names(Biostrings::GENETIC_CODE), on = .(codon)]
+      codon_table[is.na(aa_code), `:=`(aa_code = '*', amino_acid = '*', subfam = paste('*', substr(codon, 1, 2), sep = '_'))]
+    }
     codon_table[, anticodon := as.character(rev_comp(codon_table$codon))]
     codon_table[, c('codon_b1', 'codon_b2', 'codon_b3') := data.table::tstrsplit(codon, '')]
     bases <- c('T', 'C', 'A', 'G')
@@ -153,18 +158,22 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
                             s = list(WC=0, IU=0, IC=0.4659, IA=0.9075, GU=0.7861, UG=0.6295)){
     anticodon <- aa_code <- ac_level <- penality <- NULL # due to NSE notes in R CMD check
     i.values <- . <- ind <- codon <- W <- i.W <- w <- NULL # due to NSE notes in R CMD check
+    codon_table1 <- data.table::copy(codon_table)
     codon_table[, anticodon := as.character(Biostrings::reverseComplement(
         Biostrings::DNAStringSet(codon_table$codon)))]
     codon_table <- codon_table[aa_code != '*']
 
     codon_table[, ac_level := trna_level[anticodon]]
     codon_table[is.na(ac_level), ac_level := 0]
-
-    ca_pairs <- plot_ca_pairing(codon_table = codon_table, plot = FALSE)
+    # Use the original codon table as input to avoid warnings due to the removal of stop codons
+    ca_pairs <- plot_ca_pairing(codon_table = codon_table1, plot = FALSE)
     s <- utils::stack(s)
     ca_pairs[s, penality := i.values, on = .(type = ind)]
+    # The null value of penalty is complemented by 0
+    ca_pairs[is.na(penality), penality := 0]
     ca_pairs <- ca_pairs[anticodon %in% names(trna_level)]
     ca_pairs[, ac_level := trna_level[anticodon]]
+
     dtt_W <- ca_pairs[, .(W = sum(ac_level * (1 - penality))), by = .(codon)]
     codon_table[dtt_W, W := i.W, on = .(codon)]
     codon_table[, w := W/max(W, na.rm = TRUE)]

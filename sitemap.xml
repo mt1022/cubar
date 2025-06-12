@@ -10,6 +10,7 @@
 <url><loc>https://mt1022.github.io/cubar/index.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/news/index.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/aa2codon.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/ca_pairs.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/check_cds.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/codon_diff.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/codon_optimize.html</loc></url>
@@ -31,7 +32,7 @@
 <url><loc>https://mt1022.github.io/cubar/reference/get_tai.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/human_mt.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/index.html</loc></url>
-<url><loc>https://mt1022.github.io/cubar/reference/plot_ca_pairing.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/plot_ca_pairs.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/rev_comp.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/seq_to_codons.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/show_codon_tables.html</loc></url>
@@ -39,6 +40,7 @@
 <url><loc>https://mt1022.github.io/cubar/reference/slide_apply.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/slide_codon.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/slide_plot.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/trna_gcn.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/yeast_cds.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/yeast_exp.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/yeast_half_life.html</loc></url>

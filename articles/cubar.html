@@ -169,7 +169,8 @@ pairing.</p>
 <span><span class="va">ctab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_codon_table.html">get_codon_table</a></span><span class="op">(</span>gcid <span class="op">=</span> <span class="st">'1'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot possible codon and anticodon pairings</span></span>
-<span><span class="fu"><a href="../reference/plot_ca_pairing.html">plot_ca_pairing</a></span><span class="op">(</span><span class="va">ctab</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pairing</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ca_pairs.html">ca_pairs</a></span><span class="op">(</span><span class="va">ctab</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plot_ca_pairs.html">plot_ca_pairs</a></span><span class="op">(</span><span class="va">ctab</span>, <span class="va">pairing</span><span class="op">)</span></span></code></pre></div>
 <p><img src="cubar_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <p>Alternatively, user can create a custom genetic code table by
 providing a mapping between amino acids and codons.</p>
@@ -297,8 +298,7 @@ usage bias have larger scores).</p>
 </h4>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get tRNA gene copy number from GtRNADB</span></span>
-<span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/tstrsplit.html" class="external-link">tstrsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">' .*'</span>, <span class="st">''</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">yeast_trna</span><span class="op">)</span><span class="op">)</span>, <span class="st">'-'</span><span class="op">)</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="va">trna_gcn</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">trna_gcn</span><span class="op">)</span> <span class="op">!=</span> <span class="st">'NNN'</span><span class="op">]</span> <span class="co"># copy of each anticodon</span></span>
+<span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trna_gcn.html">trna_gcn</a></span><span class="op">(</span><span class="va">yeast_trna</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># calculate tRNA weight for each codon</span></span>
 <span><span class="va">trna_w</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/est_trna_weight.html">est_trna_weight</a></span><span class="op">(</span>trna_level <span class="op">=</span> <span class="va">trna_gcn</span>, codon_table <span class="op">=</span> <span class="va">ctab</span><span class="op">)</span></span>

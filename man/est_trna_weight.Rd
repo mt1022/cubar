@@ -7,7 +7,8 @@
 est_trna_weight(
   trna_level,
   codon_table = get_codon_table(),
-  s = list(WC = 0, IU = 0, IC = 0.4659, IA = 0.9075, GU = 0.7861, UG = 0.6295)
+  domain = "Eukarya",
+  s = NULL
 )
 }
 \arguments{
@@ -16,7 +17,10 @@ vector names are anticodons.}
 
 \item{codon_table}{a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.}
 
-\item{s}{list of non-Waston-Crick pairing panelty.}
+\item{domain}{"Eukarya" (default), "Bacteria" or "Archaea". Determine based on the type of organism. 
+The inferred wobble values strength are different for each domain of life. Specify either the parameter "domain" or "s".}
+
+\item{s}{list of non-Waston-Crick pairing panelty. Specify either the parameter "domain" or "s".}
 }
 \value{
 data.table of tRNA expression information.
@@ -26,8 +30,9 @@ data.table of tRNA expression information.
 This weight reflects relative tRNA availability for each codon.
 }
 \examples{
-# estimate codon tRNA weight for yeasts
-est_trna_weight(yeast_trna_gcn)
+# estimate codon tRNA weight for yeast
+yeast_trna_w <- est_trna_weight(yeast_trna_gcn)
+print(yeast_trna_w)
 
 }
 \references{

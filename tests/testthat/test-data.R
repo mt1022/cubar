@@ -26,13 +26,10 @@ test_that("internal data is loaded correctly", {
     expect_true(class(yeast_trna_gcn) %in% c("numeric", "integer", "table"))
     expect_equal(length(yeast_trna_gcn), 41)
     expect_true(all(names(yeast_trna_gcn) %in% c(
-        "TTT", "TTC", "TTA", "TTG", "CTT", "CTC", "CTA", "CTG", "ATT", "ATC",
-        "ATA", "ATG", "GTT", "GTC", "GTA", "GTG", "TCT", "TCC", "TCA", "TCG",
-        "CCT", "CCC", "CCA", "CCG", "ACT", "ACC", "ACA", "ACG", "GCT", "GCC",
-        "GCA", "GCG", "TAT", "TAC", "TAA", "TAG", "CAT", "CAC", "CAA", "CAG",
-        "AAT", "AAC", "AAA", "AAG", "GAT", "GAC", "GAA", "GAG", "TGT", "TGC",
-        "TGA", "TGG", "CGT", "CGC", "CGA", "CGG", "AGT", "AGC", "AGA", "AGG",
-        "GGT", "GGC", "GGA", "GGG")))
+      "Ala-AGC", "Ala-TGC", "Arg-ACG", "Arg-CCG", "Arg-CCT", "Arg-TCT", "Asn-GTT", "Asp-GTC", "Cys-GCA", "Gln-CTG", "Gln-TTG",
+      "Glu-CTC", "Glu-TTC", "Gly-CCC", "Gly-GCC", "Gly-TCC", "His-GTG", "Ile-AAT", "Ile-TAT", "Leu-CAA", "Leu-GAG", "Leu-TAA", 
+      "Leu-TAG", "Lys-CTT", "Lys-TTT", "Met-CAT", "Phe-GAA", "Pro-AGG", "Pro-TGG", "Ser-AGA", "Ser-CGA", "Ser-GCT", "Ser-TGA",
+      "Thr-AGT", "Thr-CGT", "Thr-TGT", "Trp-CCA", "Tyr-GTA", "Val-AAC", "Val-CAC", "Val-TAC")))
 
     # test that aa2codon is a data.frame with 64 rows 2 columns: amino_acid, and codon
     # all codons are valid

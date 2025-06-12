@@ -42,27 +42,40 @@ est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_tab
 }
 
 
-#' Plot codon-anticodon pairing relationship
+#' Generate codon-anticodon pairing relationship
 #'
-#' \code{plot_ca_pairing} show possible codon-anticodons pairings
+#' \code{ca_pairs} show possible codon-anticodons pairings
 #'
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or
 #'   \code{create_codon_table}.
-#' @param plot whether to plot the pairing relationship
-#' @returns a data.table of codon info and RSCU values
+#' @param domain "Eukarya" (default), "Bacteria" or "Archaea". Determine based on the type of organism.
+#' @param plot FALSE (default) or TRUE. Whether to keep the columns required for plotting.
+#' @returns a data.table of codon-anticodon pairing information
 #' @importFrom data.table ':='
 #' @importFrom rlang .data
 #' @export
 #' @examples
+#' # get possible codon and anticodon pairings for the vertebrate mitochondrial genetic code
 #' ctab <- get_codon_table(gcid = '2')
-#' pairing <- plot_ca_pairing(ctab)
+#' pairing <- ca_pairs(ctab)
 #' head(pairing)
 #'
-plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
-    anticodon <- codon <- codon_b1 <- codon_b2 <- codon_b3 <- NULL # due to NSE notes in R CMD check
+ca_pairs <- function(codon_table = get_codon_table(), domain = "Eukarya", plot = FALSE){
+    anticodon <- codon <- codon_b1 <- codon_b2 <- codon_b3 <- amino_acid <- NULL # due to NSE notes in R CMD check
     . <- aa_code <- base_codon <- base_anti <- type <- NULL
-    anticodon_aa <- codon_aa <- i.aa_code <- NULL
+    anticodon_aa <- codon_aa <- i.aa_code <- i.amino_acid <- NULL
+    
+    if(!domain %in% c("Eukarya", "Bacteria", "Archaea")){
+      stop("Unknown domain: ", domain)
+    }
     codon_table <- data.table::copy(codon_table)
+    
+    if(nrow(codon_table) < 64){
+      message("Warning: The input codon table is incomplete. The missing codons are filled in as termination codons.")
+      codon_table <- codon_table[names(Biostrings::GENETIC_CODE), on = .(codon)]
+      codon_table[is.na(aa_code), `:=`(
+        aa_code = '*', amino_acid = '*', subfam = paste('*', substr(codon, 1, 2), sep = '_'))]
+    }
     codon_table[, anticodon := as.character(rev_comp(codon_table$codon))]
     codon_table[, c('codon_b1', 'codon_b2', 'codon_b3') := data.table::tstrsplit(codon, '')]
     bases <- c('T', 'C', 'A', 'G')
@@ -99,36 +112,104 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
     ca_pairs <- ca_pairs[!anticodon %in% as.character(rev_comp(stop_codons))]
     # only wobble among synonymous codons and anticodons
     ca_pairs[codon_table, codon_aa := i.aa_code, on = .(codon)]
+    ca_pairs[codon_table, amino_acid := i.amino_acid, on = .(codon)]
     ca_pairs[codon_table, anticodon_aa := i.aa_code, on = .(anticodon)]
     ca_pairs <- ca_pairs[codon_aa == anticodon_aa]
-
-    if(plot){
-        p <- ggplot2::ggplot(codon_table, ggplot2::aes(y = .data$codon_b3)) +
-            ggplot2::geom_segment(
-                data = ca_pairs,
-                mapping = ggplot2::aes(
-                    x = 1, xend = 2,
-                    y = base_codon, yend = base_anti,
-                    color = type)) +
-            ggplot2::geom_label(ggplot2::aes(x = 1, label = .data$codon)) +
-            ggplot2::geom_label(ggplot2::aes(x = 2, label = .data$anticodon)) +
-            ggplot2::geom_label(ggplot2::aes(x = 0.4, label = .data$aa_code)) +
-            ggplot2::scale_color_brewer(palette = 'Dark2') +
-            ggplot2::facet_grid(codon_b2 ~ codon_b1, scales = 'free_y') +
-            ggplot2::scale_x_continuous(
-                limits = c(0.15, 2.5), breaks = c(0.4, 1, 2),
-                labels = c('AA', 'Codon', 'Anti')) +
-            ggplot2::labs(x = NULL, y = NULL, color = NULL) +
-            ggplot2::theme(axis.text.y = ggplot2::element_blank(),
-                           axis.ticks.y = ggplot2::element_blank(),
-                           axis.line.y = ggplot2::element_blank(),
-                           strip.text = ggplot2::element_blank())
-        print(p)
-        # return silently
-        invisible(ca_pairs[, .(type, codon, anticodon)])
-    }else{
-        return(ca_pairs[, .(type, codon, anticodon)])
+    
+    if(domain == "Bacteria"){
+      ca_pairs <- rbind(ca_pairs, data.table::data.table(codon_b1 = "A", codon_b2 = "T", type = "LA", base_codon = "A", base_anti = "G",
+                                                         codon = "ATA", anticodon = "CAT", codon_aa = "I", amino_acid = "Ile", anticodon_aa = "I"))
+    }else if(domain == "Archaea"){
+      ca_pairs <- rbind(ca_pairs, data.table::data.table(codon_b1 = "A", codon_b2 = "T", type = "agmA", base_codon = "A", base_anti = "G",
+                                                         codon = "ATA", anticodon = "CAT", codon_aa = "I", amino_acid = "Ile", anticodon_aa = "I"))
     }
+    ca_pairs <- ca_pairs[order(factor(ca_pairs$codon, levels = codon_table$codon))]
+    if(plot){
+      return(ca_pairs)
+    }else{
+      return(ca_pairs[, .(type, codon, anticodon, amino_acid)])
+    }
+    
+}
+
+
+#' Plot codon-anticodon pairing relationship
+#'
+#' \code{plot_ca_pairs} show possible codon-anticodons pairings
+#' @param codon_table a table of genetic code derived from \code{get_codon_table} or
+#'   \code{create_codon_table}.
+#' @param ca_pairs a table of codon-anticodon pairing derived from \code{ca_pairs}
+#' @returns a plot on possible codon-anticodons pairings
+#' @importFrom data.table ':='
+#' @importFrom rlang .data
+#' @export
+#' @examples
+#' # plot possible codon and anticodon pairings for the vertebrate mitochondrial genetic code
+#' ctab <- get_codon_table(gcid = '2')
+#' pairing <- ca_pairs(ctab, plot = TRUE)
+#' plot_ca_pairs(ctab, pairing)
+#'
+#' # plot possible codon and anticodon pairings for the standard genetic code in bacteria
+#' plot_ca_pairs(ca_pairs = ca_pairs(domain = "Bacteria", plot = TRUE))
+#' 
+plot_ca_pairs <- function(codon_table = get_codon_table(), ca_pairs = ca_pairs){
+  anticodon <- codon <- codon_b1 <- codon_b2 <- codon_b3 <- . <- NULL # due to NSE notes in R CMD check
+  aa_code <- base_codon <- base_anti <- type <- NULL
+  codon_table <- data.table::copy(codon_table)
+  
+  if(nrow(codon_table) < 64){
+    message("Warning: The input codon table is incomplete. The missing codons are filled in as termination codons.")
+    codon_table <- codon_table[names(Biostrings::GENETIC_CODE), on = .(codon)]
+    codon_table[is.na(aa_code), `:=`(aa_code = '*', amino_acid = '*', subfam = paste('*', substr(codon, 1, 2), sep = '_'))]
+  }
+  codon_table[, anticodon := as.character(rev_comp(codon_table$codon))]
+  codon_table[, c('codon_b1', 'codon_b2', 'codon_b3') := data.table::tstrsplit(codon, '')]
+  bases <- c('T', 'C', 'A', 'G')
+  codon_table[, codon_b1 := factor(codon_b1, levels = bases)]
+  codon_table[, `:=`(
+    codon_b1 = factor(codon_b1, levels = bases),
+    codon_b2 = factor(codon_b2, levels = bases),
+    codon_b3 = factor(codon_b3, levels = rev(bases))
+  )]
+  codon_table <- codon_table[order(codon_b1, codon_b2, codon_b3)]
+  p <- ggplot2::ggplot(codon_table, ggplot2::aes(y = .data$codon_b3)) +
+    ggplot2::geom_segment(
+      data = ca_pairs,
+      mapping = ggplot2::aes(
+        x = 1, xend = 2,
+        y = base_codon, yend = base_anti,
+        color = type)) +
+    ggplot2::geom_label(ggplot2::aes(x = 1, label = .data$codon)) +
+    ggplot2::geom_label(ggplot2::aes(x = 2, label = .data$anticodon)) +
+    ggplot2::geom_label(ggplot2::aes(x = 0.4, label = .data$aa_code)) +
+    ggplot2::scale_color_brewer(palette = 'Dark2') +
+    ggplot2::facet_grid(codon_b2 ~ codon_b1, scales = 'free_y') +
+    ggplot2::scale_x_continuous(
+      limits = c(0.15, 2.5), breaks = c(0.4, 1, 2),
+      labels = c('AA', 'Codon', 'Anti')) +
+    ggplot2::labs(x = NULL, y = NULL, color = NULL) +
+    ggplot2::theme(axis.text.y = ggplot2::element_blank(),
+                   axis.ticks.y = ggplot2::element_blank(),
+                   axis.line.y = ggplot2::element_blank(),
+                   strip.text = ggplot2::element_blank())
+  print(p)
+}
+
+#' get tRNA gene copy number from GtRNADB
+#'
+#' \code{trna_gcn} get tRNA gene copy number from GtRNADB
+#' @param trna_seq a fasta file of tRNA sequences from GtRNADB
+#' @returns a table of tRNA gene copy number for each anticodon
+#' @export
+#' @examples
+#' # get tRNA gene copy number for yeast
+#' trna_gcn <- trna_gcn(yeast_trna)
+#' 
+trna_gcn <- function(trna_seq){
+  trna_copy <- sub('.*tRNA-(.*?)-\\d.*', '\\1', names(trna_seq))
+  trna_copy <- trna_copy[!trna_copy %in% c("fMet-CAT", "iMet-CAT", "Und-NNN")]
+  trna_gcn <- table(as.vector(trna_copy))
+  return(trna_gcn)
 }
 
 
@@ -140,31 +221,61 @@ plot_ca_pairing <- function(codon_table = get_codon_table(), plot = TRUE){
 #' @param trna_level, named vector of tRNA level (or gene copy numbers), one value for each anticodon.
 #'   vector names are anticodons.
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.
-#' @param s list of non-Waston-Crick pairing panelty.
+#' @param domain "Eukarya" (default), "Bacteria" or "Archaea". Determine based on the type of organism. 
+#' The inferred wobble values strength are different for each domain of life. Specify either the parameter "domain" or "s".
+#' @param s list of non-Waston-Crick pairing panelty. Specify either the parameter "domain" or "s".
 #' @returns data.table of tRNA expression information.
 #' @importFrom data.table ':='
 #' @references dos Reis M, Savva R, Wernisch L. 2004. Solving the riddle of codon usage preferences: a test for translational selection. Nucleic Acids Res 32:5036-5044.
 #' @export
 #' @examples
-#' # estimate codon tRNA weight for yeasts
-#' est_trna_weight(yeast_trna_gcn)
-#'
-est_trna_weight <- function(trna_level, codon_table = get_codon_table(),
-                            s = list(WC=0, IU=0, IC=0.4659, IA=0.9075, GU=0.7861, UG=0.6295)){
-    anticodon <- aa_code <- ac_level <- penality <- NULL # due to NSE notes in R CMD check
-    i.values <- . <- ind <- codon <- W <- i.W <- w <- NULL # due to NSE notes in R CMD check
+#' # estimate codon tRNA weight for yeast
+#' yeast_trna_w <- est_trna_weight(yeast_trna_gcn)
+#' print(yeast_trna_w)
+#' 
+est_trna_weight <- function(trna_level, codon_table = get_codon_table(), domain = "Eukarya",
+                            s = NULL){
+    anticodon <- aa_code <- ac_level <- penality <- amino_acid <- NULL # due to NSE notes in R CMD check
+    i.values <- . <- ind <- codon <- trna_id <- type <- W <- i.W <- w <- NULL # due to NSE notes in R CMD check
+    
+    codon_table1 <- data.table::copy(codon_table)
     codon_table[, anticodon := as.character(Biostrings::reverseComplement(
-        Biostrings::DNAStringSet(codon_table$codon)))]
+      Biostrings::DNAStringSet(codon_table$codon)))]
     codon_table <- codon_table[aa_code != '*']
-
-    codon_table[, ac_level := trna_level[anticodon]]
+    if(domain %in% c("Bacteria", "Archaea")){
+      codon_table <- rbind(codon_table, data.table::data.table(aa_code = "I", amino_acid = "Ile", codon = "ATA",
+                                                               subfam = "Ile_AT", anticodon = "CAT"))
+    }
+    codon_table[, trna_id := paste(amino_acid, anticodon, sep = "-")]
+    codon_table[, ac_level := trna_level[trna_id]]
     codon_table[is.na(ac_level), ac_level := 0]
+    
+    # Use the original codon table as input to avoid warnings due to the removal of stop codons
+    ca_pairs <- ca_pairs(codon_table = codon_table1, domain = domain)
+    
+    if(is.null(s)){
+      s <- switch(domain,
+                  Eukarya  = list(WC = 0, IU = 0, IC = 0.4659, IA = 0.9075, GU = 0.7861, UG = 0.6295),
+                  Bacteria = list(WC = 0, IU = 0, IC = 0.4211, IA = 0.8773, GU = 0.6294, UG = 0.698, LA = 0.7309),
+                  Archaea  = list(WC = 0, IU = 0, IC = 0.3774, IA = 0.5015, GU = 0.3898, UG = 0.4363, agmA = 0.6453),
+                  stop("Unknown domain: ", domain)
+      )
+    }else{
+      if(!"WC" %in% names(s)){
+        s$WC <- 0
+      }
+      missing_types <- setdiff(unique(ca_pairs$type), names(s))
+      if(length(missing_types) > 0){
+        stop("Missing selection penalty for codon pairs: ", paste(missing_types, collapse = " "))
+      }
+    }
 
-    ca_pairs <- plot_ca_pairing(codon_table = codon_table, plot = FALSE)
     s <- utils::stack(s)
     ca_pairs[s, penality := i.values, on = .(type = ind)]
-    ca_pairs <- ca_pairs[anticodon %in% names(trna_level)]
-    ca_pairs[, ac_level := trna_level[anticodon]]
+    ca_pairs[, trna_id := paste(amino_acid, anticodon, sep = "-")]
+    ca_pairs <- ca_pairs[trna_id %in% names(trna_level)]
+    ca_pairs[, ac_level := trna_level[trna_id]]
+
     dtt_W <- ca_pairs[, .(W = sum(ac_level * (1 - penality))), by = .(codon)]
     codon_table[dtt_W, W := i.W, on = .(codon)]
     codon_table[, w := W/max(W, na.rm = TRUE)]

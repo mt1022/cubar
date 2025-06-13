@@ -10,7 +10,7 @@ ca_pairs(codon_table = get_codon_table(), domain = "Eukarya", plot = FALSE)
 \item{codon_table}{a table of genetic code derived from \code{get_codon_table} or
 \code{create_codon_table}.}
 
-\item{domain}{"Eukarya" (default), "Bacteria" or "Archaea". Determine based on the type of organism.}
+\item{domain}{Display the codon-anticodon pairs of which type of organism. "Eukarya" (default), "Bacteria" or "Archaea".}
 
 \item{plot}{FALSE (default) or TRUE. Whether to keep the columns required for plotting.}
 }

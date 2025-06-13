@@ -4,13 +4,13 @@
 \alias{plot_ca_pairs}
 \title{Plot codon-anticodon pairing relationship}
 \usage{
-plot_ca_pairs(codon_table = get_codon_table(), ca_pairs = ca_pairs)
+plot_ca_pairs(codon_table = get_codon_table(), pairs = pairs)
 }
 \arguments{
 \item{codon_table}{a table of genetic code derived from \code{get_codon_table} or
 \code{create_codon_table}.}
 
-\item{ca_pairs}{a table of codon-anticodon pairing derived from \code{ca_pairs}}
+\item{pairs}{a table of codon-anticodon pairing derived from \code{ca_pairs}}
 }
 \value{
 a plot on possible codon-anticodons pairings
@@ -21,10 +21,10 @@ a plot on possible codon-anticodons pairings
 \examples{
 # plot possible codon and anticodon pairings for the vertebrate mitochondrial genetic code
 ctab <- get_codon_table(gcid = '2')
-pairing <- ca_pairs(ctab, plot = TRUE)
-plot_ca_pairs(ctab, pairing)
+pairs <- ca_pairs(ctab, plot = TRUE)
+plot_ca_pairs(ctab, pairs)
 
 # plot possible codon and anticodon pairings for the standard genetic code in bacteria
-plot_ca_pairs(ca_pairs = ca_pairs(domain = "Bacteria", plot = TRUE))
+plot_ca_pairs(pairs = ca_pairs(domain = "Bacteria", plot = TRUE))
 
 }

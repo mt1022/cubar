@@ -135,7 +135,7 @@ plot_dist(cai, xlab = 'CAI')
 #### tRNA Adaptation Index (tAI)
 ```{r}
 # get tRNA gene copy number from GtRNADB
-trna_gcn <- trna_gcn(yeast_trna)
+trna_gcn <- extract_trna_gcn(yeast_trna)
 
 # calculate tRNA weight for each codon
 trna_w <- est_trna_weight(trna_level = trna_gcn, codon_table = ctab)

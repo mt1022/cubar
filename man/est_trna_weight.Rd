@@ -17,8 +17,8 @@ vector names are anticodons.}
 
 \item{codon_table}{a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.}
 
-\item{domain}{"Eukarya" (default), "Bacteria" or "Archaea". Determine based on the type of organism. 
-The inferred wobble values strength are different for each domain of life. Specify either the parameter "domain" or "s".}
+\item{domain}{The taxonomic domain of interest. "Eukarya" (default), "Bacteria" or "Archaea". 
+Specify either the parameter "domain" or "s".}
 
 \item{s}{list of non-Waston-Crick pairing panelty. Specify either the parameter "domain" or "s".}
 }

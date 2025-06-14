@@ -298,7 +298,7 @@ usage bias have larger scores).</p>
 </h4>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get tRNA gene copy number from GtRNADB</span></span>
-<span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trna_gcn.html">trna_gcn</a></span><span class="op">(</span><span class="va">yeast_trna</span><span class="op">)</span></span>
+<span><span class="va">trna_gcn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_trna_gcn.html">extract_trna_gcn</a></span><span class="op">(</span><span class="va">yeast_trna</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># calculate tRNA weight for each codon</span></span>
 <span><span class="va">trna_w</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/est_trna_weight.html">est_trna_weight</a></span><span class="op">(</span>trna_level <span class="op">=</span> <span class="va">trna_gcn</span>, codon_table <span class="op">=</span> <span class="va">ctab</span><span class="op">)</span></span>

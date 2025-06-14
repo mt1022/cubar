@@ -16,10 +16,13 @@
 <url><loc>https://mt1022.github.io/cubar/reference/codon_optimize.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/count_codons.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/create_codon_table.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/est_aau.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/est_csc.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/est_optimal_codons.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/est_rscu.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/est_trna_weight.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/extract_trna_gcn.html</loc></url>
+<url><loc>https://mt1022.github.io/cubar/reference/get_aau.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/get_cai.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/get_codon_table.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/get_cscg.html</loc></url>
@@ -40,7 +43,6 @@
 <url><loc>https://mt1022.github.io/cubar/reference/slide_apply.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/slide_codon.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/slide_plot.html</loc></url>
-<url><loc>https://mt1022.github.io/cubar/reference/trna_gcn.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/yeast_cds.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/yeast_exp.html</loc></url>
 <url><loc>https://mt1022.github.io/cubar/reference/yeast_half_life.html</loc></url>

@@ -48,7 +48,7 @@ est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_tab
 #'
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or
 #'   \code{create_codon_table}.
-#' @param domain "Eukarya" (default), "Bacteria" or "Archaea". Determine based on the type of organism.
+#' @param domain The taxonomic domain of interest. "Eukarya" (default), "Bacteria" or "Archaea".
 #' @param plot FALSE (default) or TRUE. Whether to keep the columns required for plotting.
 #' @returns a data.table of codon-anticodon pairing information
 #' @importFrom data.table ':='
@@ -117,11 +117,15 @@ ca_pairs <- function(codon_table = get_codon_table(), domain = "Eukarya", plot =
     ca_pairs <- ca_pairs[codon_aa == anticodon_aa]
     
     if(domain == "Bacteria"){
-      ca_pairs <- rbind(ca_pairs, data.table::data.table(codon_b1 = "A", codon_b2 = "T", type = "LA", base_codon = "A", base_anti = "G",
-                                                         codon = "ATA", anticodon = "CAT", codon_aa = "I", amino_acid = "Ile", anticodon_aa = "I"))
+      dt <-data.table::data.table(codon_b1 = "A", codon_b2 = "T", type = "LA", base_codon = "A", 
+                             base_anti = "G", codon = "ATA", anticodon = "CAT", codon_aa = "I", 
+                             amino_acid = "Ile", anticodon_aa = "I")
+      ca_pairs <- rbind(ca_pairs, dt)
     }else if(domain == "Archaea"){
-      ca_pairs <- rbind(ca_pairs, data.table::data.table(codon_b1 = "A", codon_b2 = "T", type = "agmA", base_codon = "A", base_anti = "G",
-                                                         codon = "ATA", anticodon = "CAT", codon_aa = "I", amino_acid = "Ile", anticodon_aa = "I"))
+      dt <-data.table::data.table(codon_b1 = "A", codon_b2 = "T", type = "agmA", base_codon = "A", 
+                                  base_anti = "G", codon = "ATA", anticodon = "CAT", codon_aa = "I", 
+                                  amino_acid = "Ile", anticodon_aa = "I")
+      ca_pairs <- rbind(ca_pairs, dt)
     }
     ca_pairs <- ca_pairs[order(factor(ca_pairs$codon, levels = codon_table$codon))]
     if(plot){
@@ -138,7 +142,7 @@ ca_pairs <- function(codon_table = get_codon_table(), domain = "Eukarya", plot =
 #' \code{plot_ca_pairs} show possible codon-anticodons pairings
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or
 #'   \code{create_codon_table}.
-#' @param ca_pairs a table of codon-anticodon pairing derived from \code{ca_pairs}
+#' @param pairs a table of codon-anticodon pairing derived from \code{ca_pairs}
 #' @returns a plot on possible codon-anticodons pairings
 #' @importFrom data.table ':='
 #' @importFrom rlang .data
@@ -146,13 +150,13 @@ ca_pairs <- function(codon_table = get_codon_table(), domain = "Eukarya", plot =
 #' @examples
 #' # plot possible codon and anticodon pairings for the vertebrate mitochondrial genetic code
 #' ctab <- get_codon_table(gcid = '2')
-#' pairing <- ca_pairs(ctab, plot = TRUE)
-#' plot_ca_pairs(ctab, pairing)
+#' pairs <- ca_pairs(ctab, plot = TRUE)
+#' plot_ca_pairs(ctab, pairs)
 #'
 #' # plot possible codon and anticodon pairings for the standard genetic code in bacteria
-#' plot_ca_pairs(ca_pairs = ca_pairs(domain = "Bacteria", plot = TRUE))
+#' plot_ca_pairs(pairs = ca_pairs(domain = "Bacteria", plot = TRUE))
 #' 
-plot_ca_pairs <- function(codon_table = get_codon_table(), ca_pairs = ca_pairs){
+plot_ca_pairs <- function(codon_table = get_codon_table(), pairs = pairs){
   anticodon <- codon <- codon_b1 <- codon_b2 <- codon_b3 <- . <- NULL # due to NSE notes in R CMD check
   aa_code <- base_codon <- base_anti <- type <- NULL
   codon_table <- data.table::copy(codon_table)
@@ -174,7 +178,7 @@ plot_ca_pairs <- function(codon_table = get_codon_table(), ca_pairs = ca_pairs){
   codon_table <- codon_table[order(codon_b1, codon_b2, codon_b3)]
   p <- ggplot2::ggplot(codon_table, ggplot2::aes(y = .data$codon_b3)) +
     ggplot2::geom_segment(
-      data = ca_pairs,
+      data = pairs,
       mapping = ggplot2::aes(
         x = 1, xend = 2,
         y = base_codon, yend = base_anti,
@@ -197,15 +201,15 @@ plot_ca_pairs <- function(codon_table = get_codon_table(), ca_pairs = ca_pairs){
 
 #' get tRNA gene copy number from GtRNADB
 #'
-#' \code{trna_gcn} get tRNA gene copy number from GtRNADB
+#' \code{extract_trna_gcn} get tRNA gene copy number from GtRNADB
 #' @param trna_seq a fasta file of tRNA sequences from GtRNADB
 #' @returns a table of tRNA gene copy number for each anticodon
 #' @export
 #' @examples
 #' # get tRNA gene copy number for yeast
-#' trna_gcn <- trna_gcn(yeast_trna)
+#' trna_gcn <- extract_trna_gcn(yeast_trna)
 #' 
-trna_gcn <- function(trna_seq){
+extract_trna_gcn <- function(trna_seq){
   trna_copy <- sub('.*tRNA-(.*?)-\\d.*', '\\1', names(trna_seq))
   trna_copy <- trna_copy[!trna_copy %in% c("fMet-CAT", "iMet-CAT", "Und-NNN")]
   trna_gcn <- table(as.vector(trna_copy))
@@ -221,20 +225,20 @@ trna_gcn <- function(trna_seq){
 #' @param trna_level, named vector of tRNA level (or gene copy numbers), one value for each anticodon.
 #'   vector names are anticodons.
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.
-#' @param domain "Eukarya" (default), "Bacteria" or "Archaea". Determine based on the type of organism. 
-#' The inferred wobble values strength are different for each domain of life. Specify either the parameter "domain" or "s".
+#' @param domain The taxonomic domain of interest. "Eukarya" (default), "Bacteria" or "Archaea". 
+#' Specify either the parameter "domain" or "s".
 #' @param s list of non-Waston-Crick pairing panelty. Specify either the parameter "domain" or "s".
 #' @returns data.table of tRNA expression information.
 #' @importFrom data.table ':='
 #' @references dos Reis M, Savva R, Wernisch L. 2004. Solving the riddle of codon usage preferences: a test for translational selection. Nucleic Acids Res 32:5036-5044.
+#' @references Sabi R, Tuller T. 2014. Modelling the efficiency of codon-tRNA interactions based on codon usage bias. DNA Res 21:511-526.
 #' @export
 #' @examples
 #' # estimate codon tRNA weight for yeast
 #' yeast_trna_w <- est_trna_weight(yeast_trna_gcn)
 #' print(yeast_trna_w)
 #' 
-est_trna_weight <- function(trna_level, codon_table = get_codon_table(), domain = "Eukarya",
-                            s = NULL){
+est_trna_weight <- function(trna_level, codon_table = get_codon_table(), domain = "Eukarya", s = NULL){
     anticodon <- aa_code <- ac_level <- penality <- amino_acid <- NULL # due to NSE notes in R CMD check
     i.values <- . <- ind <- codon <- trna_id <- type <- W <- i.W <- w <- NULL # due to NSE notes in R CMD check
     
@@ -389,4 +393,26 @@ est_csc <- function(seqs, half_life, codon_table = get_codon_table(), cor_method
     csc <- data.table::data.table(t(csc), keep.rownames = TRUE)
     data.table::setnames(csc, c('codon', 'csc', 'pvalue'))
     return(csc)
+}
+
+#' Estimate Amino Acid Usage Frequencies of CDSs.
+#'
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @param codon_table codon_table a table of genetic code derived from \code{get_codon_table} or
+#'   \code{create_codon_table}.
+#' @returns a data.table with amino acid frequencies of CDSs.
+#' @export
+#' @examples
+#' # estimate amino acid frequencies of yeast genes
+#' cf_all <- count_codons(yeast_cds)
+#' aau <- est_aau(cf_all)
+#' print(aau)
+est_aau <- function(cf, codon_table = get_codon_table()){
+  aa_code <- count_codon <- count <- codon <- amino_acid <- aa_code <- proportion <- . <- NULL # due to NSE notes in R CMD check
+  codon_table <- data.table::as.data.table(codon_table)
+  codon_table <- codon_table[aa_code != '*']
+  codon_table[, count_codon := colSums(cf)[codon]]
+  aau <- codon_table[, .(count = sum(count_codon)), by = .(amino_acid, aa_code)]
+  aau[, proportion := count/sum(aau$count)]
+  return(aau)
 }

@@ -17,8 +17,8 @@ vector names are anticodons.}
 
 \item{codon_table}{a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.}
 
-\item{domain}{"Eukarya" (default), "Bacteria" or "Archaea". Determine based on the type of organism. 
-The inferred wobble values strength are different for each domain of life. Specify either the parameter "domain" or "s".}
+\item{domain}{The taxonomic domain of interest. "Eukarya" (default), "Bacteria" or "Archaea". 
+Specify either the parameter "domain" or "s".}
 
 \item{s}{list of non-Waston-Crick pairing panelty. Specify either the parameter "domain" or "s".}
 }
@@ -37,4 +37,6 @@ print(yeast_trna_w)
 }
 \references{
 dos Reis M, Savva R, Wernisch L. 2004. Solving the riddle of codon usage preferences: a test for translational selection. Nucleic Acids Res 32:5036-5044.
+
+Sabi R, Tuller T. 2014. Modelling the efficiency of codon-tRNA interactions based on codon usage bias. DNA Res 21:511-526.
 }

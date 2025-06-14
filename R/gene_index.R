@@ -335,3 +335,31 @@ get_dp <- function(cf, host_weights, codon_table = get_codon_table(),
     # 2. exact match to the host tRNA pool. (very rare)
     dp <- exp(rowMeans(log(d), na.rm = TRUE))
 }
+
+#' Amino Acid Usage
+#'
+#' Calculate Amino Acid Usage Frequencies of each CDS.
+#'
+#' @param cf matrix of codon frequencies as calculated by `count_codons()`.
+#' @param codon_table a table of genetic code derived from \code{get_codon_table} or
+#'   \code{create_codon_table}.
+#' @returns a matrix of amino acid frequencies for each CDS.
+#' @export
+#' @examples
+#' # estimate amino acid frequencies of yeast CDSs
+#' cf_all <- count_codons(yeast_cds)
+#' aau_gene <- get_aau(cf_all)
+#' head(aau_gene)
+#' 
+
+get_aau <- function(cf, codon_table = get_codon_table()){
+  aa_code <- id <- codon <- count <- count_codon <- aa_code <-  amino_acid <- . <- NULL # due to NSE notes in R CMD check
+  codon_table <- data.table::as.data.table(codon_table)
+  codon_table <- codon_table[amino_acid != '*']
+  aa_mat <- sapply(split(codon_table$codon, codon_table$amino_acid), \(x) rowSums(cf[, x, drop = FALSE]))
+  if(!is.matrix(aa_mat)){
+    aa_mat <- t(as.matrix(aa_mat))
+  }
+  aau_mat <- aa_mat/rowSums(aa_mat)
+  return(aau_mat)
+}

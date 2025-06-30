@@ -2,7 +2,7 @@
 title: "The environment required for the codon_optimize function"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{The environment required for the codon_optimize function}
+  %\VignetteIndexEntry{Codon optimization}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

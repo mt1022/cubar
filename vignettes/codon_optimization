@@ -1,5 +1,5 @@
 ---
-title: "The environment required for the codon_optimize function"
+title: "Codon optimization"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Codon optimization}

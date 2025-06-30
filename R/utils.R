@@ -8,40 +8,217 @@
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or
 #'   \code{create_codon_table}.
 #' @param level "subfam" (default) or "amino_acid". Optimize codon usage at which level.
-#' @return a DNAString of the optimized coding sequence.
+#' Required when method is set to "naive" or "IDT".
+#' @param method "naive" (default), "IDT" or "CodonTransformer". For which method to estimate optimal codons.
+#' The "IDT" method derives from the Codon Optimization Tool of INTEGRATED DNA TECHNOLOGIES.
+#' The "CodonTransformer" method derives from the tool CodonTransformer.
+#' @param cf matrix of codon frequencies as calculated by \code{count_codons()}. Required when method is set to "IDT".
+#' @param envname the name of an environment when using the method "CodonTransformer" or when "spliceai" is TRUE.
+#' Maintain consistency with user-defined conda environment name (default: cubar_env).
+#' @param organism organism ID (integer) or name (string) (e.g., "Escherichia coli general",
+#' must be from ORGANISM2ID in CodonUtils). Required when method is set to "CodonTransformer".
+#' @param attention_type type of attention mechanism to use in model - 'block_sparse' for memory efficient
+#' or 'original_full' (default) for standard attention. Required when method is set to "CodonTransformer".
+#' @param deterministic if TRUE (default), uses deterministic decoding (picks most likely tokens).
+#' If "False", samples tokens based on probabilities adjusted by temperature.
+#' Required when method is set to "CodonTransformer".
+#' @param temperature controls randomness in non-deterministic mode. Lower values (0.2) are conservative and
+#' pick high probability tokens, while higher values (0.8) allow more diversity.
+#' Must be positive. Required when method is set to "CodonTransformer". Default is 0.2.
+#' @param top_p nucleus sampling threshold - only tokens with cumulative probability up to this value are considered.
+#' Balances diversity and quality of predictions. Must be between 0 and 1.
+#' Required when method is set to "CodonTransformer". Default is 0.95.
+#' @param num_sequences number of different DNA sequences to generate. Default is 1. Required when method is
+#' set to "IDT" or "CodonTransformer". When greater than 1, identical duplicate sequences will be retained
+#' as a single copy, potentially resulting in a final sequence count that is less than the specified value.
+#' With the method "CodonTransformer", only works when deterministic=False, and each sequence will be sampled
+#' based on the temperature and top_p parameters.
+#' @param match_protein constrains predictions to only use codons that translate back to the exact input protein sequence.
+#' Only recommended when using high temperatures or error prone input proteins
+#' (e.g. not starting with methionine or having numerous repetitions). Default is FALSE.
+#' @param spliceai TRUE or FALSE (default). whether to run spliceai to predict possible splice junction sites.
+#' This option derives from the tool SpliceAI.
+#' @return a DNAString of the optimized coding sequence when num_sequences is set to 1 and spliceai is FALSE,
+#' or a DNAStringSet of the optimized coding sequences when num_sequences is large than 1 and spliceai is FALSE,
+#' or a data.table object, including columns of candidate optimized sequences and columns indicating
+#' the possibility of splice sites when spliceai is TRUE.
+#' @importFrom data.table .SD
+#' @references Fallahpour A, Gureghian V, Filion GJ, Lindner AB, Pandi A. CodonTransformer:
+#' a multispecies codon optimizer using context-aware neural networks. Nat Commun. 2025 Apr 3;16(1):3205.
+#'
+#' Jaganathan K, Panagiotopoulou S K, McRae J F, et al. Predicting splicing from primary sequence
+#'  with deep learning[J].Cell, 2019, 176(3): 535-548. e24.
 #' @export
 #' @examples
 #' cf_all <- count_codons(yeast_cds)
 #' optimal_codons <- est_optimal_codons(cf_all)
 #' seq <- 'ATGCTACGA'
+#' # method "naive":
 #' codon_optimize(seq, optimal_codons)
-#'
-codon_optimize <- function(seq, optimal_codons,
-                           codon_table = get_codon_table(), level = 'subfam'){
-    . <- aa_code <- codon <- coef <- NULL
-    if(!level %in% c('amino_acid', 'subfam')){
-        stop('Possible values for `level` are "amino_acid" and "subfam"')
-    }
-    if(!inherits(seq, 'DNAString')){
-        seq <- Biostrings::DNAString(seq)
-    }
+#' # method "IDT":
+#' codon_optimize(seq, cf = cf_all, method = "IDT")
+#' codon_optimize(seq, cf = cf_all, method = "IDT", num_sequences = 10)
+#' # method "CodonTransformer":
+#' seq_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae")
+#' print(seq_opt)
+#' seqs_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae",
+#' num_sequences = 10, deterministic =FALSE, temperature = 0.4)
+#' print(seqs_opt)
+#' seqs_opt <- codon_optimize(seq, cf = cf_all, method = "IDT", num_sequences = 10, spliceai = TRUE)
+#' print(seqs_opt)
+#' seq_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae",
+#' spliceai = TRUE)
+#' print(seq_opt)
+
+codon_optimize <- function(
+    seq, optimal_codons = optimal_codons, cf = NULL, codon_table = get_codon_table(),
+    level = 'subfam', method = 'naive', num_sequences = 1, organism = NULL, envname = "cubar_env",
+    attention_type = "original_full", deterministic = TRUE, temperature = 0.2, top_p = 0.95,
+    match_protein = FALSE, spliceai = FALSE){
+  . <- aa_code <- codon <- coef <- freq <- Possible_splice_junction <- NULL
+  Candidate_optimized_sequence <- spliceai_run <- NULL
+  if(!level %in% c('amino_acid', 'subfam')){
+    stop('Possible values for `level` are "amino_acid" and "subfam"')
+  }
+  if(!inherits(seq, 'DNAString')){
+    seq <- Biostrings::DNAString(seq)
+  }
+  tryCatch({
+    protein <- as.character(Biostrings::translate(seq))
+  }, warning = function(w){
+    num_ignored <- length(seq) %% 3
+    message(sprintf(
+      "Warning: due to incomplete codon, the last %d base%s ignored.",
+      num_ignored,
+      ifelse(num_ignored == 1, " was", "s were")))
+  })
+  stop_codon <- strsplit(protein, "")[[1]] == "*"
+  if(sum(stop_codon) != 0){
+    stop('Found termination codon at the following location: ', paste(3*which(stop_codon)-2, collapse = ", "))
+  }
+  c2l <- codon_table[[level]]
+  names(c2l) <- codon_table[['codon']]
+  codons_old <- seq_to_codons(seq)
+  seq_codons_fam <- c2l[codons_old]
+
+  if(method == "naive"){
     optimal_codons <- data.table::as.data.table(optimal_codons)
     # if there are multiple codons for the same amino acid or subfamily,
     # cubar will first rank by the `coef` (if exists) column to keep codons
     # with the largest `coef` value.
     if('coef' %in% colnames(optimal_codons)){
-        optimal_codons <- optimal_codons[order(-optimal_codons$coef)]
+      optimal_codons <- optimal_codons[order(-optimal_codons$coef)]
     }
-    optimal_codons <- unique(optimal_codons, by = level)
-    l2c <- optimal_codons$codon
-    names(l2c) <- optimal_codons[[level]]
+    optimal_codons_u <- unique(optimal_codons, by = level)
+    l2c <- optimal_codons_u$codon
+    names(l2c) <- optimal_codons_u[[level]]
+    codons_new <- l2c[seq_codons_fam]
+    seq_opt <- Biostrings::DNAString(paste0(codons_new, collapse = ''))
+  }
 
-    c2l <- codon_table[[level]]
-    names(c2l) <- codon_table[['codon']]
-    codons_old <- seq_to_codons(seq)
-    codons_new <- l2c[c2l[codons_old]]
+  if(method == "IDT"){
+    if(is.null(cf)){
+      stop('cf is required when method is set to "IDT".')
+    }
+    cf_freq <- data.table::data.table(codon = colnames(cf), freq = colSums(cf))
+    codon_table <- merge(codon_table, cf_freq, by = "codon", all.x = TRUE)
+    codon_table <- codon_table[
+      , .SD[freq > 0.1 * sum(freq)], by = level
+    ]
+    codon_fam_list <- split(codon_table, by = level)
+    sampled_codons_list <- replicate(num_sequences, {
+      sapply(seq_codons_fam, function(fam) {
+        dt <- codon_fam_list[[fam]]
+        dt[sample(.N, 1, prob = freq), codon]
+      })
+    }, simplify = FALSE)
+    seq_opt <- unique(Biostrings::DNAStringSet(
+      unlist(lapply(sampled_codons_list, paste0, collapse = ""))
+    ))
+    # If only 1 sequence is requested, return as DNAString
+    if(num_sequences == 1) {
+      seq_opt <- seq_opt[[1]]
+    }
+  }
 
-    return(Biostrings::DNAString(paste0(codons_new, collapse = '')))
+  if(method == "CodonTransformer"){
+    reticulate::use_condaenv(envname)
+    if(is.null(organism)){
+      stop('Organism ID (integer) or name (string) (e.g., "Escherichia coli general")')
+    }
+    deterministic <- ifelse(deterministic, "True", "False")
+    match_protein <- ifelse(match_protein, "True", "False")
+    Sys.setenv(HF_ENDPOINT = "https://hf-mirror.com")
+    predict_opt_sequence <- function(protein, organism, attention_type, deterministic,
+                                       temperature, top_p, num_sequences, match_protein) {
+      reticulate::py_run_string(sprintf('
+import torch
+from transformers import AutoTokenizer, BigBirdForMaskedLM
+from CodonTransformer.CodonPrediction import predict_dna_sequence
+from CodonTransformer.CodonJupyter import format_model_output
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+tokenizer = AutoTokenizer.from_pretrained("adibvafa/CodonTransformer")
+model = BigBirdForMaskedLM.from_pretrained("adibvafa/CodonTransformer").to(device)
+output = predict_dna_sequence(
+    protein="%s",
+    organism="%s",
+    device=device,
+    tokenizer=tokenizer,
+    model=model,
+    attention_type="%s",
+    deterministic=%s,
+    temperature=%s,
+    top_p=%s,
+    num_sequences=%s,
+    match_protein = %s
+)
+if type(output) is not list:
+    r_output = output.predicted_dna
+else:
+    r_output = list()
+    for i in range(0, len(output)):
+        r_output.append(output[i].predicted_dna)
+  ', protein, organism, attention_type, deterministic, temperature, top_p, num_sequences, match_protein))
+return(reticulate::py$r_output)
+    }
+    predict_dna <- predict_opt_sequence(
+      protein = protein, organism = organism, attention_type = attention_type,
+      deterministic = deterministic, temperature = temperature, top_p = top_p,
+      num_sequences = num_sequences, match_protein = match_protein
+    )
+    if(num_sequences == 1){
+      seq_opt <- Biostrings::DNAString(predict_dna)
+    } else{
+      seq_opt <- unique(Biostrings::DNAStringSet(predict_dna))
+    }
+  }
+
+  if(spliceai == TRUE){
+    reticulate::use_condaenv(envname)
+    spliceai_run <- function(seq){
+      reticulate::py_run_string(sprintf('
+from keras.models import load_model
+from pkg_resources import resource_filename
+from spliceai.utils import one_hot_encode
+import numpy as np
+
+input_sequence = "%s"
+# Replace this with your custom sequence
+
+context = 10000
+paths = ("models/spliceai{}.h5".format(x) for x in range(1, 6))
+models = [load_model(resource_filename("spliceai", x)) for x in paths]
+x = one_hot_encode("N"*(context//2) + input_sequence + "N"*(context//2))[None, :]
+y = np.mean([models[m].predict(x) for m in range(5)], axis=0)
+
+flag = False if np.sum(y[0,:,0] <= 0.5) == 0 else True
+  ', seq))
+      return(reticulate::py$flag)
+    }
+    seq_opt <- data.table::data.table(Candidate_optimized_sequence = as.character(seq_opt))
+    seq_opt[, Possible_splice_junction := vapply(Candidate_optimized_sequence, spliceai_run, logical(1))]
+  }
+  return(seq_opt)
 }
 
 #' Differential codon usage analysis

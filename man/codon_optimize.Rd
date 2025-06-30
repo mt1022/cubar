@@ -36,29 +36,29 @@ codon_optimize(
 Required when method is set to "naive" or "IDT".}
 
 \item{method}{"naive" (default), "IDT" or "CodonTransformer". For which method to estimate optimal codons.
-The "IDT" method derives from the Codon Optimization Tool of INTEGRATED DNA TECHNOLOGIES. 
+The "IDT" method derives from the Codon Optimization Tool of INTEGRATED DNA TECHNOLOGIES.
 The "CodonTransformer" method derives from the tool CodonTransformer.}
 
-\item{num_sequences}{number of different DNA sequences to generate. Default is 1. Required when method is 
-set to "IDT" or "CodonTransformer". When greater than 1, identical duplicate sequences will be retained 
+\item{num_sequences}{number of different DNA sequences to generate. Default is 1. Required when method is
+set to "IDT" or "CodonTransformer". When greater than 1, identical duplicate sequences will be retained
 as a single copy, potentially resulting in a final sequence count that is less than the specified value.
-With the method "CodonTransformer", only works when deterministic=False, and each sequence will be sampled 
+With the method "CodonTransformer", only works when deterministic=False, and each sequence will be sampled
 based on the temperature and top_p parameters.}
 
-\item{organism}{organism ID (integer) or name (string) (e.g., "Escherichia coli general", 
+\item{organism}{organism ID (integer) or name (string) (e.g., "Escherichia coli general",
 must be from ORGANISM2ID in CodonUtils). Required when method is set to "CodonTransformer".}
 
 \item{envname}{the name of an environment when using the method "CodonTransformer" or when "spliceai" is TRUE.
-Maintain consistency with user-defined conda environment name.}
+Maintain consistency with user-defined conda environment name (default: cubar_env).}
 
 \item{attention_type}{type of attention mechanism to use in model - 'block_sparse' for memory efficient
 or 'original_full' (default) for standard attention. Required when method is set to "CodonTransformer".}
 
-\item{deterministic}{if TRUE (default), uses deterministic decoding (picks most likely tokens). 
+\item{deterministic}{if TRUE (default), uses deterministic decoding (picks most likely tokens).
 If "False", samples tokens based on probabilities adjusted by temperature.
 Required when method is set to "CodonTransformer".}
 
-\item{temperature}{controls randomness in non-deterministic mode. Lower values (0.2) are conservative and 
+\item{temperature}{controls randomness in non-deterministic mode. Lower values (0.2) are conservative and
 pick high probability tokens, while higher values (0.8) allow more diversity.
 Must be positive. Required when method is set to "CodonTransformer". Default is 0.2.}
 
@@ -105,7 +105,7 @@ spliceai = TRUE)
 print(seq_opt)
 }
 \references{
-Fallahpour A, Gureghian V, Filion GJ, Lindner AB, Pandi A. CodonTransformer: 
+Fallahpour A, Gureghian V, Filion GJ, Lindner AB, Pandi A. CodonTransformer:
 a multispecies codon optimizer using context-aware neural networks. Nat Commun. 2025 Apr 3;16(1):3205.
 
 Jaganathan K, Panagiotopoulou S K, McRae J F, et al. Predicting splicing from primary sequence

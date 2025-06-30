@@ -43,13 +43,13 @@ print(seq_opt)
 ```
 
 The "codontransformer" method originates from the machine learning tool CodonTransformer, which integrates its predict_rna_Sequence function and uses its pre trained model to optimize sequences.
-```{r}
+```{r, eval=FALSE}
 seq_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae")
 print(seq_opt)
 ```
 
 Cubar can generate several optimized sequences at the same time using the argument `num_sequences` with the method "IDT" and "CodonTransformer". When `num_sequences` is greater than 1, identical duplicate sequences will be retained as a single copy, potentially resulting in a final sequence count less than the specified value.
-```{r}
+```{r, eval=FALSE}
 seqs_opt <- codon_optimize(seq, cf = cf_all, method = "IDT", num_sequences = 10)
 print(seqs_opt)
 seqs_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae",
@@ -58,7 +58,7 @@ print(seqs_opt)
 ```
 
 In addition, cubar integrated the deep learning tool SpliceAI to identify potential splice sites with the argument `spliceai`. When the probability scores of non-splice site for each base are greater than 0.5, it is considered that there are no potential splice junction sites, and the `Possible_splice_junction` in the output is marked as FALSE, otherwise it is marked as TRUE.
-```{r}
+```{r, eval=FALSE}
 seqs_opt <- codon_optimize(seq, cf = cf_all, method = "IDT", num_sequences = 10, spliceai = TRUE)
 print(seqs_opt)
 seq_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae", spliceai = TRUE)

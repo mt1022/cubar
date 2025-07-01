@@ -10,6 +10,7 @@
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or
 #'   \code{create_codon_table}.
 #' @param level "subfam" (default) or "amino_acid". For which level to determine RSCU.
+#' @param incl_stop FALSE (default) or TRUE. Whether to display the RSCU values of the stop codons.
 #' @returns a data.table of codon info. RSCU values are reported in the last column.
 #' @importFrom data.table ':='
 #' @references Sharp PM, Tuohy TM, Mosurski KR. 1986. Codon usage in yeast: cluster analysis clearly differentiates highly and lowly expressed genes. Nucleic Acids Res 14:5125-5143.
@@ -26,13 +27,15 @@
 #' est_rscu(cf_heg)
 #'
 est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_table(),
-                     level = 'subfam'){
+                     level = 'subfam', incl_stop = FALSE){
     aa_code <- cts <- codon <- . <- rscu <- prop <- NULL # due to NSE notes in R CMD check
     if(!level %in% c('amino_acid', 'subfam')){
       stop('Possible values for `level` are "amino_acid" and "subfam"')
     }
     codon_freq <- colSums(cf * weight)
-    codon_table <- codon_table[aa_code != '*']
+    if(!incl_stop){
+      codon_table <- codon_table[aa_code != '*']
+    }
     codon_table[, cts := codon_freq[codon]]
     codon_table[, `:=`(
         prop = (cts + pseudo_cnt) / sum(cts + pseudo_cnt),

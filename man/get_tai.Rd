@@ -4,12 +4,14 @@
 \alias{get_tai}
 \title{Calculate TAI}
 \usage{
-get_tai(cf, trna_w)
+get_tai(cf, trna_w, w_format = "cubar")
 }
 \arguments{
 \item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
 
 \item{trna_w}{tRNA weight for each codon, can be generated with \code{est_trna_weight()}.}
+
+\item{w_format}{tRNA weight values from cubar (default) or the package tAI.}
 }
 \value{
 a named vector of TAI values

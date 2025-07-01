@@ -103,6 +103,7 @@ get_cai <- function(cf, rscu, level = 'subfam'){
 #'
 #' @param cf matrix of codon frequencies as calculated by \code{count_codons()}.
 #' @param trna_w tRNA weight for each codon, can be generated with \code{est_trna_weight()}.
+#' @param w_format "cubar" or "tAI". tRNA weight values from cubar (default) or the package tAI.
 #' @returns a named vector of TAI values
 #' @references dos Reis M, Savva R, Wernisch L. 2004. Solving the riddle of codon usage
 #'   preferences: a test for translational selection. Nucleic Acids Res 32:5036-5044.
@@ -115,12 +116,21 @@ get_cai <- function(cf, rscu, level = 'subfam'){
 #' head(tai)
 #' hist(tai)
 #'
-get_tai <- function(cf, trna_w){
-    # codon frequency per CDS
-    cf <- cf[, trna_w$codon, drop = FALSE]
-
-    # tai
-    tai <- exp(cf %*% matrix(log(trna_w$w)) / rowSums(cf))
+get_tai <- function(cf, trna_w, w_format = "cubar"){
+    
+    if(!w_format %in% c('cubar', 'tAI')){
+      stop('Possible values for `w_format` are "cubar" and "tAI"')
+    }
+    if(w_format == "cubar"){
+      # codon frequency per CDS
+      cf <- cf[, trna_w$codon, drop = FALSE]
+      # tai
+      tai <- exp(cf %*% matrix(log(trna_w$w)) / rowSums(cf))
+    }else if(w_format == "tAI"){
+      codon_table <- get_codon_table()
+      valid_codons <- setdiff(codon_table$codon, c('TAA', 'TAG', 'TGA', 'ATG'))
+      tai <- exp(cf[, valid_codons] %*% matrix(log(trna_w)) / rowSums(cf[, valid_codons]))
+    }
     return(tai[, 1])
 }
 
@@ -241,7 +251,7 @@ get_gc4d <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
 #'
 get_fop <- function(cf, op = NULL, codon_table = get_codon_table(), ...){
   coef <- qvalue <- codon <- optimal <- amino_acid <- N <- . <- NULL
-  excluded_codon <- codon_table[, .(codon = codon, .N), .(by = amino_acid)][(N == 1 | amino_acid == "*"),.(codon)]
+  excluded_codon <- codon_table[, .(codon = codon, .N), by = .(amino_acid)][(N == 1 | amino_acid == "*")]$codon
   cf <- cf[, !colnames(cf) %in% excluded_codon]
   codon_table <- codon_table[!codon %in% excluded_codon,]
   if(is.null(op)){

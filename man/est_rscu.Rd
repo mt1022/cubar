@@ -9,7 +9,8 @@ est_rscu(
   weight = 1,
   pseudo_cnt = 1,
   codon_table = get_codon_table(),
-  level = "subfam"
+  level = "subfam",
+  incl_stop = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ only a few sequences are available for RSCU calculation.}
 \code{create_codon_table}.}
 
 \item{level}{"subfam" (default) or "amino_acid". For which level to determine RSCU.}
+
+\item{incl_stop}{FALSE (default) or TRUE. Whether to display the RSCU values of the stop codons.}
 }
 \value{
 a data.table of codon info. RSCU values are reported in the last column.

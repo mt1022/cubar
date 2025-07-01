@@ -19,7 +19,8 @@
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/non_standard_genetic_code.html">Non-standard genetic code</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/codon_optimization.html">Codon optimization</a></li>
+    <li><a class="dropdown-item" href="../articles/non_standard_genetic_code.html">Non-standard genetic code</a></li>
     <li><a class="dropdown-item" href="../articles/theory.html">Theories behind cubar</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -50,7 +51,8 @@
 <span>  weight <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  pseudo_cnt <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  codon_table <span class="op">=</span> <span class="fu"><a href="get_codon_table.html">get_codon_table</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  level <span class="op">=</span> <span class="st">"subfam"</span></span>
+<span>  level <span class="op">=</span> <span class="st">"subfam"</span>,</span>
+<span>  incl_stop <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -79,6 +81,10 @@ only a few sequences are available for RSCU calculation.</p></dd>
 
 <dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>
 <dd><p>"subfam" (default) or "amino_acid". For which level to determine RSCU.</p></dd>
+
+
+<dt id="arg-incl-stop">incl_stop<a class="anchor" aria-label="anchor" href="#arg-incl-stop"></a></dt>
+<dd><p>FALSE (default) or TRUE. Whether to display the RSCU values of the stop codons.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -34,7 +34,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/non_standard_genetic_code.html">Non-standard genetic code</a></li>
+<li><a class="dropdown-item" href="../articles/codon_optimization.html">Codon optimization</a></li>
+    <li><a class="dropdown-item" href="../articles/non_standard_genetic_code.html">Non-standard genetic code</a></li>
     <li><a class="dropdown-item" href="../articles/theory.html">Theories behind cubar</a></li>
   </ul>
 </li>
@@ -314,6 +315,77 @@ following code:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># path_gtrnadb &lt;- 'http://gtrnadb.ucsc.edu/genomes/eukaryota/Scere3/sacCer3-mature-tRNAs.fa'</span></span>
 <span><span class="co"># yeast_trna &lt;- Biostrings::readRNAStringSet(path_gtrnadb)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="indices-that-require-additional-data">Indices that require additional data<a class="anchor" aria-label="anchor" href="#indices-that-require-additional-data"></a>
+</h4>
+<p>The following table outlines indices those that can be derived
+directly from the sequence and those that require experimental data or
+databases to obtain their codon weights.</p>
+<table class="table">
+<colgroup>
+<col width="20%">
+<col width="29%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th align="center">Indice</th>
+<th align="center">whether need additional data</th>
+<th align="center">Additional data provided</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">ENC</td>
+<td align="center">no</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center">GC</td>
+<td align="center">no</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center">GC3s</td>
+<td align="center">no</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center">GC4d</td>
+<td align="center">no</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center">Fop</td>
+<td align="center">no</td>
+<td align="center">-</td>
+</tr>
+<tr class="even">
+<td align="center">AAU</td>
+<td align="center">no</td>
+<td align="center">-</td>
+</tr>
+<tr class="odd">
+<td align="center">CAI</td>
+<td align="center">yes</td>
+<td align="center">gene expression level of highly expressed genes</td>
+</tr>
+<tr class="even">
+<td align="center">tAI</td>
+<td align="center">yes</td>
+<td align="center">tRNA gene copy number of the species</td>
+</tr>
+<tr class="odd">
+<td align="center">CSCg</td>
+<td align="center">yes</td>
+<td align="center">RNA half life of the species</td>
+</tr>
+<tr class="even">
+<td align="center">Dp</td>
+<td align="center">yes</td>
+<td align="center">tRNA gene copy number of the host genome</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level4">
 <h4 id="correlation-between-indices">Correlation between indices<a class="anchor" aria-label="anchor" href="#correlation-between-indices"></a>

@@ -11,7 +11,10 @@
 #'   \code{create_codon_table}.
 #' @param level "subfam" (default) or "amino_acid". For which level to determine RSCU.
 #' @param incl_stop FALSE (default) or TRUE. Whether to display the RSCU values of the stop codons.
-#' @returns a data.table of codon info. RSCU values are reported in the last column.
+#' @returns a data.table of codon table. RSCU values are reported in the last column.
+#' The columns include single-letter abbreviation of the amino acid, three-letter abbreviation,
+#' codon, codon subfamily, usage frequency in all sequences, usage frequency proportion 
+#' for each subfamily or amino acid, the weight of the CAI index, and RSCU.
 #' @importFrom data.table ':='
 #' @references Sharp PM, Tuohy TM, Mosurski KR. 1986. Codon usage in yeast: cluster analysis clearly differentiates highly and lowly expressed genes. Nucleic Acids Res 14:5125-5143.
 #' @export
@@ -53,7 +56,8 @@ est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_tab
 #'   \code{create_codon_table}.
 #' @param domain The taxonomic domain of interest. "Eukarya" (default), "Bacteria" or "Archaea".
 #' @param plot FALSE (default) or TRUE. Whether to keep the columns required for plotting.
-#' @returns a data.table of codon-anticodon pairing information
+#' @returns a data.table of codon-anticodon pairing information. The columns represent 
+#' the pairing type, codon, corresponding anticodon, and the encoded amino acid when the argument "plot" is FALSE.
 #' @importFrom data.table ':='
 #' @importFrom rlang .data
 #' @export
@@ -206,7 +210,10 @@ plot_ca_pairs <- function(codon_table = get_codon_table(), pairs = pairs){
 #'
 #' \code{extract_trna_gcn} get tRNA gene copy number from GtRNADB
 #' @param trna_seq a fasta file of tRNA sequences from GtRNADB
-#' @returns a table of tRNA gene copy number for each anticodon
+#' @returns a table of tRNA gene copy number for each anticodon. The name of the element 
+#' corresponds to the anticodon and the amino acid it carries. tRNA transporting either 
+#' initiator methionine (iMet) in eukaryotes and archaea, or formylmethionine (fMet) in prokaryotes, 
+#' utilized to initiate translation, is excluded from the count.
 #' @export
 #' @examples
 #' # get tRNA gene copy number for yeast
@@ -231,7 +238,9 @@ extract_trna_gcn <- function(trna_seq){
 #' @param domain The taxonomic domain of interest. "Eukarya" (default), "Bacteria" or "Archaea". 
 #' Specify either the parameter "domain" or "s".
 #' @param s list of non-Waston-Crick pairing panelty. Specify either the parameter "domain" or "s".
-#' @returns data.table of tRNA expression information.
+#' @returns a data.table of tRNA expression information. The columns include single-letter abbreviation of the amino acid, 
+#' three-letter abbreviation, codon, codon subfamily, anticodon, tRNA id, tRNA gene copy number, 
+#' the absolute adaptiveness value (colunm "W"), and the relative adaptiveness value (weight of the tAI index, column "w").
 #' @importFrom data.table ':='
 #' @references dos Reis M, Savva R, Wernisch L. 2004. Solving the riddle of codon usage preferences: a test for translational selection. Nucleic Acids Res 32:5036-5044.
 #' @references Sabi R, Tuller T. 2014. Modelling the efficiency of codon-tRNA interactions based on codon usage bias. DNA Res 21:511-526.
@@ -310,7 +319,10 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(), domain 
 #'   optionally log-transformed (for example, with \code{log1p}). The opposite of ENC will be used by
 #'   default if \code{gene_score} is not provided.
 #' @param fdr false discovery rate used to determine optimal codons.
-#' @returns data.table of optimal codons.
+#' @returns a data.table object of a codon table that indicates the optimality of each codon.
+#' The columns include single-letter abbreviation of the amino acid, three-letter abbreviation, 
+#' codon, codon subfamily, regression coefficient, regression P-value, Benjamini and Hochberg corrected Q-value, 
+#' and indication of whether the codon is optimal.
 #' @importFrom data.table ':='
 #' @export
 #' @examples
@@ -372,7 +384,7 @@ est_optimal_codons <- function(cf, codon_table = get_codon_table(), level = 'sub
 #' @param half_life data.frame of mRNA half life (gene_id & half_life are column names).
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.
 #' @param cor_method method name passed to `cor.test` used for calculating correlation coefficients.
-#' @returns data.table of optimal codons.
+#' @returns a data.table of codons and their CSCs. The columns include codon, codon stability coefficient, and correlation P-value.
 #' @references Presnyak V, Alhusaini N, Chen YH, Martin S, Morris N, Kline N, Olson S, Weinberg D, Baker KE, Graveley BR, et al. 2015. Codon optimality is a major determinant of mRNA stability. Cell 160:1111-1124.
 #' @export
 #' @examples
@@ -403,7 +415,8 @@ est_csc <- function(seqs, half_life, codon_table = get_codon_table(), cor_method
 #' @param cf matrix of codon frequencies as calculated by `count_codons()`.
 #' @param codon_table codon_table a table of genetic code derived from \code{get_codon_table} or
 #'   \code{create_codon_table}.
-#' @returns a data.table with amino acid frequencies of CDSs.
+#' @returns a data.table with amino acid frequencies of CDSs. The columns include three-letter abbreviation of the amino acid, 
+#' single-letter abbreviation, usage frequency of the amino acid in all sequences, and usage frequency proportion.
 #' @export
 #' @examples
 #' # estimate amino acid frequencies of yeast genes

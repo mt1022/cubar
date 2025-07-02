@@ -40,7 +40,7 @@
 #' This option derives from the tool SpliceAI.
 #' @return a DNAString of the optimized coding sequence when num_sequences is set to 1 and spliceai is FALSE,
 #' or a DNAStringSet of the optimized coding sequences when num_sequences is large than 1 and spliceai is FALSE,
-#' or a data.table object, including columns of candidate optimized sequences and columns indicating
+#' or a data.table object, including a column that outlines candidate optimized sequences and a column indicating
 #' the possibility of splice sites when spliceai is TRUE.
 #' @importFrom data.table .SD
 #' @references Fallahpour A, Gureghian V, Filion GJ, Lindner AB, Pandi A. CodonTransformer:

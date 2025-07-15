@@ -16,16 +16,19 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `codon_optimize` function optimizes sequences according to the synonymous optimal codon while also integrating IDT's sequence optimization approach. Additionally, it employs the CodonTransformer method for sequence optimization and utilizes SpliceAI to identify potential splice sites within the optimized sequences. It is essential for users to set up a command-line environment using `conda` or `mamba` prior to applying the CodonTransformer method and SpliceAI in cubar:
+Codon optimization modifies a gene’s coding sequence to enhance protein production without changing the encoded amino acid sequence. The `codon_optimize` function in the `cubar` package provides three strategies for optimizing coding sequences based on the codon usage of the target organism. The first two strategies replace rare codons with more frequently used ones, while the third strategy employs the third-party deep learning model `CodonTransformer` (Fallahpour et al., 2025) to optimize codon usage. Additionally, `cubar` can integrate the state-of-the-art deep learning model `SpliceAI` (Jaganathan et al., 2019) to prevent the unintended introduction of cryptic splice sites in optimized sequences. As both `SpliceAI` and `CodonTransformer` are Python-based, users must manually install these packages. Here we demonstrates how to install them using `conda` (or `mamba`) in a new environment for use in `cubar`.
 
 ```{bash, eval=FALSE}
+# create a new environment named "cubar_env" with both python and r installed
 conda create -n cubar_env python=3.12 r-base blas=*=netlib r-reticulate
+# activate the environment we just created
 conda activate cubar_env
 # install CodonTransformer and SpliceAI
 pip install CodonTransformer tensorflow spliceai
 ```
 
-The default "naive" method involves optimizing the sequence through the use of synonymous codons. Any codon that is not currently optimized will be substituted with an appropriate optimized codon from its respective family or subfamily, if available.
+##### "naive" method
+The default "naive" method simply replaces each codon to the most preferred one in the same family or subfamily.
 ```{r}
 library(cubar)
 
@@ -36,19 +39,23 @@ seq_opt <- codon_optimize(seq, optimal_codons)
 print(seq_opt)
 ```
 
-The "IDT" method originates from the principle of the codon optimization tool of Integrated DNA Technologies. It randomly selects codons based on the frequency of codons at the family or subfamily level, but excludes rare codons below 10%.
+##### "IDT" method
+The "IDT" option implements the method used by the codon optimization tool of Integrated DNA Technologies. Briefly, this method randomly selects synonymous codons from the same family or subfamily based on their relative frequency, but excluding rare codons used below 10% in the target organism.
 ```{r}
 seq_opt <- codon_optimize(seq, cf = cf_all, method = "IDT")
 print(seq_opt)
 ```
 
-The "codontransformer" method originates from the machine learning tool CodonTransformer, which integrates its predict_rna_Sequence function and uses its pre trained model to optimize sequences.
+##### "CodonTransformer" method
+The "CodonTransformer" method optimizes codon usage with the third-party software `CodonTransformer` directly using a wrapper in R. `CodonTransformer` is a deep learning model that can generate coding sequences that show similar codon usage and distribution to host genes with reduced negative cis elements in a wide range of organisms across the tree of life. Please refer to the original study for more details.
+
 ```{r, eval=FALSE}
 seq_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae")
 print(seq_opt)
 ```
 
-Cubar can generate several optimized sequences at the same time using the argument `num_sequences` with the method "IDT" and "CodonTransformer". When `num_sequences` is greater than 1, identical duplicate sequences will be retained as a single copy, potentially resulting in a final sequence count less than the specified value.
+`cubar` can generate several optimized sequences at the same time using the argument `num_sequences` with the method "IDT" and "CodonTransformer". When `num_sequences` is greater than 1, identical duplicate sequences will be retained as a single copy, potentially resulting in a final sequence count less than the specified value.
+
 ```{r, eval=FALSE}
 seqs_opt <- codon_optimize(seq, cf = cf_all, method = "IDT", num_sequences = 10)
 print(seqs_opt)
@@ -57,10 +64,20 @@ num_sequences = 10, deterministic =FALSE, temperature = 0.4)
 print(seqs_opt)
 ```
 
-In addition, cubar integrated the deep learning tool SpliceAI to identify potential splice sites with the argument `spliceai`. When the probability scores of non-splice site for each base are greater than 0.5, it is considered that there are no potential splice junction sites, and the `Possible_splice_junction` in the output is marked as FALSE, otherwise it is marked as TRUE.
+##### Splice site detection
+
+In addition, `cubar` integrated the deep learning tool `SpliceAI` to identify potential splice sites with the argument `spliceai`. When the probabilities of non-splice site for each base are greater than 0.5, it is considered that there are no potential splice junction sites, and the `Possible_splice_junction` in the output is marked as FALSE, otherwise it is marked as TRUE.
 ```{r, eval=FALSE}
 seqs_opt <- codon_optimize(seq, cf = cf_all, method = "IDT", num_sequences = 10, spliceai = TRUE)
 print(seqs_opt)
 seq_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae", spliceai = TRUE)
 print(seq_opt)
 ```
+
+
+##### References
+
+- Fallahpour A, Gureghian V, Filion GJ, Lindner AB, Pandi A. CodonTransformer: a multispecies codon optimizer using context-aware neural networks. Nat Commun. 2025 Apr 3;16(1):3205. doi: 10.1038/s41467-025-58588-7. PMID: 40180930; PMCID: PMC11968976.
+- Jaganathan K, Kyriazopoulou Panagiotopoulou S, McRae JF, Darbandi SF, Knowles D, Li YI, Kosmicki JA, Arbelaez J, Cui W, Schwartz GB, Chow ED, Kanterakis E, Gao H, Kia A, Batzoglou S, Sanders SJ, Farh KK. Predicting Splicing from Primary Sequence with Deep Learning. Cell. 2019 Jan 24;176(3):535-548.e24. doi: 10.1016/j.cell.2018.12.015. Epub 2019 Jan 17. PMID: 30661751.
+- Method used by the IDT codon optimization tool: https://sg.idtdna.com/pages/education/decoded/article/idt-codon-optimization-tool-makes-synthetic-gene-design-easy
+

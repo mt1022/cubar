@@ -68,22 +68,33 @@
 
     
     
-<p>The <code>codon_optimize</code> function optimizes sequences
-according to the synonymous optimal codon while also integrating IDT’s
-sequence optimization approach. Additionally, it employs the
-CodonTransformer method for sequence optimization and utilizes SpliceAI
-to identify potential splice sites within the optimized sequences. It is
-essential for users to set up a command-line environment using
-<code>conda</code> or <code>mamba</code> prior to applying the
-CodonTransformer method and SpliceAI in cubar:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> cubar_env python=3.12 r-base blas=<span class="pp">*</span>=netlib r-reticulate</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">conda</span> activate cubar_env</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># install CodonTransformer and SpliceAI</span></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">pip</span> install CodonTransformer tensorflow spliceai</span></code></pre></div>
-<p>The default “naive” method involves optimizing the sequence through
-the use of synonymous codons. Any codon that is not currently optimized
-will be substituted with an appropriate optimized codon from its
-respective family or subfamily, if available.</p>
+<p>Codon optimization modifies a gene’s coding sequence to enhance
+protein production without changing the encoded amino acid sequence. The
+<code>codon_optimize</code> function in the <code>cubar</code> package
+provides three strategies for optimizing coding sequences based on the
+codon usage of the target organism. The first two strategies replace
+rare codons with more frequently used ones, while the third strategy
+employs the third-party deep learning model
+<code>CodonTransformer</code> (Fallahpour et al., 2025) to optimize
+codon usage. Additionally, <code>cubar</code> can integrate the
+state-of-the-art deep learning model <code>SpliceAI</code> (Jaganathan
+et al., 2019) to prevent the unintended introduction of cryptic splice
+sites in optimized sequences. As both <code>SpliceAI</code> and
+<code>CodonTransformer</code> are Python-based, users must manually
+install these packages. Here we demonstrates how to install them using
+<code>conda</code> (or <code>mamba</code>) in a new environment for use
+in <code>cubar</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># create a new environment named "cubar_env" with both python and r installed</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> cubar_env python=3.12 r-base blas=<span class="pp">*</span>=netlib r-reticulate</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># activate the environment we just created</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">conda</span> activate cubar_env</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co"># install CodonTransformer and SpliceAI</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="ex">pip</span> install CodonTransformer tensorflow spliceai</span></code></pre></div>
+<div class="section level5">
+<h5 id="naive-method">“naive” method<a class="anchor" aria-label="anchor" href="#naive-method"></a>
+</h5>
+<p>The default “naive” method simply replaces each codon to the most
+preferred one in the same family or subfamily.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mt1022/cubar" class="external-link">cubar</a></span><span class="op">)</span></span>
 <span></span>
@@ -95,25 +106,38 @@ respective family or subfamily, if available.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seq_opt</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 9-letter DNAString object</span></span>
 <span><span class="co">#&gt; seq: <span style="color: #000000; background-color: #FFAFAF;">A</span><span style="color: #000000; background-color: #FFD7AF;">T</span><span style="color: #000000; background-color: #AFFFFF;">G</span><span style="color: #000000; background-color: #AFFFAF;">C</span><span style="color: #000000; background-color: #FFD7AF;">T</span><span style="color: #000000; background-color: #FFAFAF;">A</span><span style="color: #000000; background-color: #AFFFAF;">C</span><span style="color: #000000; background-color: #AFFFFF;">G</span><span style="color: #000000; background-color: #FFD7AF;">T</span></span></span></code></pre></div>
-<p>The “IDT” method originates from the principle of the codon
-optimization tool of Integrated DNA Technologies. It randomly selects
-codons based on the frequency of codons at the family or subfamily
-level, but excludes rare codons below 10%.</p>
+</div>
+<div class="section level5">
+<h5 id="idt-method">“IDT” method<a class="anchor" aria-label="anchor" href="#idt-method"></a>
+</h5>
+<p>The “IDT” option implements the method used by the codon optimization
+tool of Integrated DNA Technologies. Briefly, this method randomly
+selects synonymous codons from the same family or subfamily based on
+their relative frequency, but excluding rare codons used below 10% in
+the target organism.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">seq_opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codon_optimize.html">codon_optimize</a></span><span class="op">(</span><span class="va">seq</span>, cf <span class="op">=</span> <span class="va">cf_all</span>, method <span class="op">=</span> <span class="st">"IDT"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seq_opt</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 9-letter DNAString object</span></span>
 <span><span class="co">#&gt; seq: <span style="color: #000000; background-color: #FFAFAF;">A</span><span style="color: #000000; background-color: #FFD7AF;">T</span><span style="color: #000000; background-color: #AFFFFF;">G</span><span style="color: #000000; background-color: #AFFFAF;">C</span><span style="color: #000000; background-color: #FFD7AF;">T</span><span style="color: #000000; background-color: #AFFFFF;">G</span><span style="color: #000000; background-color: #AFFFAF;">C</span><span style="color: #000000; background-color: #AFFFFF;">G</span><span style="color: #000000; background-color: #FFAFAF;">A</span></span></span></code></pre></div>
-<p>The “codontransformer” method originates from the machine learning
-tool CodonTransformer, which integrates its predict_rna_Sequence
-function and uses its pre trained model to optimize sequences.</p>
+</div>
+<div class="section level5">
+<h5 id="codontransformer-method">“CodonTransformer” method<a class="anchor" aria-label="anchor" href="#codontransformer-method"></a>
+</h5>
+<p>The “CodonTransformer” method optimizes codon usage with the
+third-party software <code>CodonTransformer</code> directly using a
+wrapper in R. <code>CodonTransformer</code> is a deep learning model
+that can generate coding sequences that show similar codon usage and
+distribution to host genes with reduced negative cis elements in a wide
+range of organisms across the tree of life. Please refer to the original
+study for more details.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">seq_opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codon_optimize.html">codon_optimize</a></span><span class="op">(</span><span class="va">seq</span>, method <span class="op">=</span> <span class="st">"CodonTransformer"</span>, organism <span class="op">=</span> <span class="st">"Saccharomyces cerevisiae"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seq_opt</span><span class="op">)</span></span></code></pre></div>
-<p>Cubar can generate several optimized sequences at the same time using
-the argument <code>num_sequences</code> with the method “IDT” and
-“CodonTransformer”. When <code>num_sequences</code> is greater than 1,
-identical duplicate sequences will be retained as a single copy,
+<p><code>cubar</code> can generate several optimized sequences at the
+same time using the argument <code>num_sequences</code> with the method
+“IDT” and “CodonTransformer”. When <code>num_sequences</code> is greater
+than 1, identical duplicate sequences will be retained as a single copy,
 potentially resulting in a final sequence count less than the specified
 value.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -122,18 +146,43 @@ value.</p>
 <span><span class="va">seqs_opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codon_optimize.html">codon_optimize</a></span><span class="op">(</span><span class="va">seq</span>, method <span class="op">=</span> <span class="st">"CodonTransformer"</span>, organism <span class="op">=</span> <span class="st">"Saccharomyces cerevisiae"</span>,</span>
 <span>num_sequences <span class="op">=</span> <span class="fl">10</span>, deterministic <span class="op">=</span><span class="cn">FALSE</span>, temperature <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seqs_opt</span><span class="op">)</span></span></code></pre></div>
-<p>In addition, cubar integrated the deep learning tool SpliceAI to
-identify potential splice sites with the argument <code>spliceai</code>.
-When the probability scores of non-splice site for each base are greater
-than 0.5, it is considered that there are no potential splice junction
-sites, and the <code>Possible_splice_junction</code> in the output is
-marked as FALSE, otherwise it is marked as TRUE.</p>
+</div>
+<div class="section level5">
+<h5 id="splice-site-detection">Splice site detection<a class="anchor" aria-label="anchor" href="#splice-site-detection"></a>
+</h5>
+<p>In addition, <code>cubar</code> integrated the deep learning tool
+<code>SpliceAI</code> to identify potential splice sites with the
+argument <code>spliceai</code>. When the probabilities of non-splice
+site for each base are greater than 0.5, it is considered that there are
+no potential splice junction sites, and the
+<code>Possible_splice_junction</code> in the output is marked as FALSE,
+otherwise it is marked as TRUE.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">seqs_opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codon_optimize.html">codon_optimize</a></span><span class="op">(</span><span class="va">seq</span>, cf <span class="op">=</span> <span class="va">cf_all</span>, method <span class="op">=</span> <span class="st">"IDT"</span>, num_sequences <span class="op">=</span> <span class="fl">10</span>, spliceai <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seqs_opt</span><span class="op">)</span></span>
 <span><span class="va">seq_opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codon_optimize.html">codon_optimize</a></span><span class="op">(</span><span class="va">seq</span>, method <span class="op">=</span> <span class="st">"CodonTransformer"</span>, organism <span class="op">=</span> <span class="st">"Saccharomyces cerevisiae"</span>, spliceai <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seq_opt</span><span class="op">)</span></span></code></pre></div>
-  </main>
+</div>
+<div class="section level5">
+<h5 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h5>
+<ul>
+<li>Fallahpour A, Gureghian V, Filion GJ, Lindner AB, Pandi A.
+CodonTransformer: a multispecies codon optimizer using context-aware
+neural networks. Nat Commun. 2025 Apr 3;16(1):3205. doi:
+10.1038/s41467-025-58588-7. PMID: 40180930; PMCID: PMC11968976.</li>
+<li>Jaganathan K, Kyriazopoulou Panagiotopoulou S, McRae JF, Darbandi
+SF, Knowles D, Li YI, Kosmicki JA, Arbelaez J, Cui W, Schwartz GB, Chow
+ED, Kanterakis E, Gao H, Kia A, Batzoglou S, Sanders SJ, Farh KK.
+Predicting Splicing from Primary Sequence with Deep Learning. Cell. 2019
+Jan 24;176(3):535-548.e24. doi: 10.1016/j.cell.2018.12.015. Epub 2019
+Jan 17. PMID: 30661751.</li>
+<li>Method used by the IDT codon optimization tool: <a href="https://sg.idtdna.com/pages/education/decoded/article/idt-codon-optimization-tool-makes-synthetic-gene-design-easy" class="external-link uri">https://sg.idtdna.com/pages/education/decoded/article/idt-codon-optimization-tool-makes-synthetic-gene-design-easy</a>
+</li>
+</ul>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

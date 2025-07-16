@@ -4,7 +4,7 @@
 
 ## revdepcheck results
 
-0 packages depends on this package currently.
+0 packages depend on this package currently.
 
 * OK: 0
 * BROKEN: 0

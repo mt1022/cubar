@@ -114,7 +114,7 @@ ca_pairs <- function(codon_table = get_codon_table(), domain = "Eukarya", plot =
         rbind(wc, ih, gu)
     }, by = .(codon_b1, codon_b2)]
     stop_codons <- codon_table[aa_code == '*', codon]
-    # no pairing to stop codons or anitcodon corresponding to stop codons
+    # no pairing to stop codons or anticodon corresponding to stop codons
     ca_pairs <- ca_pairs[!codon %in% stop_codons]
     ca_pairs <- ca_pairs[!anticodon %in% as.character(rev_comp(stop_codons))]
     # only wobble among synonymous codons and anticodons
@@ -237,7 +237,7 @@ extract_trna_gcn <- function(trna_seq){
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.
 #' @param domain The taxonomic domain of interest. "Eukarya" (default), "Bacteria" or "Archaea". 
 #' Specify either the parameter "domain" or "s".
-#' @param s list of non-Waston-Crick pairing panelty. Specify either the parameter "domain" or "s".
+#' @param s list of non-Watson-Crick pairing penalty. Specify either the parameter "domain" or "s".
 #' @returns a data.table of tRNA expression information. The columns include single-letter abbreviation of the amino acid, 
 #' three-letter abbreviation, codon, codon subfamily, anticodon, tRNA id, tRNA gene copy number, 
 #' the absolute adaptiveness value (colunm "W"), and the relative adaptiveness value (weight of the tAI index, column "w").
@@ -251,7 +251,7 @@ extract_trna_gcn <- function(trna_seq){
 #' print(yeast_trna_w)
 #' 
 est_trna_weight <- function(trna_level, codon_table = get_codon_table(), domain = "Eukarya", s = NULL){
-    anticodon <- aa_code <- ac_level <- penality <- amino_acid <- NULL # due to NSE notes in R CMD check
+    anticodon <- aa_code <- ac_level <- penalty <- amino_acid <- NULL # due to NSE notes in R CMD check
     i.values <- . <- ind <- codon <- trna_id <- type <- W <- i.W <- w <- NULL # due to NSE notes in R CMD check
     
     codon_table1 <- data.table::copy(codon_table)
@@ -287,12 +287,12 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(), domain 
     }
 
     s <- utils::stack(s)
-    ca_pairs[s, penality := i.values, on = .(type = ind)]
+    ca_pairs[s, penalty := i.values, on = .(type = ind)]
     ca_pairs[, trna_id := paste(amino_acid, anticodon, sep = "-")]
     ca_pairs <- ca_pairs[trna_id %in% names(trna_level)]
     ca_pairs[, ac_level := trna_level[trna_id]]
 
-    dtt_W <- ca_pairs[, .(W = sum(ac_level * (1 - penality))), by = .(codon)]
+    dtt_W <- ca_pairs[, .(W = sum(ac_level * (1 - penalty))), by = .(codon)]
     codon_table[dtt_W, W := i.W, on = .(codon)]
     codon_table[, w := W/max(W, na.rm = TRUE)]
 

@@ -9,9 +9,9 @@
 #' @return a named vector of ENC values. The names of the elements correspond to the sequence names.
 #' @export
 #' @references
-#' - Wright F. 1990. The 'effective number of codons' used in a gene. Gene 87:23-29.
-#' - Sun X, Yang Q, Xia X. 2013. An improved implementation of effective number of codons (NC).
-#'   Mol Biol Evol 30:191-196.
+#' Wright F. 1990. The 'effective number of codons' used in a gene. Gene 87:23-29.
+#'
+#' Sun X, Yang Q, Xia X. 2013. An improved implementation of effective number of codons (NC). Mol Biol Evol 30:191-196.
 #' @examples
 #' # estimate ENC of yeast genes
 #' cf_all <- count_codons(yeast_cds)

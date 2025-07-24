@@ -7,14 +7,15 @@
 get_tai(cf, trna_w, w_format = "cubar")
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
+\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}. 
+The start codons of CDSs need to be removed.}
 
 \item{trna_w}{tRNA weight for each codon, can be generated with \code{est_trna_weight()}.}
 
-\item{w_format}{tRNA weight values from cubar (default) or the package tAI.}
+\item{w_format}{"cubar" or "tAI". tRNA weight values from cubar (default) or the package tAI.}
 }
 \value{
-a named vector of TAI values
+a named vector of TAI values. The names of the elements correspond to the sequence names.
 }
 \description{
 \code{get_tai} calculates tRNA Adaptation Index (TAI) of each CDS
@@ -22,8 +23,9 @@ a named vector of TAI values
 \examples{
 # calculate TAI of yeast genes based on genomic tRNA copy numbers
 w <- est_trna_weight(yeast_trna_gcn)
-cf_all <- count_codons(yeast_cds)
-tai <- get_tai(cf_all, w)
+yeast_cds_qc <- check_cds(yeast_cds)
+cf <- count_codons(yeast_cds_qc)
+tai <- get_tai(cf, w)
 head(tai)
 hist(tai)
 

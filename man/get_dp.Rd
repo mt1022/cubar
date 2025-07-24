@@ -28,7 +28,7 @@ the codon subfamily level. Otherwise, the deviation is calculated at the amino a
 "ignore" (default), or "zero" (set codon proportions to 0).}
 }
 \value{
-a named vector of dp values.
+a named vector of dp values. The names of the elements correspond to the sequence names.
 }
 \description{
 \code{get_dp} calculates Deviation from Proportionality of each CDS.

@@ -15,7 +15,7 @@ get_enc(cf, codon_table = get_codon_table(), level = "subfam")
 \item{level}{"subfam" (default) or "amino_acid". For which level to determine ENC.}
 }
 \value{
-vector of ENC values, sequence names are used as vector names
+a named vector of ENC values. The names of the elements correspond to the sequence names.
 }
 \description{
 \code{get_enc} computes ENC of each CDS
@@ -28,7 +28,7 @@ head(enc)
 hist(enc)
 }
 \references{
-- Wright F. 1990. The 'effective number of codons' used in a gene. Gene 87:23-29.
-- Sun X, Yang Q, Xia X. 2013. An improved implementation of effective number of codons (NC).
-  Mol Biol Evol 30:191-196.
+Wright F. 1990. The 'effective number of codons' used in a gene. Gene 87:23-29.
+
+Sun X, Yang Q, Xia X. 2013. An improved implementation of effective number of codons (NC). Mol Biol Evol 30:191-196.
 }

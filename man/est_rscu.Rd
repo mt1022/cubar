@@ -30,7 +30,10 @@ only a few sequences are available for RSCU calculation.}
 \item{incl_stop}{FALSE (default) or TRUE. Whether to display the RSCU values of the stop codons.}
 }
 \value{
-a data.table of codon info. RSCU values are reported in the last column.
+a data.table of codon table. RSCU values are reported in the last column.
+The columns include single-letter abbreviation of the amino acid, three-letter abbreviation,
+codon, codon subfamily, usage frequency in all sequences, usage frequency proportion 
+for each subfamily or amino acid, the weight of the CAI index, and RSCU.
 }
 \description{
 \code{est_rscu} returns the RSCU value of codons

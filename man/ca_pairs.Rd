@@ -15,7 +15,8 @@ ca_pairs(codon_table = get_codon_table(), domain = "Eukarya", plot = FALSE)
 \item{plot}{FALSE (default) or TRUE. Whether to keep the columns required for plotting.}
 }
 \value{
-a data.table of codon-anticodon pairing information
+a data.table of codon-anticodon pairing information. The columns represent 
+the pairing type, codon, corresponding anticodon, and the encoded amino acid when the argument "plot" is FALSE.
 }
 \description{
 \code{ca_pairs} show possible codon-anticodons pairings

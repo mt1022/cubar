@@ -15,7 +15,7 @@ get_gc3s(cf, codon_table = get_codon_table(), level = "subfam")
 GC content at synonymous 3rd codon positions.}
 }
 \value{
-a named vector of GC3s values.
+a named vector of GC3s values. The names of the elements correspond to the sequence names.
 }
 \description{
 Calculate GC content at synonymous 3rd codon positions.

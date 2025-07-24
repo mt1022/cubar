@@ -10,7 +10,7 @@ get_gc(cf)
 \item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
 }
 \value{
-a named vector of GC contents.
+a named vector of GC contents. The names of the elements correspond to the sequence names.
 }
 \description{
 Calculate GC content of the whole sequences.

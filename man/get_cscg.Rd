@@ -12,7 +12,7 @@ get_cscg(cf, csc)
 \item{csc}{table of Codon Stabilization Coefficients as calculated by \code{est_csc()}.}
 }
 \value{
-a named vector of cscg values.
+a named vector of cscg values. The names of the elements correspond to the sequence names.
 }
 \description{
 \code{get_cscg} calculates Mean Codon Stabilization Coefficients of each CDS.

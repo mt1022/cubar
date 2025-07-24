@@ -20,10 +20,12 @@ vector names are anticodons.}
 \item{domain}{The taxonomic domain of interest. "Eukarya" (default), "Bacteria" or "Archaea". 
 Specify either the parameter "domain" or "s".}
 
-\item{s}{list of non-Waston-Crick pairing panelty. Specify either the parameter "domain" or "s".}
+\item{s}{list of non-Watson-Crick pairing penalty. Specify either the parameter "domain" or "s".}
 }
 \value{
-data.table of tRNA expression information.
+a data.table of tRNA expression information. The columns include single-letter abbreviation of the amino acid, 
+three-letter abbreviation, codon, codon subfamily, anticodon, tRNA id, tRNA gene copy number, 
+the absolute adaptiveness value (colunm "W"), and the relative adaptiveness value (weight of the tAI index, column "w").
 }
 \description{
 \code{est_trna_weight} compute the tRNA weight per codon for TAI calculation.

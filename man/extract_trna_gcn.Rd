@@ -10,7 +10,10 @@ extract_trna_gcn(trna_seq)
 \item{trna_seq}{a fasta file of tRNA sequences from GtRNADB}
 }
 \value{
-a table of tRNA gene copy number for each anticodon
+a table of tRNA gene copy number for each anticodon. The name of the element 
+corresponds to the anticodon and the amino acid it carries. tRNA transporting either 
+initiator methionine (iMet) in eukaryotes and archaea, or formylmethionine (fMet) in prokaryotes, 
+utilized to initiate translation, is excluded from the count.
 }
 \description{
 \code{extract_trna_gcn} get tRNA gene copy number from GtRNADB

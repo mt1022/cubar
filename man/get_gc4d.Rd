@@ -16,7 +16,7 @@ get_gc4d(cf, codon_table = get_codon_table(), level = "subfam")
 GC contents at 4-fold degenerate sites.}
 }
 \value{
-a named vector of GC4d values.
+a named vector of GC4d values. The names of the elements correspond to the sequence names.
 }
 \description{
 Calculate GC content at synonymous position of codons (using four-fold degenerate sites only).

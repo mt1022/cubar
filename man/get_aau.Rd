@@ -14,6 +14,7 @@ get_aau(cf, codon_table = get_codon_table())
 }
 \value{
 a matrix of amino acid frequencies for each CDS.
+Each row corresponds to a sequence, and each column represents an amino acid.
 }
 \description{
 Calculate Amino Acid Usage Frequencies of each CDS.

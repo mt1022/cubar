@@ -18,7 +18,7 @@ get_fop(cf, op = NULL, codon_table = get_codon_table(), ...)
 \item{...}{other arguments passed to \code{est_optimal_codons}.}
 }
 \value{
-a named vector of fop values.
+a named vector of fop values. The names of the elements correspond to the sequence names.
 }
 \description{
 \code{get_fop} calculates the fraction of optimal codons (Fop) of each CDS.

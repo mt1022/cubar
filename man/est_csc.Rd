@@ -21,7 +21,7 @@ est_csc(
 \item{cor_method}{method name passed to `cor.test` used for calculating correlation coefficients.}
 }
 \value{
-data.table of optimal codons.
+a data.table of codons and their CSCs. The columns include codon, codon stability coefficient, and correlation P-value.
 }
 \description{
 \code{get_csc} calculate codon occurrence to mRNA stability correlation coefficients (Default to Pearson's).

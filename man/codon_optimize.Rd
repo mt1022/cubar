@@ -76,7 +76,7 @@ This option derives from the tool SpliceAI.}
 \value{
 a DNAString of the optimized coding sequence when num_sequences is set to 1 and spliceai is FALSE,
 or a DNAStringSet of the optimized coding sequences when num_sequences is large than 1 and spliceai is FALSE,
-or a data.table object, including columns of candidate optimized sequences and columns indicating
+or a data.table object, including a column that outlines candidate optimized sequences and a column indicating
 the possibility of splice sites when spliceai is TRUE.
 }
 \description{
@@ -92,17 +92,18 @@ codon_optimize(seq, optimal_codons)
 # method "IDT":
 codon_optimize(seq, cf = cf_all, method = "IDT")
 codon_optimize(seq, cf = cf_all, method = "IDT", num_sequences = 10)
-# method "CodonTransformer":
-seq_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae")
-print(seq_opt)
-seqs_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae",
-num_sequences = 10, deterministic =FALSE, temperature = 0.4)
-print(seqs_opt)
-seqs_opt <- codon_optimize(seq, cf = cf_all, method = "IDT", num_sequences = 10, spliceai = TRUE)
-print(seqs_opt)
-seq_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae",
-spliceai = TRUE)
-print(seq_opt)
+
+# # The following examples requires pre-installation of python package SpliceAI or Codon
+#  # Transformer. see the codon optimization vignette for further details.
+# seq_opt <- codon_optimize(seq, method = "CodonTransformer",
+#     organism = "Saccharomyces cerevisiae")
+# seqs_opt <- codon_optimize(seq, method = "CodonTransformer",
+#     organism = "Saccharomyces cerevisiae", num_sequences = 10,
+#     deterministic =FALSE, temperature = 0.4)
+# seqs_opt <- codon_optimize(seq, cf = cf_all, method = "IDT",
+#     num_sequences = 10, spliceai = TRUE)
+# seq_opt <- codon_optimize(seq, method = "CodonTransformer",
+#     organism = "Saccharomyces cerevisiae", spliceai = TRUE)
 }
 \references{
 Fallahpour A, Gureghian V, Filion GJ, Lindner AB, Pandi A. CodonTransformer:

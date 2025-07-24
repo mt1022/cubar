@@ -13,7 +13,8 @@ est_aau(cf, codon_table = get_codon_table())
 \code{create_codon_table}.}
 }
 \value{
-a data.table with amino acid frequencies of CDSs.
+a data.table with amino acid frequencies of CDSs. The columns include three-letter abbreviation of the amino acid, 
+single-letter abbreviation, usage frequency of the amino acid in all sequences, and usage frequency proportion.
 }
 \description{
 Estimate Amino Acid Usage Frequencies of CDSs.

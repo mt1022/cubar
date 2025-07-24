@@ -15,7 +15,7 @@ generated with \code{est_rscu} or prepared manually.}
 \item{level}{"subfam" (default) or "amino_acid". For which level to determine CAI.}
 }
 \value{
-a named vector of CAI values
+a named vector of CAI values. The names of the elements correspond to the sequence names.
 }
 \description{
 \code{get_cai} calculates Codon Adaptation Index (CAI) of each input CDS

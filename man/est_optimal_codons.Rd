@@ -28,7 +28,10 @@ default if \code{gene_score} is not provided.}
 \item{fdr}{false discovery rate used to determine optimal codons.}
 }
 \value{
-data.table of optimal codons.
+a data.table object of a codon table that indicates the optimality of each codon.
+The columns include single-letter abbreviation of the amino acid, three-letter abbreviation, 
+codon, codon subfamily, regression coefficient, regression P-value, Benjamini and Hochberg corrected Q-value, 
+and indication of whether the codon is optimal.
 }
 \description{
 \code{est_optimal_codons} determine optimal codon of each codon family with binomial regression.

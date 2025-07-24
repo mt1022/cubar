@@ -76,12 +76,14 @@ Specify either the parameter "domain" or "s".</p></dd>
 
 
 <dt id="arg-s">s<a class="anchor" aria-label="anchor" href="#arg-s"></a></dt>
-<dd><p>list of non-Waston-Crick pairing panelty. Specify either the parameter "domain" or "s".</p></dd>
+<dd><p>list of non-Watson-Crick pairing penalty. Specify either the parameter "domain" or "s".</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>data.table of tRNA expression information.</p>
+    <p>a data.table of tRNA expression information. The columns include single-letter abbreviation of the amino acid,
+three-letter abbreviation, codon, codon subfamily, anticodon, tRNA id, tRNA gene copy number,
+the absolute adaptiveness value (colunm "W"), and the relative adaptiveness value (weight of the tAI index, column "w").</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

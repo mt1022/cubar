@@ -156,7 +156,7 @@ This option derives from the tool SpliceAI.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>a DNAString of the optimized coding sequence when num_sequences is set to 1 and spliceai is FALSE,
 or a DNAStringSet of the optimized coding sequences when num_sequences is large than 1 and spliceai is FALSE,
-or a data.table object, including columns of candidate optimized sequences and columns indicating
+or a data.table object, including a column that outlines candidate optimized sequences and a column indicating
 the possibility of splice sites when spliceai is TRUE.</p>
     </div>
     <div class="section level2">
@@ -191,25 +191,18 @@ a multispecies codon optimizer using context-aware neural networks. Nat Commun. 
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6]     9 <span style="color: #000000; background-color: #FFAFAF;">A</span><span style="color: #000000; background-color: #FFD7AF;">T</span><span style="color: #000000; background-color: #AFFFFF;">G</span><span style="color: #000000; background-color: #AFFFAF;">C</span><span style="color: #000000; background-color: #FFD7AF;">T</span><span style="color: #000000; background-color: #AFFFFF;">G</span><span style="color: #000000; background-color: #AFFFAF;">C</span><span style="color: #000000; background-color: #AFFFFF;">G</span><span style="color: #000000; background-color: #FFD7AF;">T</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [7]     9 <span style="color: #000000; background-color: #FFAFAF;">A</span><span style="color: #000000; background-color: #FFD7AF;">T</span><span style="color: #000000; background-color: #AFFFFF;">G</span><span style="color: #000000; background-color: #AFFFAF;">C</span><span style="color: #000000; background-color: #FFD7AF;">TT</span><span style="color: #000000; background-color: #AFFFAF;">C</span><span style="color: #000000; background-color: #AFFFFF;">G</span><span style="color: #000000; background-color: #AFFFAF;">C</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [8]     9 <span style="color: #000000; background-color: #FFAFAF;">A</span><span style="color: #000000; background-color: #FFD7AF;">T</span><span style="color: #000000; background-color: #AFFFFF;">G</span><span style="color: #000000; background-color: #AFFFAF;">C</span><span style="color: #000000; background-color: #FFD7AF;">TT</span><span style="color: #000000; background-color: #AFFFAF;">C</span><span style="color: #000000; background-color: #AFFFFF;">G</span><span style="color: #000000; background-color: #FFAFAF;">A</span></span>
-<span class="r-in"><span><span class="co"># method "CodonTransformer":</span></span></span>
-<span class="r-in"><span><span class="va">seq_opt</span> <span class="op">&lt;-</span> <span class="fu">codon_optimize</span><span class="op">(</span><span class="va">seq</span>, method <span class="op">=</span> <span class="st">"CodonTransformer"</span>, organism <span class="op">=</span> <span class="st">"Saccharomyces cerevisiae"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in reticulate::use_condaenv(envname):</span> Unable to locate conda environment 'cubar_env'.</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seq_opt</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'seq_opt' not found</span>
-<span class="r-in"><span><span class="va">seqs_opt</span> <span class="op">&lt;-</span> <span class="fu">codon_optimize</span><span class="op">(</span><span class="va">seq</span>, method <span class="op">=</span> <span class="st">"CodonTransformer"</span>, organism <span class="op">=</span> <span class="st">"Saccharomyces cerevisiae"</span>,</span></span>
-<span class="r-in"><span>num_sequences <span class="op">=</span> <span class="fl">10</span>, deterministic <span class="op">=</span><span class="cn">FALSE</span>, temperature <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in reticulate::use_condaenv(envname):</span> Unable to locate conda environment 'cubar_env'.</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seqs_opt</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'seqs_opt' not found</span>
-<span class="r-in"><span><span class="va">seqs_opt</span> <span class="op">&lt;-</span> <span class="fu">codon_optimize</span><span class="op">(</span><span class="va">seq</span>, cf <span class="op">=</span> <span class="va">cf_all</span>, method <span class="op">=</span> <span class="st">"IDT"</span>, num_sequences <span class="op">=</span> <span class="fl">10</span>, spliceai <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in reticulate::use_condaenv(envname):</span> Unable to locate conda environment 'cubar_env'.</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seqs_opt</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'seqs_opt' not found</span>
-<span class="r-in"><span><span class="va">seq_opt</span> <span class="op">&lt;-</span> <span class="fu">codon_optimize</span><span class="op">(</span><span class="va">seq</span>, method <span class="op">=</span> <span class="st">"CodonTransformer"</span>, organism <span class="op">=</span> <span class="st">"Saccharomyces cerevisiae"</span>,</span></span>
-<span class="r-in"><span>spliceai <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in reticulate::use_condaenv(envname):</span> Unable to locate conda environment 'cubar_env'.</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seq_opt</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'seq_opt' not found</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># # The following examples requires pre-installation of python package SpliceAI or Codon</span></span></span>
+<span class="r-in"><span><span class="co">#  # Transformer. see the codon optimization vignette for further details.</span></span></span>
+<span class="r-in"><span><span class="co"># seq_opt &lt;- codon_optimize(seq, method = "CodonTransformer",</span></span></span>
+<span class="r-in"><span><span class="co">#     organism = "Saccharomyces cerevisiae")</span></span></span>
+<span class="r-in"><span><span class="co"># seqs_opt &lt;- codon_optimize(seq, method = "CodonTransformer",</span></span></span>
+<span class="r-in"><span><span class="co">#     organism = "Saccharomyces cerevisiae", num_sequences = 10,</span></span></span>
+<span class="r-in"><span><span class="co">#     deterministic =FALSE, temperature = 0.4)</span></span></span>
+<span class="r-in"><span><span class="co"># seqs_opt &lt;- codon_optimize(seq, cf = cf_all, method = "IDT",</span></span></span>
+<span class="r-in"><span><span class="co">#     num_sequences = 10, spliceai = TRUE)</span></span></span>
+<span class="r-in"><span><span class="co"># seq_opt &lt;- codon_optimize(seq, method = "CodonTransformer",</span></span></span>
+<span class="r-in"><span><span class="co">#     organism = "Saccharomyces cerevisiae", spliceai = TRUE)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

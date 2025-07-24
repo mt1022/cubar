@@ -54,7 +54,8 @@
 
 
 <dl><dt id="arg-cf">cf<a class="anchor" aria-label="anchor" href="#arg-cf"></a></dt>
-<dd><p>matrix of codon frequencies as calculated by <code><a href="count_codons.html">count_codons()</a></code>.</p></dd>
+<dd><p>matrix of codon frequencies as calculated by <code><a href="count_codons.html">count_codons()</a></code>.
+The start codons of CDSs need to be removed.</p></dd>
 
 
 <dt id="arg-trna-w">trna_w<a class="anchor" aria-label="anchor" href="#arg-trna-w"></a></dt>
@@ -62,12 +63,12 @@
 
 
 <dt id="arg-w-format">w_format<a class="anchor" aria-label="anchor" href="#arg-w-format"></a></dt>
-<dd><p>tRNA weight values from cubar (default) or the package tAI.</p></dd>
+<dd><p>"cubar" or "tAI". tRNA weight values from cubar (default) or the package tAI.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a named vector of TAI values</p>
+    <p>a named vector of TAI values. The names of the elements correspond to the sequence names.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -79,11 +80,12 @@
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># calculate TAI of yeast genes based on genomic tRNA copy numbers</span></span></span>
 <span class="r-in"><span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="est_trna_weight.html">est_trna_weight</a></span><span class="op">(</span><span class="va">yeast_trna_gcn</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">cf_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="count_codons.html">count_codons</a></span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tai</span> <span class="op">&lt;-</span> <span class="fu">get_tai</span><span class="op">(</span><span class="va">cf_all</span>, <span class="va">w</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">yeast_cds_qc</span> <span class="op">&lt;-</span> <span class="fu"><a href="check_cds.html">check_cds</a></span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cf</span> <span class="op">&lt;-</span> <span class="fu"><a href="count_codons.html">count_codons</a></span><span class="op">(</span><span class="va">yeast_cds_qc</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tai</span> <span class="op">&lt;-</span> <span class="fu">get_tai</span><span class="op">(</span><span class="va">cf</span>, <span class="va">w</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tai</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   YPL071C   YLL050C   YMR172W   YOR185C   YLL032C   YBR225W </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.2950724 0.4451196 0.2818316 0.3573874 0.3149884 0.3092542 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.2950325 0.4463443 0.2818053 0.3576659 0.3150053 0.3092631 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">tai</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="get_tai-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>

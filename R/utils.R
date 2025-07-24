@@ -58,17 +58,18 @@
 #' # method "IDT":
 #' codon_optimize(seq, cf = cf_all, method = "IDT")
 #' codon_optimize(seq, cf = cf_all, method = "IDT", num_sequences = 10)
-#' # method "CodonTransformer":
-#' seq_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae")
-#' print(seq_opt)
-#' seqs_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae",
-#' num_sequences = 10, deterministic =FALSE, temperature = 0.4)
-#' print(seqs_opt)
-#' seqs_opt <- codon_optimize(seq, cf = cf_all, method = "IDT", num_sequences = 10, spliceai = TRUE)
-#' print(seqs_opt)
-#' seq_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae",
-#' spliceai = TRUE)
-#' print(seq_opt)
+#'
+#' # # The following examples requires pre-installation of python package SpliceAI or Codon
+#' #  # Transformer. see the codon optimization vignette for further details.
+#' # seq_opt <- codon_optimize(seq, method = "CodonTransformer",
+#' #     organism = "Saccharomyces cerevisiae")
+#' # seqs_opt <- codon_optimize(seq, method = "CodonTransformer",
+#' #     organism = "Saccharomyces cerevisiae", num_sequences = 10,
+#' #     deterministic =FALSE, temperature = 0.4)
+#' # seqs_opt <- codon_optimize(seq, cf = cf_all, method = "IDT",
+#' #     num_sequences = 10, spliceai = TRUE)
+#' # seq_opt <- codon_optimize(seq, method = "CodonTransformer",
+#' #     organism = "Saccharomyces cerevisiae", spliceai = TRUE)
 
 codon_optimize <- function(
     seq, optimal_codons = optimal_codons, cf = NULL, codon_table = get_codon_table(),

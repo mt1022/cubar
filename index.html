@@ -58,107 +58,267 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="cubar">cubar<a class="anchor" aria-label="anchor" href="#cubar"></a>
 </h1></div>
+<blockquote>
+<p><strong>Comprehensive Codon Usage Bias Analysis in R</strong></p>
+</blockquote>
 <!-- badges: start -->
 
+<!-- badges: end -->
+<div class="section level2">
+<h2 id="table-of-contents">Table of Contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
+</h2>
+<ul>
+<li>
+<a href="#cubar">cubar</a>
+<ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#overview">Overview</a></li>
+<li>
+<a href="#features">Features</a>
+<ul>
+<li><a href="#id_-codon-level-analysis">🧬 Codon-Level Analysis</a></li>
+<li><a href="#id_-gene-level-metrics">📊 Gene-Level Metrics</a></li>
+<li><a href="#id_%EF%B8%8F-utilities--tools">🛠️ Utilities &amp; Tools</a></li>
+</ul>
+</li>
+<li><a href="#why-choose-cubar">Why Choose cubar?</a></li>
+<li>
+<a href="#installation">Installation</a>
+<ul>
+<li><a href="#stable-release-recommended">Stable Release (Recommended)</a></li>
+<li><a href="#development-version">Development Version</a></li>
+<li><a href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+<li>
+<a href="#documentation--tutorials">Documentation &amp; Tutorials</a>
+<ul>
+<li><a href="#id_-getting-started">🎯 Getting Started</a></li>
+<li><a href="#id_-advanced-topics">📚 Advanced Topics</a></li>
+</ul>
+</li>
+<li><a href="#example-workflow">Example Workflow</a></li>
+<li><a href="#id_-getting-help">🆘 Getting Help</a></li>
+<li><a href="#related-packages">Related Packages</a></li>
+<li><a href="#license">License</a></li>
+<li><a href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p>Codon usage bias refers to the non-uniform usage of synonymous codons (codons that encode the same amino acid) across different organisms, genes, and functional categories. <strong>cubar</strong> is a comprehensive R package for analyzing codon usage bias in coding sequences. It provides a unified framework for calculating established codon usage metrics, conducting sliding-window analyses or differential usage analyses, and optimizing sequences for heterologous expression.</p>
+</div>
+<div class="section level2">
+<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
+</h2>
 <div class="section level3">
-<h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+<h3 id="id_-codon-level-analysis">🧬 Codon-Level Analysis<a class="anchor" aria-label="anchor" href="#id_-codon-level-analysis"></a>
 </h3>
-<p>cubar is a package for codon usage bias analysis in R. Main features are as follows:</p>
 <ul>
-<li>Codon level analyses
+<li>
+<strong>RSCU calculation</strong>: Relative synonymous codon usage analysis</li>
+<li>
+<strong>Amino acid usage</strong>: Frequency of each amino acid in sequences</li>
+<li>
+<strong>Codon weights</strong>: Calculate weights based on gene expression, tRNA availability, and mRNA stability</li>
+<li>
+<strong>Optimal codon inference</strong>: Machine learning-based identification of optimal codons</li>
+<li>
+<strong>Codon-anticodon visualization</strong>: Visualization of codon-tRNA pairing relationships</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="id_-gene-level-metrics">📊 Gene-Level Metrics<a class="anchor" aria-label="anchor" href="#id_-gene-level-metrics"></a>
+</h3>
 <ul>
-<li>Calculate codon weights based on gene expression, tRNA availability, and mRNA stability;</li>
-<li>Calculate relative synonymous codon usage (RSCU);</li>
-<li>Machine learning-based inference of optimal codons;</li>
-<li>Visualization codon-anticodon pairing relationships;</li>
+<li>
+<strong>Codon frequency tabulation</strong>: Count codon occurrences across sequences</li>
+<li>
+<strong>CAI (Codon Adaptation Index)</strong>: Measure similarity to highly expressed genes</li>
+<li>
+<strong>ENC (Effective Number of Codons)</strong>: Assess codon usage bias strength</li>
+<li>
+<strong>Fop (Fraction of Optimal codons)</strong>: Calculate proportion of optimal codons</li>
+<li>
+<strong>tAI (tRNA Adaptation Index)</strong>: Match codon usage to tRNA availability</li>
+<li>
+<strong>CSCg (Codon Stabilization Coefficients)</strong>: Quantify mRNA stability effects</li>
+<li>
+<strong>Dp (Deviation from Proportionality)</strong>: Analyze virus-host codon usage relationships</li>
+<li>
+<strong>GC content metrics</strong>: Overall GC, GC3s (3rd codon positions), GC4d (4-fold degenerate sites)</li>
 </ul>
-</li>
-<li>Gene level analyses
+</div>
+<div class="section level3">
+<h3 id="id_️-utilities--tools">🛠️ Utilities &amp; Tools<a class="anchor" aria-label="anchor" href="#id_%EF%B8%8F-utilities--tools"></a>
+</h3>
 <ul>
-<li>Tabulate codon frequency of each coding sequence;</li>
-<li>Measure codon usage similarity to highly expressed genes with Codon Adaptation Index (CAI);</li>
-<li>Quantify the influence of codon usage on mRNA stability with Mean Codon Stabilization Coefficients (CSCg);</li>
-<li>Measure codon usage bias with the nonparametric index Effective number of codons (ENC);</li>
-<li>Measure the fraction of pre-determined optimal codons (Fop) in each sequence;</li>
-<li>Overall GC content (GC) or that of 3rd synonymous positions (GC3s) or 4-fold degenerate sites (GC4d);</li>
-<li>Quantify whether codon usage matches tRNA availability using tRNA Adaptation Index (tAI);</li>
-<li>Measure the deviation from proportionality (Dp) of viral synonymous codon usage from host tRNA supply;</li>
+<li>
+<strong>Sliding window analysis</strong>: Positional codon usage patterns within genes</li>
+<li>
+<strong>Sequence optimization</strong>: Redesign sequences for optimal expression</li>
+<li>
+<strong>Differential codon usage</strong>: Statistical comparison between sequence sets</li>
+<li>
+<strong>Quality control</strong>: Comprehensive CDS validation and preprocessing</li>
 </ul>
-</li>
-<li>Utilities
+</div>
+</div>
+<div class="section level2">
+<h2 id="why-choose-cubar">Why Choose cubar?<a class="anchor" aria-label="anchor" href="#why-choose-cubar"></a>
+</h2>
 <ul>
-<li>Sliding window analysis of codon usage within a coding sequence;</li>
-<li>Optimize codon usage based on optimal codons for heterologous expression;</li>
-<li>Test differential usage of codons between two sets of sequences;</li>
+<li>
+<strong>🚀 High Performance</strong>: Process large datasets (&gt;100,000 sequences) efficiently using optimized <code>Biostrings</code> and <code>data.table</code> backends</li>
+<li>
+<strong>🧬 Flexible Genetic Codes</strong>: Support for all NCBI genetic codes plus custom genetic code tables</li>
+<li>
+<strong>🔗 R Ecosystem Integration</strong>: Seamlessly integrate with other bioinformatics and data analysis packages</li>
+<li>
+<strong>📚 Comprehensive Documentation</strong>: Extensive tutorials, examples, and theoretical background</li>
+<li>
+<strong>🔬 Research Ready</strong>: Implements established metrics with proper citations and validation</li>
 </ul>
-</li>
-</ul>
-<p>Main advantages of <code>cubar</code> are as follows: - Process large datasets (&gt;10,0000 sequences) efficiently using the <code>Biostrings</code> and <code>data.table</code> backends; - Support genetic codes cataloged by <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi" class="external-link">NCBI</a> as well as custom ones; - Integrate with other data analysis or bioinformatic packages in the R ecosystem;</p>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<div class="section level3">
+<h3 id="stable-release-recommended">Stable Release (Recommended)<a class="anchor" aria-label="anchor" href="#stable-release-recommended"></a>
+</h3>
+<p>Install the latest stable version from CRAN:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"cubar"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="development-version">Development Version<a class="anchor" aria-label="anchor" href="#development-version"></a>
+</h3>
+<p>Install the latest development version from GitHub:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Install devtools if not already installed</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Install cubar from GitHub</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"mt1022/cubar"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
 </h3>
-<p>Depends</p>
-<ul>
-<li>
-<code>R</code> (&gt;= 4.1.0)</li>
-</ul>
-<p>Imports</p>
-<ul>
-<li>
-<code>Biostrings</code> (&gt;= 2.60.0),</li>
-<li>
-<code>IRanges</code> (&gt;= 2.34.0),</li>
-<li>
-<code>data.table</code> (&gt;= 1.14.0),</li>
-<li>
-<code>ggplot2</code> (&gt;= 3.3.5),</li>
-<li>
-<code>rlang</code> (&gt;= 0.4.11)</li>
-</ul>
+<p><strong>System Requirements:</strong> - R (≥ 4.1.0)</p>
+<p><strong>Required Packages:</strong> - <code>Biostrings</code> (≥ 2.60.0) - Bioconductor package for sequence manipulation - <code>IRanges</code> (≥ 2.34.0) - Bioconductor infrastructure for range operations<br>
+- <code>data.table</code> (≥ 1.14.0) - High-performance data manipulation - <code>ggplot2</code> (≥ 3.3.5) - Data visualization - <code>rlang</code> (≥ 0.4.11) - Language tools</p>
+<p><strong>Note:</strong> Bioconductor packages will be installed automatically, but you may need to update your R installation if you encounter compatibility issues.</p>
 </div>
-<div class="section level3">
-<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h3>
-<p>The latest release of <code>cubar</code> can be installed with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"cubar"</span><span class="op">)</span></span></code></pre></div>
-<p>The latest developmental version of <code>cubar</code> can be installed with:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"mt1022/cubar"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="documentation--tutorials">Documentation &amp; Tutorials<a class="anchor" aria-label="anchor" href="#documentation--tutorials"></a>
+</h2>
+<p>📖 <strong>Complete documentation</strong> is available within R (<code>?function_name</code>) and on our <a href="https://mt1022.github.io/cubar/"><strong>package website</strong></a>.</p>
 <div class="section level3">
-<h3 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
-</h3>
-<p>Documentation can be found within R (by typing <code>?function_name</code>). The following tutorials are available from our <a href="https://mt1022.github.io/cubar/">website</a>:</p>
-<ul>
-<li>
-<a href="https://mt1022.github.io/cubar/articles/cubar.html">Get Started</a>: A brief introduction demonstrating the basic usage of <code>cubar</code>;</li>
-<li>
-<a href="https://mt1022.github.io/cubar/articles/non_standard_genetic_code.html">Non-standard Genetic Code</a>: How to use <code>cubar</code> with non-standard genetic codes;</li>
-<li>
-<a href="https://mt1022.github.io/cubar/articles/theory.html">Theories behind cubar</a>: The mathematical details behind the core functions in <code>cubar</code>;</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
-</h3>
-<p>Please use GitHub <a href="https://github.com/mt1022/cubar/issues" class="external-link">issues</a> for bug reports, questions, and feature requests.</p>
-</div>
-<div class="section level3">
-<h3 id="suggests">Suggests<a class="anchor" aria-label="anchor" href="#suggests"></a>
+<h3 id="id_-getting-started">🎯 Getting Started<a class="anchor" aria-label="anchor" href="#id_-getting-started"></a>
 </h3>
 <ul>
 <li>
-<a href="https://bioconductor.org/packages/release/bioc/html/Biostrings.html" class="external-link">Biostrings</a> for sequence input/output and manipulation;</li>
+<a href="https://mt1022.github.io/cubar/articles/cubar.html"><strong>Introduction to cubar</strong></a> - Basic usage and core functionality</li>
 <li>
-<a href="https://github.com/dosorio/Peptides" class="external-link">Peptides</a> for peptide- or protein-related indices;</li>
+<a href="https://mt1022.github.io/cubar/articles/non_standard_genetic_code.html"><strong>Non-standard Genetic Codes</strong></a> - Working with alternative genetic codes</li>
+<li>
+<a href="https://mt1022.github.io/cubar/articles/codon_optimization.html"><strong>Codon Optimization</strong></a> - Sequence optimization strategies</li>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
+<h3 id="id_-advanced-topics">📚 Advanced Topics<a class="anchor" aria-label="anchor" href="#id_-advanced-topics"></a>
 </h3>
-<p>GitHub Copilot was used to suggest code snippets in the development of this package. Thanks the <a href="https://education.github.com/" class="external-link">GitHub Education</a> teacher program for providing free access to GitHub Copilot.</p>
+<ul>
+<li>
+<a href="https://mt1022.github.io/cubar/articles/theory.html"><strong>Mathematical Foundations</strong></a> - Detailed theory behind the metrics</li>
+<li>
+<a href="https://mt1022.github.io/cubar/reference/"><strong>Function Reference</strong></a> - Complete function documentation</li>
+</ul>
+</div>
+</div>
+<div class="section level2">
+<h2 id="example-workflow">Example Workflow<a class="anchor" aria-label="anchor" href="#example-workflow"></a>
+</h2>
+<p>Here’s a typical analysis workflow demonstrating key functionality:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mt1022/cubar" class="external-link">cubar</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 1. Load and quality-check sequences</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">)</span></span>
+<span><span class="va">clean_cds</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/check_cds.html">check_cds</a></span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 2. Calculate codon frequencies</span></span>
+<span><span class="va">codon_freq</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/count_codons.html">count_codons</a></span><span class="op">(</span><span class="va">clean_cds</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 3. Calculate multiple metrics</span></span>
+<span><span class="va">enc</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_enc.html">get_enc</a></span><span class="op">(</span><span class="va">codon_freq</span><span class="op">)</span>           <span class="co"># Effective number of codons</span></span>
+<span><span class="va">gc3s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_gc3s.html">get_gc3s</a></span><span class="op">(</span><span class="va">codon_freq</span><span class="op">)</span>         <span class="co"># GC content at 3rd positions</span></span>
+<span></span>
+<span><span class="co"># 4. Analyze highly expressed genes</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">)</span></span>
+<span><span class="va">yeast_exp</span> <span class="op">&lt;-</span> <span class="va">yeast_exp</span><span class="op">[</span><span class="va">yeast_exp</span><span class="op">$</span><span class="va">gene_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">codon_freq</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">high_expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">yeast_exp</span><span class="op">$</span><span class="va">fpkm</span><span class="op">)</span>, <span class="op">]</span>, <span class="fl">500</span><span class="op">)</span></span>
+<span><span class="va">rscu_high</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/est_rscu.html">est_rscu</a></span><span class="op">(</span><span class="va">codon_freq</span><span class="op">[</span><span class="va">high_expr</span><span class="op">$</span><span class="va">gene_id</span>, <span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">cai</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_cai.html">get_cai</a></span><span class="op">(</span><span class="va">codon_freq</span>, <span class="va">rscu_high</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 5. Visualize results</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ENC <span class="op">=</span> <span class="va">enc</span>, CAI <span class="op">=</span> <span class="va">cai</span>, GC3s <span class="op">=</span> <span class="va">gc3s</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">GC3s</span>, x <span class="op">=</span> <span class="va">ENC</span>, y <span class="op">=</span> <span class="va">CAI</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_color_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Codon Usage Bias Relationships"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"Effective Number of Codons"</span>, y <span class="op">=</span> <span class="st">"Codon Adaptation Index"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="id_-getting-help">🆘 Getting Help<a class="anchor" aria-label="anchor" href="#id_-getting-help"></a>
+</h2>
+<ul>
+<li>
+<strong>📋 GitHub Issues</strong>: <a href="https://github.com/mt1022/cubar/issues" class="external-link">Report bugs, request features, or ask questions</a>
+</li>
+<li>
+<strong>📖 Documentation</strong>: Check function help (<code>?function_name</code>) and <a href="https://mt1022.github.io/cubar/">online docs</a>
+</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="related-packages">Related Packages<a class="anchor" aria-label="anchor" href="#related-packages"></a>
+</h2>
+<p>For complementary analysis, consider these R packages:</p>
+<ul>
+<li>
+<strong><a href="https://bioconductor.org/packages/release/bioc/html/Biostrings.html" class="external-link">Biostrings</a></strong> - Sequence input/output and manipulation</li>
+<li>
+<strong><a href="https://github.com/dosorio/Peptides" class="external-link">Peptides</a></strong> - Peptide and protein property calculations</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
+</h2>
+<p>This project is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</p>
+</div>
+<div class="section level2">
+<h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
+</h2>
+<ul>
+<li>
+<strong>GitHub Copilot</strong> was used to suggest code snippets during development</li>
+<li>
+<strong><a href="https://education.github.com/" class="external-link">GitHub Education</a></strong> for providing free access to development tools</li>
+<li>The R and Bioconductor communities for excellent foundational packages</li>
+<li>Contributors and users who have provided feedback and improvements</li>
+</ul>
+<hr>
+<div align="center">
+<p><strong><a href="https://mt1022.github.io/cubar/">📚 Documentation</a> • <a href="https://github.com/mt1022/cubar/issues" class="external-link">🐛 Report Bug</a> • <a href="https://github.com/mt1022/cubar/issues" class="external-link">💡 Request Feature</a></strong></p>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

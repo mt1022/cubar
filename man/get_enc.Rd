@@ -2,30 +2,38 @@
 % Please edit documentation in R/gene_index.R
 \name{get_enc}
 \alias{get_enc}
-\title{Calculate ENC}
+\title{Calculate effective number of codons (ENC)}
 \usage{
 get_enc(cf, codon_table = get_codon_table(), level = "subfam")
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
+\item{cf}{A matrix of codon frequencies as calculated by \code{count_codons()}.
+Rows represent sequences and columns represent codons.}
 
-\item{codon_table}{codon_table a table of genetic code derived from \code{get_codon_table} or
-\code{create_codon_table}.}
+\item{codon_table}{A codon table defining the genetic code, derived from 
+\code{get_codon_table()} or \code{create_codon_table()}.}
 
-\item{level}{"subfam" (default) or "amino_acid". For which level to determine ENC.}
+\item{level}{Character string specifying the analysis level: "subfam" (default, 
+analyzes codon subfamilies) or "amino_acid" (analyzes at amino acid level).}
 }
 \value{
-a named vector of ENC values. The names of the elements correspond to the sequence names.
+A named numeric vector of ENC values. Names correspond to sequence 
+  identifiers from the input matrix. ENC values typically range from 20 
+  (maximum bias) to 61 (uniform usage).
 }
 \description{
-\code{get_enc} computes ENC of each CDS
+\code{get_enc} computes the effective number of codons (ENC) for each coding 
+sequence, which quantifies the degree of codon usage bias. Lower ENC values 
+indicate stronger bias (fewer codons are used), while higher values indicate 
+more uniform codon usage.
 }
 \examples{
-# estimate ENC of yeast genes
+# Calculate ENC for yeast genes
 cf_all <- count_codons(yeast_cds)
 enc <- get_enc(cf_all)
 head(enc)
-hist(enc)
+hist(enc, main = "Distribution of ENC values")
+
 }
 \references{
 Wright F. 1990. The 'effective number of codons' used in a gene. Gene 87:23-29.

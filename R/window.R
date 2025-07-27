@@ -1,16 +1,26 @@
-#' slide window interval generator
+#' Generate sliding window intervals
 #'
-#' \code{slide} generates a data.table with start, center, and end columns
-#' for a sliding window analysis.
+#' \code{slide} creates a data.table defining sliding window positions for 
+#' analyzing sequences or data along a continuous range. This function provides 
+#' the foundation for positional analyses of codon usage patterns within genes.
 #'
-#' @param from integer, the start of the sequence
-#' @param to integer, the end of the sequence
-#' @param step integer, the step size
-#' @param before integer, the number of values before the center of a window
-#' @param after integer, the number of values after the center of a window
-#' @return data.table with start, center, and end columns
+#' @param from Integer specifying the start position of the analysis range.
+#' @param to Integer specifying the end position of the analysis range.
+#' @param step Integer specifying the step size between consecutive window centers 
+#'   (default: 1). Larger values create non-overlapping or less overlapping windows.
+#' @param before Integer specifying the number of positions to include before 
+#'   the window center (default: 0). Determines the left boundary of each window.
+#' @param after Integer specifying the number of positions to include after 
+#'   the window center (default: 0). Determines the right boundary of each window.
+#' @return A data.table with three columns:
+#'   \itemize{
+#'     \item \code{start}: Start position of each window
+#'     \item \code{center}: Center position of each window  
+#'     \item \code{end}: End position of each window
+#'   }
 #' @export
 #' @examples
+#' # Create sliding windows with step size 2 and window size 3
 #' slide(1, 10, step = 2, before = 1, after = 1)
 #'
 slide <- function(from, to, step = 1, before = 0, after = 0){
@@ -24,18 +34,30 @@ slide <- function(from, to, step = 1, before = 0, after = 0){
 }
 
 
-#' sliding window of codons
+#' Generate sliding windows for codon-level analysis
 #'
-#' \code{slide_codon} generates a data.table with start, center, and end columns
-#'   for a sliding window analysis of codons.
+#' \code{slide_codon} creates sliding window intervals specifically designed 
+#' for codon-based analysis of DNA sequences. This function automatically 
+#' handles codon boundaries and is useful for studying positional effects 
+#' in codon usage within genes.
 #'
-#' @param seq DNAString, the sequence
-#' @param step integer, the step size
-#' @param before integer, the number of codons before the center of a window
-#' @param after integer, the number of codons after the center of a window
-#' @return data.table with start, center, and end columns
+#' @param seq A DNA sequence as a DNAString object, or any object that can 
+#'   be coerced to DNAString.
+#' @param step Integer specifying the step size between consecutive window centers 
+#'   in codons (default: 1). A step of 3 creates non-overlapping windows.
+#' @param before Integer specifying the number of codons to include before 
+#'   the window center (default: 0).
+#' @param after Integer specifying the number of codons to include after 
+#'   the window center (default: 0).
+#' @return A data.table with three columns containing nucleotide positions:
+#'   \itemize{
+#'     \item \code{start}: Start nucleotide position of each window
+#'     \item \code{center}: Center nucleotide position of each window
+#'     \item \code{end}: End nucleotide position of each window
+#'   }
 #' @export
 #' @examples
+#' # Create sliding windows for codon analysis
 #' x <- Biostrings::DNAString('ATCTACATAGCTACGTAGCTCGATGCTAGCATGCATCGTACGATCGTCGATCGTAG')
 #' slide_codon(x, step = 3, before = 1, after = 1)
 #'

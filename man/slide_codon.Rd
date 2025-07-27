@@ -2,27 +2,39 @@
 % Please edit documentation in R/window.R
 \name{slide_codon}
 \alias{slide_codon}
-\title{sliding window of codons}
+\title{Generate sliding windows for codon-level analysis}
 \usage{
 slide_codon(seq, step = 1, before = 0, after = 0)
 }
 \arguments{
-\item{seq}{DNAString, the sequence}
+\item{seq}{A DNA sequence as a DNAString object, or any object that can 
+be coerced to DNAString.}
 
-\item{step}{integer, the step size}
+\item{step}{Integer specifying the step size between consecutive window centers 
+in codons (default: 1). A step of 3 creates non-overlapping windows.}
 
-\item{before}{integer, the number of codons before the center of a window}
+\item{before}{Integer specifying the number of codons to include before 
+the window center (default: 0).}
 
-\item{after}{integer, the number of codons after the center of a window}
+\item{after}{Integer specifying the number of codons to include after 
+the window center (default: 0).}
 }
 \value{
-data.table with start, center, and end columns
+A data.table with three columns containing nucleotide positions:
+  \itemize{
+    \item \code{start}: Start nucleotide position of each window
+    \item \code{center}: Center nucleotide position of each window
+    \item \code{end}: End nucleotide position of each window
+  }
 }
 \description{
-\code{slide_codon} generates a data.table with start, center, and end columns
-  for a sliding window analysis of codons.
+\code{slide_codon} creates sliding window intervals specifically designed 
+for codon-based analysis of DNA sequences. This function automatically 
+handles codon boundaries and is useful for studying positional effects 
+in codon usage within genes.
 }
 \examples{
+# Create sliding windows for codon analysis
 x <- Biostrings::DNAString('ATCTACATAGCTACGTAGCTCGATGCTAGCATGCATCGTACGATCGTCGATCGTAG')
 slide_codon(x, step = 3, before = 1, after = 1)
 

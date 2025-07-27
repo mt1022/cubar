@@ -1,12 +1,14 @@
-#' Convert CDS to codons
+#' Convert a coding sequence to a codon vector
 #'
-#' \code{seq_to_codons} converts a coding sequence to a vector of codons
+#' \code{seq_to_codons} converts a coding sequence (CDS) into a vector of codons by 
+#' splitting the sequence into non-overlapping triplets starting from the first position.
 #'
-#' @param seq DNAString, or an object that can be coerced to a DNAString
-#' @returns a character vector of codons
+#' @param seq A coding sequence as a DNAString object, or any object that can be 
+#'   coerced to a DNAString (e.g., character string).
+#' @return A character vector where each element represents a codon (3-nucleotide sequence).
 #' @export
 #' @examples
-#' # convert a CDS sequence to a sequence of codons
+#' # Convert a CDS sequence to a sequence of codons
 #' seq_to_codons('ATGTGGTAG')
 #' seq_to_codons(yeast_cds[[1]])
 #'
@@ -22,15 +24,17 @@ seq_to_codons <- function(seq){
 }
 
 
-#' Reverse complement
+#' Generate reverse complement sequences
 #'
-#' \code{rev_comp} creates reverse complemented version of the input sequence
+#' \code{rev_comp} generates the reverse complement of input DNA sequences. 
+#' This is commonly used for analyzing complementary strands or anticodon sequences.
 #'
-#' @param seqs input sequences, DNAStringSet or named vector of sequences
-#' @returns reverse complemented input sequences as a DNAStringSet.
+#' @param seqs Input DNA sequences as a DNAStringSet object, or a named vector 
+#'   of sequences that can be coerced to DNAStringSet.
+#' @return A DNAStringSet object containing the reverse complemented sequences.
 #' @export
 #' @examples
-#' # reverse complement of codons
+#' # Reverse complement of codons
 #' rev_comp(Biostrings::DNAStringSet(c('TAA', 'TAG')))
 #'
 rev_comp <- function(seqs){
@@ -41,25 +45,29 @@ rev_comp <- function(seqs){
 }
 
 
-#' Quality control of CDS
+#' Quality control and preprocessing of coding sequences
 #'
-#' \code{check_cds} performs quality control of CDS sequences by filtering some
-#' peculiar sequences and optionally remove start or stop codons.
+#' \code{check_cds} performs comprehensive quality control on coding sequences (CDS) 
+#' by filtering sequences based on various criteria and optionally removing start 
+#' or stop codons. This function ensures that sequences meet the requirements for 
+#' downstream codon usage analysis.
 #'
-#' @param seqs input CDS sequences
-#' @param min_len minimum CDS length in nt
-#' @param check_len check whether CDS length is divisible by 3
-#' @param check_start check whether CDSs have start codons
-#' @param check_stop check whether CDSs have stop codons
-#' @param check_istop check internal stop codons
-#' @param rm_start whether to remove start codons
-#' @param rm_stop whether to remove stop codons
-#' @param codon_table codon table matching the genetic code of \code{seqs}
-#' @param start_codons vector of start codons
-#' @returns DNAStringSet of filtered (and trimmed) CDS sequences
+#' @param seqs Input CDS sequences as a DNAStringSet or compatible object.
+#' @param min_len Minimum CDS length in nucleotides (default: 6).
+#' @param check_len Logical. Check whether CDS length is divisible by 3 (default: TRUE).
+#' @param check_start Logical. Check whether CDSs begin with valid start codons (default: TRUE).
+#' @param check_stop Logical. Check whether CDSs end with valid stop codons (default: TRUE).
+#' @param check_istop Logical. Check for internal stop codons (default: TRUE).
+#' @param rm_start Logical. Remove start codons from the sequences (default: TRUE).
+#' @param rm_stop Logical. Remove stop codons from the sequences (default: TRUE).
+#' @param codon_table Codon table matching the genetic code of the input sequences.
+#'   Generated using \code{get_codon_table()} or \code{create_codon_table()}.
+#' @param start_codons Character vector specifying valid start codons (default: "ATG").
+#' @return A DNAStringSet containing filtered and optionally trimmed CDS sequences 
+#'   that pass all quality control checks.
 #' @export
 #' @examples
-#' # CDS sequence QC for a sample of yeast genes
+#' # Perform CDS sequence quality control for a sample of yeast genes
 #' s <- head(yeast_cds, 10)
 #' print(s)
 #' check_cds(s)
@@ -107,19 +115,26 @@ check_cds <- function(seqs, codon_table = get_codon_table(), min_len = 6,
 }
 
 
-#' Count occurrences of different codons
+#' Count codon frequencies in coding sequences
 #'
-#' \code{count_codons} tabulates the occurrences of all the 64 codons in input CDSs
+#' \code{count_codons} tabulates the frequency of all 64 possible codons across 
+#' input coding sequences. This function provides the foundation for most codon 
+#' usage bias analyses in the cubar package.
 #'
-#' @param seqs CDS sequences, DNAStringSet.
-#' @param ... additional arguments passed to \code{Biostrings::trinucleotideFrequency}.
-#' @returns matrix of codon (column) frequencies of each CDS (row).
+#' @param seqs Coding sequences as a DNAStringSet object, or compatible input 
+#'   that can be coerced to DNAStringSet.
+#' @param ... Additional arguments passed to \code{Biostrings::trinucleotideFrequency}.
+#' @return A matrix where rows represent individual CDS sequences and columns 
+#'   represent the 64 possible codons. Each cell contains the frequency count 
+#'   of the corresponding codon in the respective sequence.
 #' @export
 #' @examples
-#' # count codon occurrences
+#' # Count codon frequencies across all yeast CDS sequences
 #' cf_all <- count_codons(yeast_cds)
 #' dim(cf_all)
 #' cf_all[1:5, 1:5]
+#' 
+#' # Count codons for a single sequence
 #' count_codons(yeast_cds[1])
 #'
 count_codons <- function(seqs, ...){

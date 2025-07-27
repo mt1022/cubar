@@ -2,7 +2,7 @@
 % Please edit documentation in R/sequences.R
 \name{check_cds}
 \alias{check_cds}
-\title{Quality control of CDS}
+\title{Quality control and preprocessing of coding sequences}
 \usage{
 check_cds(
   seqs,
@@ -18,35 +18,39 @@ check_cds(
 )
 }
 \arguments{
-\item{seqs}{input CDS sequences}
+\item{seqs}{Input CDS sequences as a DNAStringSet or compatible object.}
 
-\item{codon_table}{codon table matching the genetic code of \code{seqs}}
+\item{codon_table}{Codon table matching the genetic code of the input sequences.
+Generated using \code{get_codon_table()} or \code{create_codon_table()}.}
 
-\item{min_len}{minimum CDS length in nt}
+\item{min_len}{Minimum CDS length in nucleotides (default: 6).}
 
-\item{check_len}{check whether CDS length is divisible by 3}
+\item{check_len}{Logical. Check whether CDS length is divisible by 3 (default: TRUE).}
 
-\item{check_start}{check whether CDSs have start codons}
+\item{check_start}{Logical. Check whether CDSs begin with valid start codons (default: TRUE).}
 
-\item{check_stop}{check whether CDSs have stop codons}
+\item{check_stop}{Logical. Check whether CDSs end with valid stop codons (default: TRUE).}
 
-\item{check_istop}{check internal stop codons}
+\item{check_istop}{Logical. Check for internal stop codons (default: TRUE).}
 
-\item{rm_start}{whether to remove start codons}
+\item{rm_start}{Logical. Remove start codons from the sequences (default: TRUE).}
 
-\item{rm_stop}{whether to remove stop codons}
+\item{rm_stop}{Logical. Remove stop codons from the sequences (default: TRUE).}
 
-\item{start_codons}{vector of start codons}
+\item{start_codons}{Character vector specifying valid start codons (default: "ATG").}
 }
 \value{
-DNAStringSet of filtered (and trimmed) CDS sequences
+A DNAStringSet containing filtered and optionally trimmed CDS sequences 
+  that pass all quality control checks.
 }
 \description{
-\code{check_cds} performs quality control of CDS sequences by filtering some
-peculiar sequences and optionally remove start or stop codons.
+\code{check_cds} performs comprehensive quality control on coding sequences (CDS) 
+by filtering sequences based on various criteria and optionally removing start 
+or stop codons. This function ensures that sequences meet the requirements for 
+downstream codon usage analysis.
 }
 \examples{
-# CDS sequence QC for a sample of yeast genes
+# Perform CDS sequence quality control for a sample of yeast genes
 s <- head(yeast_cds, 10)
 print(s)
 check_cds(s)

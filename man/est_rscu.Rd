@@ -2,7 +2,7 @@
 % Please edit documentation in R/codon_weight.R
 \name{est_rscu}
 \alias{est_rscu}
-\title{Estimate RSCU}
+\title{Estimate Relative Synonymous Codon Usage (RSCU)}
 \usage{
 est_rscu(
   cf,
@@ -14,39 +14,49 @@ est_rscu(
 )
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
+\item{cf}{A matrix of codon frequencies as calculated by \code{count_codons()}.
+Rows represent sequences and columns represent codons.}
 
-\item{weight}{a vector of the same length as \code{seqs} that gives different weights
-to CDSs when count codons. for example, it could be gene expression levels.}
+\item{weight}{A numeric vector of the same length as the number of sequences 
+in \code{cf}, providing different weights for sequences when calculating 
+codon frequencies. For example, gene expression levels. Default is 1 
+(equal weights).}
 
-\item{pseudo_cnt}{pseudo count to avoid dividing by zero. This may occur when
-only a few sequences are available for RSCU calculation.}
+\item{pseudo_cnt}{Numeric pseudo count added to avoid division by zero when 
+few sequences are available for RSCU calculation (default: 1).}
 
-\item{codon_table}{a table of genetic code derived from \code{get_codon_table} or
-\code{create_codon_table}.}
+\item{codon_table}{A codon table defining the genetic code, derived from 
+\code{get_codon_table()} or \code{create_codon_table()}.}
 
-\item{level}{"subfam" (default) or "amino_acid". For which level to determine RSCU.}
+\item{level}{Character string specifying the analysis level: "subfam" (default, 
+analyzes codon subfamilies) or "amino_acid" (analyzes at amino acid level).}
 
-\item{incl_stop}{FALSE (default) or TRUE. Whether to display the RSCU values of the stop codons.}
+\item{incl_stop}{Logical. Whether to include RSCU values for stop codons 
+in the output (default: FALSE).}
 }
 \value{
-a data.table of codon table. RSCU values are reported in the last column.
-The columns include single-letter abbreviation of the amino acid, three-letter abbreviation,
-codon, codon subfamily, usage frequency in all sequences, usage frequency proportion 
-for each subfamily or amino acid, the weight of the CAI index, and RSCU.
+A data.table containing the codon table with additional columns for 
+  RSCU analysis: usage frequency counts (cts), frequency proportions (prop), 
+  CAI weights (w_cai), and RSCU values (rscu). The table includes amino acid 
+  codes, full amino acid names, codons, and subfamily classifications.
 }
 \description{
-\code{est_rscu} returns the RSCU value of codons
+\code{est_rscu} calculates the Relative Synonymous Codon Usage (RSCU) values 
+for codons, which quantify the bias in synonymous codon usage. RSCU values 
+indicate whether a codon is used more (>1) or less (<1) frequently than 
+expected under uniform usage within its synonymous group.
 }
 \examples{
-# compute RSCU of all yeast genes
+# Calculate RSCU for all yeast genes
 cf_all <- count_codons(yeast_cds)
-est_rscu(cf_all)
+rscu_all <- est_rscu(cf_all)
+head(rscu_all)
 
-# compute RSCU of highly expressed (top 500) yeast genes
+# Calculate RSCU for highly expressed genes (top 500)
 heg <- head(yeast_exp[order(-yeast_exp$fpkm), ], n = 500)
 cf_heg <- count_codons(yeast_cds[heg$gene_id])
-est_rscu(cf_heg)
+rscu_heg <- est_rscu(cf_heg)
+head(rscu_heg)
 
 }
 \references{

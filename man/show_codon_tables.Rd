@@ -2,18 +2,23 @@
 % Please edit documentation in R/codon_info.R
 \name{show_codon_tables}
 \alias{show_codon_tables}
-\title{show available codon tables}
+\title{Display available genetic code tables}
 \usage{
 show_codon_tables()
 }
 \value{
-No return value (NULL). Available codon tables will be printed out directly.
+No return value (called for side effects). The function prints a 
+  formatted table of available genetic codes to the console, with each line 
+  showing the numeric ID and corresponding organism/organelle description.
 }
 \description{
-\code{show_codon_tables} print a table of available genetic code from NCBI through
-\code{Biostrings::GENETIC_CODE_TABLE}.
+\code{show_codon_tables} displays a formatted list of all genetic code tables 
+available from NCBI, showing their ID numbers and descriptive names. This 
+function helps users identify the appropriate genetic code ID to use with 
+\code{get_codon_table()}.
 }
 \examples{
-# print available NCBI codon table IDs and descriptions.
+# Display all available NCBI genetic code tables
 show_codon_tables()
+
 }

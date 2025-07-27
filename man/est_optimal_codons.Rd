@@ -2,7 +2,7 @@
 % Please edit documentation in R/codon_weight.R
 \name{est_optimal_codons}
 \alias{est_optimal_codons}
-\title{Estimate optimal codons}
+\title{Identify optimal codons using statistical modeling}
 \usage{
 est_optimal_codons(
   cf,
@@ -13,29 +13,38 @@ est_optimal_codons(
 )
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
+\item{cf}{A matrix of codon frequencies as calculated by \code{count_codons()}.
+Rows represent sequences and columns represent codons.}
 
-\item{codon_table}{a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.}
+\item{codon_table}{A codon table defining the genetic code, derived from 
+\code{get_codon_table()} or \code{create_codon_table()}.}
 
-\item{level}{"subfam" (default) or "amino_acid". For which level to determine optimal codons.}
+\item{level}{Character string specifying the analysis level: "subfam" (default, 
+analyzes codon subfamilies) or "amino_acid" (analyzes at amino acid level).}
 
-\item{gene_score}{a numeric vector of scores for genes. The order of values should match with
-gene orders in the codon frequency matrix. The length of the vector should be equal to the
-number of rows in the matrix. The scores could be gene expression levels (RPKM or TPM) that are
-optionally log-transformed (for example, with \code{log1p}). The opposite of ENC will be used by
-default if \code{gene_score} is not provided.}
+\item{gene_score}{A numeric vector of gene-level scores used to identify 
+optimal codons. Length must equal the number of rows in \code{cf}. Common 
+choices include:
+\itemize{
+  \item Gene expression levels (RPKM, TPM, FPKM) - optionally log-transformed
+  \item Protein abundance measurements
+  \item Custom gene importance scores
+}
+If not provided, the negative of ENC values will be used (lower ENC = higher bias).}
 
-\item{fdr}{false discovery rate used to determine optimal codons.}
+\item{fdr}{Numeric value specifying the false discovery rate threshold for 
+determining statistical significance of codon optimality (default depends on method).}
 }
 \value{
-a data.table object of a codon table that indicates the optimality of each codon.
-The columns include single-letter abbreviation of the amino acid, three-letter abbreviation, 
-codon, codon subfamily, regression coefficient, regression P-value, Benjamini and Hochberg corrected Q-value, 
-and indication of whether the codon is optimal.
+A data.table containing the input codon table with additional columns 
+  indicating codon optimality status, statistical significance, and effect sizes 
+  from the regression analysis.
 }
 \description{
-\code{est_optimal_codons} determine optimal codon of each codon family with binomial regression.
-  Usage of optimal codons should correlate negatively with enc.
+\code{est_optimal_codons} identifies optimal codons within each codon family 
+or amino acid group using binomial regression. Optimal codons are those whose 
+usage correlates positively with high gene expression or negatively with 
+codon usage bias (ENC), suggesting they are preferred for efficient translation.
 }
 \examples{
 # perform binomial regression for optimal codon estimation
@@ -44,4 +53,9 @@ codons_opt <- est_optimal_codons(cf_all)
 codons_opt <- codons_opt[optimal == TRUE]
 codons_opt
 
+}
+\references{
+Presnyak V, Alhusaini N, Chen YH, Martin S, Morris N, Kline N, Olson S, 
+Weinberg D, Baker KE, Graveley BR, et al. 2015. Codon optimality is a major 
+determinant of mRNA stability. Cell 160:1111-1124.
 }

@@ -1,33 +1,42 @@
-#' Estimate RSCU
+#' Estimate Relative Synonymous Codon Usage (RSCU)
 #'
-#' \code{est_rscu} returns the RSCU value of codons
+#' \code{est_rscu} calculates the Relative Synonymous Codon Usage (RSCU) values 
+#' for codons, which quantify the bias in synonymous codon usage. RSCU values 
+#' indicate whether a codon is used more (>1) or less (<1) frequently than 
+#' expected under uniform usage within its synonymous group.
 #'
-#' @param cf matrix of codon frequencies as calculated by \code{count_codons()}.
-#' @param weight a vector of the same length as \code{seqs} that gives different weights
-#'   to CDSs when count codons. for example, it could be gene expression levels.
-#' @param pseudo_cnt pseudo count to avoid dividing by zero. This may occur when
-#'   only a few sequences are available for RSCU calculation.
-#' @param codon_table a table of genetic code derived from \code{get_codon_table} or
-#'   \code{create_codon_table}.
-#' @param level "subfam" (default) or "amino_acid". For which level to determine RSCU.
-#' @param incl_stop FALSE (default) or TRUE. Whether to display the RSCU values of the stop codons.
-#' @returns a data.table of codon table. RSCU values are reported in the last column.
-#' The columns include single-letter abbreviation of the amino acid, three-letter abbreviation,
-#' codon, codon subfamily, usage frequency in all sequences, usage frequency proportion 
-#' for each subfamily or amino acid, the weight of the CAI index, and RSCU.
+#' @param cf A matrix of codon frequencies as calculated by \code{count_codons()}.
+#'   Rows represent sequences and columns represent codons.
+#' @param weight A numeric vector of the same length as the number of sequences 
+#'   in \code{cf}, providing different weights for sequences when calculating 
+#'   codon frequencies. For example, gene expression levels. Default is 1 
+#'   (equal weights).
+#' @param pseudo_cnt Numeric pseudo count added to avoid division by zero when 
+#'   few sequences are available for RSCU calculation (default: 1).
+#' @param codon_table A codon table defining the genetic code, derived from 
+#'   \code{get_codon_table()} or \code{create_codon_table()}.
+#' @param level Character string specifying the analysis level: "subfam" (default, 
+#'   analyzes codon subfamilies) or "amino_acid" (analyzes at amino acid level).
+#' @param incl_stop Logical. Whether to include RSCU values for stop codons 
+#'   in the output (default: FALSE).
+#' @return A data.table containing the codon table with additional columns for 
+#'   RSCU analysis: usage frequency counts (cts), frequency proportions (prop), 
+#'   CAI weights (w_cai), and RSCU values (rscu). The table includes amino acid 
+#'   codes, full amino acid names, codons, and subfamily classifications.
 #' @importFrom data.table ':='
 #' @references Sharp PM, Tuohy TM, Mosurski KR. 1986. Codon usage in yeast: cluster analysis clearly differentiates highly and lowly expressed genes. Nucleic Acids Res 14:5125-5143.
 #' @export
-#'
 #' @examples
-#' # compute RSCU of all yeast genes
+#' # Calculate RSCU for all yeast genes
 #' cf_all <- count_codons(yeast_cds)
-#' est_rscu(cf_all)
+#' rscu_all <- est_rscu(cf_all)
+#' head(rscu_all)
 #'
-#' # compute RSCU of highly expressed (top 500) yeast genes
+#' # Calculate RSCU for highly expressed genes (top 500)
 #' heg <- head(yeast_exp[order(-yeast_exp$fpkm), ], n = 500)
 #' cf_heg <- count_codons(yeast_cds[heg$gene_id])
-#' est_rscu(cf_heg)
+#' rscu_heg <- est_rscu(cf_heg)
+#' head(rscu_heg)
 #'
 est_rscu <- function(cf, weight = 1, pseudo_cnt = 1, codon_table = get_codon_table(),
                      level = 'subfam', incl_stop = FALSE){
@@ -206,18 +215,28 @@ plot_ca_pairs <- function(codon_table = get_codon_table(), pairs = pairs){
   print(p)
 }
 
-#' get tRNA gene copy number from GtRNADB
+#' Extract tRNA gene copy numbers from nature tRNA sequences
 #'
-#' \code{extract_trna_gcn} get tRNA gene copy number from GtRNADB
-#' @param trna_seq a fasta file of tRNA sequences from GtRNADB
-#' @returns a table of tRNA gene copy number for each anticodon. The name of the element 
-#' corresponds to the anticodon and the amino acid it carries. tRNA transporting either 
-#' initiator methionine (iMet) in eukaryotes and archaea, or formylmethionine (fMet) in prokaryotes, 
-#' utilized to initiate translation, is excluded from the count.
+#' \code{extract_trna_gcn} processes tRNA sequence data from  GtRNADB to 
+#' extract gene copy numbers for each tRNA  type. This information is essential
+#' for calculating tRNA availability weights used in TAI analysis.
+#'
+#' @param trna_seq A named vector or DNAStringSet of tRNA sequences, typically 
+#'   from GtRNADB. Sequence names should follow the standard format containing 
+#'   amino acid and anticodon information (e.g., "tRNA-Ala-AGC-1-1").
+#' @return A named table of tRNA gene copy numbers. Names are in the format 
+#'   "AminoAcid-Anticodon" (e.g., "Ala-AGC") and values represent the count 
+#'   of genes encoding each tRNA type. Initiator tRNAs (iMet, fMet) and 
+#'   undetermined tRNAs (Und-NNN) are automatically excluded as they serve 
+#'   specialized functions in translation initiation.
 #' @export
 #' @examples
-#' # get tRNA gene copy number for yeast
+#' # Extract tRNA gene copy numbers for yeast
 #' trna_gcn <- extract_trna_gcn(yeast_trna)
+#' head(trna_gcn)
+#' 
+#' # View the distribution of tRNA gene copies
+#' hist(trna_gcn, main = "Distribution of tRNA gene copy numbers")
 #' 
 extract_trna_gcn <- function(trna_seq){
   trna_copy <- sub('.*tRNA-(.*?)-\\d.*', '\\1', names(trna_seq))
@@ -227,28 +246,47 @@ extract_trna_gcn <- function(trna_seq){
 }
 
 
-#' Estimate tRNA weight w
+#' Estimate tRNA weights for TAI calculation
 #'
-#' \code{est_trna_weight} compute the tRNA weight per codon for TAI calculation.
-#' This weight reflects relative tRNA availability for each codon.
+#' \code{est_trna_weight} calculates tRNA weights for each codon based on tRNA 
+#' availability and codon-anticodon pairing efficiency. These weights are used 
+#' in tRNA Adaptation Index (TAI) calculations and reflect how well each codon 
+#' is supported by the cellular tRNA pool.
 #'
-#' @param trna_level, named vector of tRNA level (or gene copy numbers), one value for each anticodon.
-#'   vector names are anticodons.
-#' @param codon_table a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.
-#' @param domain The taxonomic domain of interest. "Eukarya" (default), "Bacteria" or "Archaea". 
-#' Specify either the parameter "domain" or "s".
-#' @param s list of non-Watson-Crick pairing penalty. Specify either the parameter "domain" or "s".
-#' @returns a data.table of tRNA expression information. The columns include single-letter abbreviation of the amino acid, 
-#' three-letter abbreviation, codon, codon subfamily, anticodon, tRNA id, tRNA gene copy number, 
-#' the absolute adaptiveness value (colunm "W"), and the relative adaptiveness value (weight of the tAI index, column "w").
+#' @param trna_level A named numeric vector of tRNA expression levels or gene 
+#'   copy numbers. Names should be in the format "AminoAcid-Anticodon" 
+#'   (e.g., "Ala-GCA"). Each value represents the abundance of that tRNA species.
+#' @param codon_table A codon table defining the genetic code, derived from 
+#'   \code{get_codon_table()} or \code{create_codon_table()}.
+#' @param domain Character string specifying the taxonomic domain: "Eukarya" 
+#'   (default), "Bacteria", or "Archaea". This determines the codon-anticodon 
+#'   pairing rules and selection penalties. Specify either "domain" or "s".
+#' @param s A named list of selection penalties for non-Watson-Crick pairings. 
+#'   If provided, overrides the default domain-specific penalties. Specify 
+#'   either "domain" or "s".
+#' @return A data.table containing comprehensive tRNA weight information with columns:
+#'   \itemize{
+#'     \item \code{aa_code}: Single-letter amino acid code
+#'     \item \code{amino_acid}: Three-letter amino acid abbreviation
+#'     \item \code{codon}: Codon sequence
+#'     \item \code{subfam}: Codon subfamily identifier
+#'     \item \code{anticodon}: Corresponding anticodon sequence
+#'     \item \code{trna_id}: tRNA identifier (amino_acid-anticodon)
+#'     \item \code{ac_level}: tRNA abundance level
+#'     \item \code{W}: Absolute adaptiveness value
+#'     \item \code{w}: Relative adaptiveness (normalized weight for TAI)
+#'   }
 #' @importFrom data.table ':='
 #' @references dos Reis M, Savva R, Wernisch L. 2004. Solving the riddle of codon usage preferences: a test for translational selection. Nucleic Acids Res 32:5036-5044.
 #' @references Sabi R, Tuller T. 2014. Modelling the efficiency of codon-tRNA interactions based on codon usage bias. DNA Res 21:511-526.
 #' @export
 #' @examples
-#' # estimate codon tRNA weight for yeast
+#' # Calculate tRNA weights for yeast using gene copy numbers
 #' yeast_trna_w <- est_trna_weight(yeast_trna_gcn)
-#' print(yeast_trna_w)
+#' head(yeast_trna_w)
+#' 
+#' # View the weight distribution
+#' hist(yeast_trna_w$w, main = "Distribution of tRNA weights")
 #' 
 est_trna_weight <- function(trna_level, codon_table = get_codon_table(), domain = "Eukarya", s = NULL){
     anticodon <- aa_code <- ac_level <- penalty <- amino_acid <- NULL # due to NSE notes in R CMD check
@@ -305,21 +343,38 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(), domain 
 }
 
 
-#' Estimate optimal codons
+#' Identify optimal codons using statistical modeling
 #'
-#' \code{est_optimal_codons} determine optimal codon of each codon family with binomial regression.
-#'   Usage of optimal codons should correlate negatively with enc.
+#' \code{est_optimal_codons} identifies optimal codons within each codon family 
+#' or amino acid group using binomial regression. Optimal codons are those whose 
+#' usage correlates positively with high gene expression or negatively with 
+#' codon usage bias (ENC), suggesting they are preferred for efficient translation.
 #'
-#' @param cf matrix of codon frequencies as calculated by \code{count_codons()}.
-#' @param codon_table a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.
-#' @param level "subfam" (default) or "amino_acid". For which level to determine optimal codons.
-#' @param gene_score a numeric vector of scores for genes. The order of values should match with
-#'   gene orders in the codon frequency matrix. The length of the vector should be equal to the
-#'   number of rows in the matrix. The scores could be gene expression levels (RPKM or TPM) that are
-#'   optionally log-transformed (for example, with \code{log1p}). The opposite of ENC will be used by
-#'   default if \code{gene_score} is not provided.
-#' @param fdr false discovery rate used to determine optimal codons.
-#' @returns a data.table object of a codon table that indicates the optimality of each codon.
+#' @param cf A matrix of codon frequencies as calculated by \code{count_codons()}.
+#'   Rows represent sequences and columns represent codons.
+#' @param codon_table A codon table defining the genetic code, derived from 
+#'   \code{get_codon_table()} or \code{create_codon_table()}.
+#' @param level Character string specifying the analysis level: "subfam" (default, 
+#'   analyzes codon subfamilies) or "amino_acid" (analyzes at amino acid level).
+#' @param gene_score A numeric vector of gene-level scores used to identify 
+#'   optimal codons. Length must equal the number of rows in \code{cf}. Common 
+#'   choices include:
+#'   \itemize{
+#'     \item Gene expression levels (RPKM, TPM, FPKM) - optionally log-transformed
+#'     \item Protein abundance measurements
+#'     \item Custom gene importance scores
+#'   }
+#'   If not provided, the negative of ENC values will be used (lower ENC = higher bias).
+#' @param fdr Numeric value specifying the false discovery rate threshold for 
+#'   determining statistical significance of codon optimality (default depends on method).
+#' @return A data.table containing the input codon table with additional columns 
+#'   indicating codon optimality status, statistical significance, and effect sizes 
+#'   from the regression analysis.
+#' @references 
+#' Presnyak V, Alhusaini N, Chen YH, Martin S, Morris N, Kline N, Olson S, 
+#' Weinberg D, Baker KE, Graveley BR, et al. 2015. Codon optimality is a major 
+#' determinant of mRNA stability. Cell 160:1111-1124.
+#' @export
 #' The columns include single-letter abbreviation of the amino acid, three-letter abbreviation, 
 #' codon, codon subfamily, regression coefficient, regression P-value, Benjamini and Hochberg corrected Q-value, 
 #' and indication of whether the codon is optimal.

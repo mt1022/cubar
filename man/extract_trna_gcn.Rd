@@ -2,24 +2,33 @@
 % Please edit documentation in R/codon_weight.R
 \name{extract_trna_gcn}
 \alias{extract_trna_gcn}
-\title{get tRNA gene copy number from GtRNADB}
+\title{Extract tRNA gene copy numbers from nature tRNA sequences}
 \usage{
 extract_trna_gcn(trna_seq)
 }
 \arguments{
-\item{trna_seq}{a fasta file of tRNA sequences from GtRNADB}
+\item{trna_seq}{A named vector or DNAStringSet of tRNA sequences, typically 
+from GtRNADB. Sequence names should follow the standard format containing 
+amino acid and anticodon information (e.g., "tRNA-Ala-AGC-1-1").}
 }
 \value{
-a table of tRNA gene copy number for each anticodon. The name of the element 
-corresponds to the anticodon and the amino acid it carries. tRNA transporting either 
-initiator methionine (iMet) in eukaryotes and archaea, or formylmethionine (fMet) in prokaryotes, 
-utilized to initiate translation, is excluded from the count.
+A named table of tRNA gene copy numbers. Names are in the format 
+  "AminoAcid-Anticodon" (e.g., "Ala-AGC") and values represent the count 
+  of genes encoding each tRNA type. Initiator tRNAs (iMet, fMet) and 
+  undetermined tRNAs (Und-NNN) are automatically excluded as they serve 
+  specialized functions in translation initiation.
 }
 \description{
-\code{extract_trna_gcn} get tRNA gene copy number from GtRNADB
+\code{extract_trna_gcn} processes tRNA sequence data from  GtRNADB to 
+extract gene copy numbers for each tRNA  type. This information is essential
+for calculating tRNA availability weights used in TAI analysis.
 }
 \examples{
-# get tRNA gene copy number for yeast
+# Extract tRNA gene copy numbers for yeast
 trna_gcn <- extract_trna_gcn(yeast_trna)
+head(trna_gcn)
+
+# View the distribution of tRNA gene copies
+hist(trna_gcn, main = "Distribution of tRNA gene copy numbers")
 
 }

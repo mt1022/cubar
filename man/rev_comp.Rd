@@ -2,21 +2,23 @@
 % Please edit documentation in R/sequences.R
 \name{rev_comp}
 \alias{rev_comp}
-\title{Reverse complement}
+\title{Generate reverse complement sequences}
 \usage{
 rev_comp(seqs)
 }
 \arguments{
-\item{seqs}{input sequences, DNAStringSet or named vector of sequences}
+\item{seqs}{Input DNA sequences as a DNAStringSet object, or a named vector 
+of sequences that can be coerced to DNAStringSet.}
 }
 \value{
-reverse complemented input sequences as a DNAStringSet.
+A DNAStringSet object containing the reverse complemented sequences.
 }
 \description{
-\code{rev_comp} creates reverse complemented version of the input sequence
+\code{rev_comp} generates the reverse complement of input DNA sequences. 
+This is commonly used for analyzing complementary strands or anticodon sequences.
 }
 \examples{
-# reverse complement of codons
+# Reverse complement of codons
 rev_comp(Biostrings::DNAStringSet(c('TAA', 'TAG')))
 
 }

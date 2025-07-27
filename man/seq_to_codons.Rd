@@ -2,21 +2,23 @@
 % Please edit documentation in R/sequences.R
 \name{seq_to_codons}
 \alias{seq_to_codons}
-\title{Convert CDS to codons}
+\title{Convert a coding sequence to a codon vector}
 \usage{
 seq_to_codons(seq)
 }
 \arguments{
-\item{seq}{DNAString, or an object that can be coerced to a DNAString}
+\item{seq}{A coding sequence as a DNAString object, or any object that can be 
+coerced to a DNAString (e.g., character string).}
 }
 \value{
-a character vector of codons
+A character vector where each element represents a codon (3-nucleotide sequence).
 }
 \description{
-\code{seq_to_codons} converts a coding sequence to a vector of codons
+\code{seq_to_codons} converts a coding sequence (CDS) into a vector of codons by 
+splitting the sequence into non-overlapping triplets starting from the first position.
 }
 \examples{
-# convert a CDS sequence to a sequence of codons
+# Convert a CDS sequence to a sequence of codons
 seq_to_codons('ATGTGGTAG')
 seq_to_codons(yeast_cds[[1]])
 

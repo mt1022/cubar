@@ -2,24 +2,27 @@
 % Please edit documentation in R/gene_index.R
 \name{get_gc}
 \alias{get_gc}
-\title{GC contents}
+\title{Calculate GC content of coding sequences}
 \usage{
 get_gc(cf)
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by `count_codons()`.}
+\item{cf}{A matrix of codon frequencies as calculated by \code{count_codons()}.
+Rows represent sequences and columns represent codons.}
 }
 \value{
-a named vector of GC contents. The names of the elements correspond to the sequence names.
+A named numeric vector of GC content values (ranging from 0 to 1). 
+  Names correspond to sequence identifiers from the input matrix.
 }
 \description{
-Calculate GC content of the whole sequences.
+\code{get_gc} calculates the overall GC content (percentage of guanine and 
+cytosine nucleotides) for each coding sequence.
 }
 \examples{
-# estimate GC content of yeast genes
+# Calculate GC content for yeast genes
 cf_all <- count_codons(yeast_cds)
 gc <- get_gc(cf_all)
 head(gc)
-hist(gc)
+hist(gc, main = "Distribution of GC content")
 
 }

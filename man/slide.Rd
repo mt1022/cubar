@@ -2,29 +2,39 @@
 % Please edit documentation in R/window.R
 \name{slide}
 \alias{slide}
-\title{slide window interval generator}
+\title{Generate sliding window intervals}
 \usage{
 slide(from, to, step = 1, before = 0, after = 0)
 }
 \arguments{
-\item{from}{integer, the start of the sequence}
+\item{from}{Integer specifying the start position of the analysis range.}
 
-\item{to}{integer, the end of the sequence}
+\item{to}{Integer specifying the end position of the analysis range.}
 
-\item{step}{integer, the step size}
+\item{step}{Integer specifying the step size between consecutive window centers 
+(default: 1). Larger values create non-overlapping or less overlapping windows.}
 
-\item{before}{integer, the number of values before the center of a window}
+\item{before}{Integer specifying the number of positions to include before 
+the window center (default: 0). Determines the left boundary of each window.}
 
-\item{after}{integer, the number of values after the center of a window}
+\item{after}{Integer specifying the number of positions to include after 
+the window center (default: 0). Determines the right boundary of each window.}
 }
 \value{
-data.table with start, center, and end columns
+A data.table with three columns:
+  \itemize{
+    \item \code{start}: Start position of each window
+    \item \code{center}: Center position of each window  
+    \item \code{end}: End position of each window
+  }
 }
 \description{
-\code{slide} generates a data.table with start, center, and end columns
-for a sliding window analysis.
+\code{slide} creates a data.table defining sliding window positions for 
+analyzing sequences or data along a continuous range. This function provides 
+the foundation for positional analyses of codon usage patterns within genes.
 }
 \examples{
+# Create sliding windows with step size 2 and window size 3
 slide(1, 10, step = 2, before = 1, after = 1)
 
 }

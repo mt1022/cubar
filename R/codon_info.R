@@ -1,18 +1,31 @@
-#' get codon table by NCBI gene code ID
+#' Retrieve codon table by NCBI genetic code ID
 #'
-#' \code{get_codon_table} creates a codon table based on the given id of genetic code in NCBI.
+#' \code{get_codon_table} creates a standardized codon table based on genetic 
+#' codes cataloged by NCBI. This function provides the mapping between codons 
+#' and amino acids for different organisms and organelles, which is essential 
+#' for accurate codon usage analysis.
 #'
-#' @param gcid a string of genetic code id. run \code{show_codon_tables()} to see available codon tables.
-#' @returns a \code{data.table} with four columns: aa_code, amino_acid, codon, and subfam.
+#' @param gcid A character string specifying the NCBI genetic code ID. Use 
+#'   \code{show_codon_tables()} to view all available genetic codes and their 
+#'   corresponding IDs. Default is "1" (standard genetic code).
+#' @return A data.table with four columns:
+#'   \itemize{
+#'     \item \code{aa_code}: Single-letter amino acid code
+#'     \item \code{amino_acid}: Three-letter amino acid abbreviation  
+#'     \item \code{codon}: Three-nucleotide codon sequence
+#'     \item \code{subfam}: Codon subfamily identifier (amino_acid_XY format)
+#'   }
 #' @importFrom data.table ':='
 #' @export
-#'
 #' @examples
-#' # Standard genetic code
-#' get_codon_table()
+#' # Standard genetic code (used by most organisms)
+#' standard_code <- get_codon_table()
+#' head(standard_code)
 #'
-#' # Vertebrate Mitochondrial genetic code
-#' get_codon_table(gcid = '2')
+#' # Vertebrate mitochondrial genetic code
+#' mito_code <- get_codon_table(gcid = '2')
+#' head(mito_code)
+#'
 get_codon_table <- function(gcid = '1'){
     amino_acid <- aa_code <- subfam <- codon <- . <- NULL # due to NSE notes in R CMD check
     codon_table <- Biostrings::getGeneticCode(gcid, as.data.frame = TRUE)
@@ -25,18 +38,35 @@ get_codon_table <- function(gcid = '1'){
 }
 
 
-#' create custom codon table from a data frame
+#' Create custom codon table from amino acid-codon mapping
 #'
-#' \code{create_codon_table} creates codon table from data frame of aa to codon mapping.
+#' \code{create_codon_table} generates a codon table from a user-defined data 
+#' frame that maps codons to their corresponding amino acids. This function 
+#' enables analysis of non-standard or artificial genetic codes not available 
+#' in the NCBI genetic code collection.
 #'
-#' @param aa2codon a data frame with two columns: amino_acid (Ala, Arg, etc.) and codon.
-#' @returns a \code{data.table} with four columns: aa_code, amino_acid, codon, and subfam.
+#' @param aa2codon A data frame with two required columns:
+#'   \itemize{
+#'     \item \code{amino_acid}: Three-letter amino acid abbreviations (e.g., "Ala", "Arg")
+#'     \item \code{codon}: Corresponding three-nucleotide codon sequences
+#'   }
+#' @return A data.table with four columns:
+#'   \itemize{
+#'     \item \code{aa_code}: Single-letter amino acid code
+#'     \item \code{amino_acid}: Three-letter amino acid abbreviation
+#'     \item \code{codon}: Three-nucleotide codon sequence  
+#'     \item \code{subfam}: Codon subfamily identifier (amino_acid_XY format)
+#'   }
 #' @importFrom data.table ':='
 #' @export
-#'
 #' @examples
+#' # View the example amino acid to codon mapping
 #' head(aa2codon)
-#' create_codon_table(aa2codon = aa2codon)
+#' 
+#' # Create a custom codon table
+#' custom_table <- create_codon_table(aa2codon = aa2codon)
+#' head(custom_table)
+#'
 create_codon_table <- function(aa2codon){
     aa_code <- amino_acid <- subfam <- codon <- . <- NULL # due to NSE notes in R CMD check
     codon_table <- data.table::as.data.table(aa2codon)
@@ -51,16 +81,21 @@ create_codon_table <- function(aa2codon){
 }
 
 
-#' show available codon tables
+#' Display available genetic code tables
 #'
-#' \code{show_codon_tables} print a table of available genetic code from NCBI through
-#' \code{Biostrings::GENETIC_CODE_TABLE}.
-#' @returns No return value (NULL). Available codon tables will be printed out directly.
+#' \code{show_codon_tables} displays a formatted list of all genetic code tables 
+#' available from NCBI, showing their ID numbers and descriptive names. This 
+#' function helps users identify the appropriate genetic code ID to use with 
+#' \code{get_codon_table()}.
+#'
+#' @return No return value (called for side effects). The function prints a 
+#'   formatted table of available genetic codes to the console, with each line 
+#'   showing the numeric ID and corresponding organism/organelle description.
 #' @export
-#'
 #' @examples
-#' # print available NCBI codon table IDs and descriptions.
+#' # Display all available NCBI genetic code tables
 #' show_codon_tables()
+#'
 show_codon_tables <- function(){
     cat(sprintf('%2s: %s',
                 Biostrings::GENETIC_CODE_TABLE$id,

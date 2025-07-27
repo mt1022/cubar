@@ -2,7 +2,7 @@
 % Please edit documentation in R/codon_weight.R
 \name{est_trna_weight}
 \alias{est_trna_weight}
-\title{Estimate tRNA weight w}
+\title{Estimate tRNA weights for TAI calculation}
 \usage{
 est_trna_weight(
   trna_level,
@@ -12,29 +12,48 @@ est_trna_weight(
 )
 }
 \arguments{
-\item{trna_level, }{named vector of tRNA level (or gene copy numbers), one value for each anticodon.
-vector names are anticodons.}
+\item{trna_level}{A named numeric vector of tRNA expression levels or gene 
+copy numbers. Names should be in the format "AminoAcid-Anticodon" 
+(e.g., "Ala-GCA"). Each value represents the abundance of that tRNA species.}
 
-\item{codon_table}{a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.}
+\item{codon_table}{A codon table defining the genetic code, derived from 
+\code{get_codon_table()} or \code{create_codon_table()}.}
 
-\item{domain}{The taxonomic domain of interest. "Eukarya" (default), "Bacteria" or "Archaea". 
-Specify either the parameter "domain" or "s".}
+\item{domain}{Character string specifying the taxonomic domain: "Eukarya" 
+(default), "Bacteria", or "Archaea". This determines the codon-anticodon 
+pairing rules and selection penalties. Specify either "domain" or "s".}
 
-\item{s}{list of non-Watson-Crick pairing penalty. Specify either the parameter "domain" or "s".}
+\item{s}{A named list of selection penalties for non-Watson-Crick pairings. 
+If provided, overrides the default domain-specific penalties. Specify 
+either "domain" or "s".}
 }
 \value{
-a data.table of tRNA expression information. The columns include single-letter abbreviation of the amino acid, 
-three-letter abbreviation, codon, codon subfamily, anticodon, tRNA id, tRNA gene copy number, 
-the absolute adaptiveness value (colunm "W"), and the relative adaptiveness value (weight of the tAI index, column "w").
+A data.table containing comprehensive tRNA weight information with columns:
+  \itemize{
+    \item \code{aa_code}: Single-letter amino acid code
+    \item \code{amino_acid}: Three-letter amino acid abbreviation
+    \item \code{codon}: Codon sequence
+    \item \code{subfam}: Codon subfamily identifier
+    \item \code{anticodon}: Corresponding anticodon sequence
+    \item \code{trna_id}: tRNA identifier (amino_acid-anticodon)
+    \item \code{ac_level}: tRNA abundance level
+    \item \code{W}: Absolute adaptiveness value
+    \item \code{w}: Relative adaptiveness (normalized weight for TAI)
+  }
 }
 \description{
-\code{est_trna_weight} compute the tRNA weight per codon for TAI calculation.
-This weight reflects relative tRNA availability for each codon.
+\code{est_trna_weight} calculates tRNA weights for each codon based on tRNA 
+availability and codon-anticodon pairing efficiency. These weights are used 
+in tRNA Adaptation Index (TAI) calculations and reflect how well each codon 
+is supported by the cellular tRNA pool.
 }
 \examples{
-# estimate codon tRNA weight for yeast
+# Calculate tRNA weights for yeast using gene copy numbers
 yeast_trna_w <- est_trna_weight(yeast_trna_gcn)
-print(yeast_trna_w)
+head(yeast_trna_w)
+
+# View the weight distribution
+hist(yeast_trna_w$w, main = "Distribution of tRNA weights")
 
 }
 \references{

@@ -2,20 +2,38 @@
 % Please edit documentation in R/codon_info.R
 \name{create_codon_table}
 \alias{create_codon_table}
-\title{create custom codon table from a data frame}
+\title{Create custom codon table from amino acid-codon mapping}
 \usage{
 create_codon_table(aa2codon)
 }
 \arguments{
-\item{aa2codon}{a data frame with two columns: amino_acid (Ala, Arg, etc.) and codon.}
+\item{aa2codon}{A data frame with two required columns:
+\itemize{
+  \item \code{amino_acid}: Three-letter amino acid abbreviations (e.g., "Ala", "Arg")
+  \item \code{codon}: Corresponding three-nucleotide codon sequences
+}}
 }
 \value{
-a \code{data.table} with four columns: aa_code, amino_acid, codon, and subfam.
+A data.table with four columns:
+  \itemize{
+    \item \code{aa_code}: Single-letter amino acid code
+    \item \code{amino_acid}: Three-letter amino acid abbreviation
+    \item \code{codon}: Three-nucleotide codon sequence  
+    \item \code{subfam}: Codon subfamily identifier (amino_acid_XY format)
+  }
 }
 \description{
-\code{create_codon_table} creates codon table from data frame of aa to codon mapping.
+\code{create_codon_table} generates a codon table from a user-defined data 
+frame that maps codons to their corresponding amino acids. This function 
+enables analysis of non-standard or artificial genetic codes not available 
+in the NCBI genetic code collection.
 }
 \examples{
+# View the example amino acid to codon mapping
 head(aa2codon)
-create_codon_table(aa2codon = aa2codon)
+
+# Create a custom codon table
+custom_table <- create_codon_table(aa2codon = aa2codon)
+head(custom_table)
+
 }

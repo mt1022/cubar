@@ -2,26 +2,33 @@
 % Please edit documentation in R/sequences.R
 \name{count_codons}
 \alias{count_codons}
-\title{Count occurrences of different codons}
+\title{Count codon frequencies in coding sequences}
 \usage{
 count_codons(seqs, ...)
 }
 \arguments{
-\item{seqs}{CDS sequences, DNAStringSet.}
+\item{seqs}{Coding sequences as a DNAStringSet object, or compatible input 
+that can be coerced to DNAStringSet.}
 
-\item{...}{additional arguments passed to \code{Biostrings::trinucleotideFrequency}.}
+\item{...}{Additional arguments passed to \code{Biostrings::trinucleotideFrequency}.}
 }
 \value{
-matrix of codon (column) frequencies of each CDS (row).
+A matrix where rows represent individual CDS sequences and columns 
+  represent the 64 possible codons. Each cell contains the frequency count 
+  of the corresponding codon in the respective sequence.
 }
 \description{
-\code{count_codons} tabulates the occurrences of all the 64 codons in input CDSs
+\code{count_codons} tabulates the frequency of all 64 possible codons across 
+input coding sequences. This function provides the foundation for most codon 
+usage bias analyses in the cubar package.
 }
 \examples{
-# count codon occurrences
+# Count codon frequencies across all yeast CDS sequences
 cf_all <- count_codons(yeast_cds)
 dim(cf_all)
 cf_all[1:5, 1:5]
+
+# Count codons for a single sequence
 count_codons(yeast_cds[1])
 
 }

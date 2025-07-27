@@ -2,33 +2,43 @@
 % Please edit documentation in R/gene_index.R
 \name{get_cai}
 \alias{get_cai}
-\title{Calculate CAI}
+\title{Calculate Codon Adaptation Index (CAI)}
 \usage{
 get_cai(cf, rscu, level = "subfam")
 }
 \arguments{
-\item{cf}{matrix of codon frequencies as calculated by \code{count_codons()}.}
+\item{cf}{A matrix of codon frequencies as calculated by \code{count_codons()}.
+Rows represent sequences and columns represent codons.}
 
-\item{rscu}{rscu table containing CAI weight for each codon. This table could be
-generated with \code{est_rscu} or prepared manually.}
+\item{rscu}{An RSCU table containing CAI weights for each codon. This table 
+should be generated using \code{est_rscu()} based on highly expressed genes, 
+or prepared manually with appropriate weight values.}
 
-\item{level}{"subfam" (default) or "amino_acid". For which level to determine CAI.}
+\item{level}{Character string specifying the analysis level: "subfam" (default, 
+analyzes codon subfamilies) or "amino_acid" (analyzes at amino acid level).}
 }
 \value{
-a named vector of CAI values. The names of the elements correspond to the sequence names.
+A named numeric vector of CAI values ranging from 0 to 1. Names 
+  correspond to sequence identifiers from the input matrix. Values closer 
+  to 1 indicate higher similarity to highly expressed genes.
 }
 \description{
-\code{get_cai} calculates Codon Adaptation Index (CAI) of each input CDS
+\code{get_cai} calculates the Codon Adaptation Index (CAI) for each input 
+coding sequence. CAI measures how similar the codon usage of a gene is to 
+that of highly expressed genes, serving as an indicator of translational 
+efficiency. Higher CAI values suggest better adaptation to the translational 
+machinery.
 }
 \examples{
-# estimate CAI of yeast genes based on RSCU of highly expressed genes
+# Calculate CAI for yeast genes based on RSCU of highly expressed genes
 heg <- head(yeast_exp[order(-yeast_exp$fpkm), ], n = 500)
 cf_all <- count_codons(yeast_cds)
 cf_heg <- cf_all[heg$gene_id, ]
 rscu_heg <- est_rscu(cf_heg)
 cai <- get_cai(cf_all, rscu_heg)
 head(cai)
-hist(cai)
+hist(cai, main = "Distribution of CAI values")
+
 
 }
 \references{

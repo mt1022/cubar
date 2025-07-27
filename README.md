@@ -13,24 +13,26 @@
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-  - [🧬 Codon-Level Analysis](#-codon-level-analysis)
-  - [📊 Gene-Level Metrics](#-gene-level-metrics)
-  - [🛠️ Utilities \& Tools](#️-utilities--tools)
-- [Why Choose cubar?](#why-choose-cubar)
-- [Installation](#installation)
-  - [Stable Release (Recommended)](#stable-release-recommended)
-  - [Development Version](#development-version)
-  - [Dependencies](#dependencies)
-- [Documentation \& Tutorials](#documentation--tutorials)
-  - [🎯 Getting Started](#-getting-started)
-  - [📚 Advanced Topics](#-advanced-topics)
-- [Example Workflow](#example-workflow)
-- [🆘 Getting Help](#-getting-help)
-- [Related Packages](#related-packages)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
+- [cubar](#cubar)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Features](#features)
+    - [🧬 Codon-Level Analysis](#-codon-level-analysis)
+    - [📊 Gene-Level Metrics](#-gene-level-metrics)
+    - [🛠️ Utilities \& Tools](#️-utilities--tools)
+  - [Why Choose cubar?](#why-choose-cubar)
+  - [Installation](#installation)
+    - [Stable Release (Recommended)](#stable-release-recommended)
+    - [Development Version](#development-version)
+    - [Dependencies](#dependencies)
+  - [Documentation \& Tutorials](#documentation--tutorials)
+    - [🎯 Getting Started](#-getting-started)
+    - [📚 Advanced Topics](#-advanced-topics)
+  - [Example Workflow](#example-workflow)
+  - [🆘 Getting Help](#-getting-help)
+  - [Related Packages](#related-packages)
+  - [License](#license)
+  - [Acknowledgments](#acknowledgments)
 
 ## Overview
 
@@ -40,10 +42,11 @@ Codon usage bias refers to the non-uniform usage of synonymous codons (codons th
 ## Features
 
 ### 🧬 Codon-Level Analysis
-- **Codon weights**: Calculate weights based on gene expression, tRNA availability, and mRNA stability
 - **RSCU calculation**: Relative synonymous codon usage analysis
+- **Amino acid usage**: Frequency of each amino acid in sequences
+- **Codon weights**: Calculate weights based on gene expression, tRNA availability, and mRNA stability
 - **Optimal codon inference**: Machine learning-based identification of optimal codons
-- **Codon-anticodon visualization**: Interactive plotting of pairing relationships
+- **Codon-anticodon visualization**: Visualization of codon-tRNA pairing relationships
 
 ### 📊 Gene-Level Metrics  
 - **Codon frequency tabulation**: Count codon occurrences across sequences
@@ -51,9 +54,9 @@ Codon usage bias refers to the non-uniform usage of synonymous codons (codons th
 - **ENC (Effective Number of Codons)**: Assess codon usage bias strength
 - **Fop (Fraction of Optimal codons)**: Calculate proportion of optimal codons
 - **tAI (tRNA Adaptation Index)**: Match codon usage to tRNA availability
-- **Dp (Deviation from Proportionality)**: Analyze virus-host codon usage relationships
 - **CSCg (Codon Stabilization Coefficients)**: Quantify mRNA stability effects 
-- **GC content metrics**: Overall GC, GC3s (3rd positions), GC4d (4-fold degenerate sites)
+- **Dp (Deviation from Proportionality)**: Analyze virus-host codon usage relationships
+- **GC content metrics**: Overall GC, GC3s (3rd codon positions), GC4d (4-fold degenerate sites)
 
 ### 🛠️ Utilities & Tools
 - **Sliding window analysis**: Positional codon usage patterns within genes
@@ -138,7 +141,6 @@ codon_freq <- count_codons(clean_cds)
 
 # 3. Calculate multiple metrics
 enc <- get_enc(codon_freq)           # Effective number of codons
-gc_content <- get_gc(codon_freq)     # GC content
 gc3s <- get_gc3s(codon_freq)         # GC content at 3rd positions
 
 # 4. Analyze highly expressed genes

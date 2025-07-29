@@ -1,18 +1,18 @@
 #' Calculate effective number of codons (ENC)
 #'
-#' \code{get_enc} computes the effective number of codons (ENC) for each coding 
-#' sequence, which quantifies the degree of codon usage bias. Lower ENC values 
-#' indicate stronger bias (fewer codons are used), while higher values indicate 
+#' \code{get_enc} computes the effective number of codons (ENC) for each coding
+#' sequence, which quantifies the degree of codon usage bias. Lower ENC values
+#' indicate stronger bias (fewer codons are used), while higher values indicate
 #' more uniform codon usage.
 #'
 #' @param cf A matrix of codon frequencies as calculated by \code{count_codons()}.
 #'   Rows represent sequences and columns represent codons.
-#' @param codon_table A codon table defining the genetic code, derived from 
+#' @param codon_table A codon table defining the genetic code, derived from
 #'   \code{get_codon_table()} or \code{create_codon_table()}.
-#' @param level Character string specifying the analysis level: "subfam" (default, 
+#' @param level Character string specifying the analysis level: "subfam" (default,
 #'   analyzes codon subfamilies) or "amino_acid" (analyzes at amino acid level).
-#' @return A named numeric vector of ENC values. Names correspond to sequence 
-#'   identifiers from the input matrix. ENC values typically range from 20 
+#' @return A named numeric vector of ENC values. Names correspond to sequence
+#'   identifiers from the input matrix. ENC values typically range from 20
 #'   (maximum bias) to 61 (uniform usage).
 #' @export
 #' @references
@@ -66,21 +66,21 @@ get_enc <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
 
 #' Calculate Codon Adaptation Index (CAI)
 #'
-#' \code{get_cai} calculates the Codon Adaptation Index (CAI) for each input 
-#' coding sequence. CAI measures how similar the codon usage of a gene is to 
-#' that of highly expressed genes, serving as an indicator of translational 
-#' efficiency. Higher CAI values suggest better adaptation to the translational 
+#' \code{get_cai} calculates the Codon Adaptation Index (CAI) for each input
+#' coding sequence. CAI measures how similar the codon usage of a gene is to
+#' that of highly expressed genes, serving as an indicator of translational
+#' efficiency. Higher CAI values suggest better adaptation to the translational
 #' machinery.
 #'
 #' @param cf A matrix of codon frequencies as calculated by \code{count_codons()}.
 #'   Rows represent sequences and columns represent codons.
-#' @param rscu An RSCU table containing CAI weights for each codon. This table 
-#'   should be generated using \code{est_rscu()} based on highly expressed genes, 
+#' @param rscu An RSCU table containing CAI weights for each codon. This table
+#'   should be generated using \code{est_rscu()} based on highly expressed genes,
 #'   or prepared manually with appropriate weight values.
-#' @param level Character string specifying the analysis level: "subfam" (default, 
+#' @param level Character string specifying the analysis level: "subfam" (default,
 #'   analyzes codon subfamilies) or "amino_acid" (analyzes at amino acid level).
-#' @return A named numeric vector of CAI values ranging from 0 to 1. Names 
-#'   correspond to sequence identifiers from the input matrix. Values closer 
+#' @return A named numeric vector of CAI values ranging from 0 to 1. Names
+#'   correspond to sequence identifiers from the input matrix. Values closer
 #'   to 1 indicate higher similarity to highly expressed genes.
 #' @importFrom data.table ':='
 #' @importFrom data.table .N
@@ -117,22 +117,27 @@ get_cai <- function(cf, rscu, level = 'subfam'){
 
 #' Calculate tRNA Adaptation Index (TAI)
 #'
-#' \code{get_tai} calculates the tRNA Adaptation Index (TAI) for each coding 
-#' sequence, which measures how well codon usage matches tRNA availability in 
-#' the cell. Higher TAI values indicate better adaptation to the tRNA pool, 
+#' \code{get_tai} calculates the tRNA Adaptation Index (TAI) for each coding
+#' sequence, which measures how well codon usage matches tRNA availability in
+#' the cell. Higher TAI values indicate better adaptation to the tRNA pool,
 #' suggesting more efficient translation.
 #'
-#' @param cf A matrix of codon frequencies as calculated by \code{count_codons()}. 
-#'   Note: Start codons should be removed from sequences before analysis to 
+#' @param cf A matrix of codon frequencies as calculated by \code{count_codons()}.
+#'   Note: Start codons should be removed from sequences before analysis to
 #'   avoid bias from universal start codon usage.
-#' @param trna_w A table of tRNA weights for each codon, generated using 
+#' @param trna_w A table of tRNA weights for each codon, generated using
 #'   \code{est_trna_weight()}. These weights reflect relative tRNA availability.
-#' @param w_format Character string specifying the format of tRNA weights: 
-#'   "cubar" (default, weights from cubar package) or "tAI" (weights from 
+#' @param w_format Character string specifying the format of tRNA weights:
+#'   "cubar" (default, weights from cubar package) or "tAI" (weights from
 #'   the tAI package format).
-#' @return A named numeric vector of TAI values. Names correspond to sequence 
-#'   identifiers from the input matrix. Values range from 0 to 1, with higher 
-#'   values indicating better adaptation to tRNA availability.
+#' @return A named numeric vector of TAI values. Names correspond to sequence
+#'   identifiers from the input matrix. Values range from 0 to 1, with higher
+#'   values indicating better adaptation to tRNA availability. It should be noted
+#'   that the tAI package does not include codons that correspond to methionine in
+#'   its calculation. In contrast, cubar requires removing the start codon and takes
+#'   into account codons encoding methionine within the sequence. Correspondingly,
+#'   cubar excludes initiator tRNA (iMet in eukaryotes or fMet in prokaryotes), and
+#'   focuses on the anticodons that correspond to regular methionine.
 #' @references dos Reis M, Savva R, Wernisch L. 2004. Solving the riddle of codon usage
 #'   preferences: a test for translational selection. Nucleic Acids Res 32:5036-5044.
 #' @export
@@ -146,7 +151,7 @@ get_cai <- function(cf, rscu, level = 'subfam'){
 #' hist(tai)
 #'
 get_tai <- function(cf, trna_w, w_format = "cubar"){
-    
+
     if(!w_format %in% c('cubar', 'tAI')){
       stop('Possible values for `w_format` are "cubar" and "tAI"')
     }
@@ -166,12 +171,12 @@ get_tai <- function(cf, trna_w, w_format = "cubar"){
 
 #' Calculate GC content of coding sequences
 #'
-#' \code{get_gc} calculates the overall GC content (percentage of guanine and 
+#' \code{get_gc} calculates the overall GC content (percentage of guanine and
 #' cytosine nucleotides) for each coding sequence.
 #'
 #' @param cf A matrix of codon frequencies as calculated by \code{count_codons()}.
 #'   Rows represent sequences and columns represent codons.
-#' @return A named numeric vector of GC content values (ranging from 0 to 1). 
+#' @return A named numeric vector of GC content values (ranging from 0 to 1).
 #'   Names correspond to sequence identifiers from the input matrix.
 #' @export
 #' @examples
@@ -194,7 +199,7 @@ get_gc <- function(cf){
 #'
 #' @param cf matrix of codon frequencies as calculated by \code{count_codons()}.
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.
-#' @param level "subfam" (default) or "amino_acid". For which level to determine 
+#' @param level "subfam" (default) or "amino_acid". For which level to determine
 #'   GC content at synonymous 3rd codon positions.
 #' @returns a named vector of GC3s values. The names of the elements correspond to the sequence names.
 #' @importFrom data.table ':='
@@ -229,7 +234,7 @@ get_gc3s <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
 #' @param cf matrix of codon frequencies as calculated by \code{count_codons()}.
 #' @param codon_table a table of genetic code derived from \code{get_codon_table} or
 #'   \code{create_codon_table}.
-#' @param level "subfam" (default) or "amino_acid". For which level to determine 
+#' @param level "subfam" (default) or "amino_acid". For which level to determine
 #'   GC contents at 4-fold degenerate sites.
 #' @returns a named vector of GC4d values. The names of the elements correspond to the sequence names.
 #' @importFrom data.table ':='
@@ -261,22 +266,22 @@ get_gc4d <- function(cf, codon_table = get_codon_table(), level = 'subfam'){
 
 #' Calculate fraction of optimal codons (Fop)
 #'
-#' \code{get_fop} calculates the fraction of optimal codons (Fop) for each 
-#' coding sequence, which represents the proportion of codons that are 
-#' considered optimal for translation efficiency. Higher Fop values suggest 
+#' \code{get_fop} calculates the fraction of optimal codons (Fop) for each
+#' coding sequence, which represents the proportion of codons that are
+#' considered optimal for translation efficiency. Higher Fop values suggest
 #' stronger selection for optimal codon usage.
 #'
 #' @param cf A matrix of codon frequencies as calculated by \code{count_codons()}.
 #'   Rows represent sequences and columns represent codons.
-#' @param op A character vector specifying which codons are considered optimal. 
-#'   If not provided, optimal codons will be determined automatically using 
+#' @param op A character vector specifying which codons are considered optimal.
+#'   If not provided, optimal codons will be determined automatically using
 #'   \code{est_optimal_codons()}.
-#' @param codon_table A codon table defining the genetic code, derived from 
+#' @param codon_table A codon table defining the genetic code, derived from
 #'   \code{get_codon_table()} or \code{create_codon_table()}.
-#' @param ... Additional arguments passed to \code{est_optimal_codons()} when 
+#' @param ... Additional arguments passed to \code{est_optimal_codons()} when
 #'   optimal codons are determined automatically.
-#' @return A named numeric vector of Fop values (ranging from 0 to 1). Names 
-#'   correspond to sequence identifiers from the input matrix. Higher values 
+#' @return A named numeric vector of Fop values (ranging from 0 to 1). Names
+#'   correspond to sequence identifiers from the input matrix. Higher values
 #'   indicate greater usage of optimal codons.
 #' @references Ikemura T. 1981. Correlation between the abundance of Escherichia coli transfer RNAs
 #'   and the occurrence of the respective codons in its protein genes: a proposal for a synonymous
@@ -402,7 +407,7 @@ get_dp <- function(cf, host_weights, codon_table = get_codon_table(),
 #' cf_all <- count_codons(yeast_cds)
 #' aau_gene <- get_aau(cf_all)
 #' head(aau_gene)
-#' 
+#'
 
 get_aau <- function(cf, codon_table = get_codon_table()){
   aa_code <- id <- codon <- count <- count_codon <- aa_code <-  amino_acid <- . <- NULL # due to NSE notes in R CMD check

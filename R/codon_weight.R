@@ -369,15 +369,14 @@ est_trna_weight <- function(trna_level, codon_table = get_codon_table(), domain 
 #'   determining statistical significance of codon optimality (default depends on method).
 #' @return A data.table containing the input codon table with additional columns 
 #'   indicating codon optimality status, statistical significance, and effect sizes 
-#'   from the regression analysis.
+#'   from the regression analysis. The columns include single-letter abbreviation 
+#'   of the amino acid, three-letter abbreviation, codon, codon subfamily, 
+#'   regression coefficient, regression P-value, Benjamini and Hochberg corrected 
+#'   Q-value, and indication of whether the codon is optimal.
 #' @references 
 #' Presnyak V, Alhusaini N, Chen YH, Martin S, Morris N, Kline N, Olson S, 
 #' Weinberg D, Baker KE, Graveley BR, et al. 2015. Codon optimality is a major 
 #' determinant of mRNA stability. Cell 160:1111-1124.
-#' @export
-#' The columns include single-letter abbreviation of the amino acid, three-letter abbreviation, 
-#' codon, codon subfamily, regression coefficient, regression P-value, Benjamini and Hochberg corrected Q-value, 
-#' and indication of whether the codon is optimal.
 #' @importFrom data.table ':='
 #' @export
 #' @examples

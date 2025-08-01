@@ -13,7 +13,7 @@ suggesting more efficient translation."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">cubar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,7 +83,12 @@ the tAI package format).</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A named numeric vector of TAI values. Names correspond to sequence
   identifiers from the input matrix. Values range from 0 to 1, with higher
-  values indicating better adaptation to tRNA availability.</p>
+  values indicating better adaptation to tRNA availability. It should be noted
+  that the tAI package does not include codons that correspond to methionine in
+  its calculation. In contrast, cubar requires removing the start codon and takes
+  into account codons encoding methionine within the sequence. Correspondingly,
+  cubar excludes initiator tRNA (iMet in eukaryotes or fMet in prokaryotes), and
+  focuses on the anticodons that correspond to regular methionine.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -95,7 +100,9 @@ the tAI package format).</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># calculate TAI of yeast genes based on genomic tRNA copy numbers</span></span></span>
 <span class="r-in"><span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="est_trna_weight.html">est_trna_weight</a></span><span class="op">(</span><span class="va">yeast_trna_gcn</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">yeast_cds_qc</span> <span class="op">&lt;-</span> <span class="fu"><a href="check_cds.html">check_cds</a></span><span class="op">(</span><span class="va">yeast_cds</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># note: check_istop is suppressed to facilitate package development.</span></span></span>
+<span class="r-in"><span><span class="co">#   We suggest enable this option for real sequence analyses.</span></span></span>
+<span class="r-in"><span><span class="va">yeast_cds_qc</span> <span class="op">&lt;-</span> <span class="fu"><a href="check_cds.html">check_cds</a></span><span class="op">(</span><span class="va">yeast_cds</span>, check_istop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cf</span> <span class="op">&lt;-</span> <span class="fu"><a href="count_codons.html">count_codons</a></span><span class="op">(</span><span class="va">yeast_cds_qc</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tai</span> <span class="op">&lt;-</span> <span class="fu">get_tai</span><span class="op">(</span><span class="va">cf</span>, <span class="va">w</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tai</span><span class="op">)</span></span></span>

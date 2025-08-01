@@ -13,7 +13,7 @@ codon usage bias (ENC), suggesting they are preferred for efficient translation.
 
     <a class="navbar-brand me-2" href="../index.html">cubar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,10 @@ determining statistical significance of codon optimality (default depends on met
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A data.table containing the input codon table with additional columns
   indicating codon optimality status, statistical significance, and effect sizes
-  from the regression analysis.</p>
+  from the regression analysis. The columns include single-letter abbreviation
+  of the amino acid, three-letter abbreviation, codon, codon subfamily,
+  regression coefficient, regression P-value, Benjamini and Hochberg corrected
+  Q-value, and indication of whether the codon is optimal.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

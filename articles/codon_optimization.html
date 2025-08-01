@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cubar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,6 +68,9 @@
 
     
     
+<div class="section level3">
+<h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h3>
 <p>Codon optimization modifies a gene’s coding sequence to enhance
 protein production without changing the encoded amino acid sequence. The
 <code>codon_optimize</code> function in the <code>cubar</code> package
@@ -76,10 +79,15 @@ codon usage of the target organism. The first two strategies replace
 rare codons with more frequently used ones, while the third strategy
 employs the third-party deep learning model
 <code>CodonTransformer</code> (Fallahpour et al., 2025) to optimize
-codon usage. Additionally, <code>cubar</code> can integrate the
-state-of-the-art deep learning model <code>SpliceAI</code> (Jaganathan
-et al., 2019) to prevent the unintended introduction of cryptic splice
-sites in optimized sequences. As both <code>SpliceAI</code> and
+codon usage.</p>
+</div>
+<div class="section level3">
+<h3 id="evironment-setup">Evironment setup<a class="anchor" aria-label="anchor" href="#evironment-setup"></a>
+</h3>
+<p>Additionally, <code>cubar</code> can integrate the state-of-the-art
+deep learning model <code>SpliceAI</code> (Jaganathan et al., 2019) to
+prevent the unintended introduction of cryptic splice sites in optimized
+sequences. As both <code>SpliceAI</code> and
 <code>CodonTransformer</code> are Python-based, users must manually
 install these packages. Here we demonstrates how to install them using
 <code>conda</code> (or <code>mamba</code>) in a new environment for use
@@ -90,6 +98,10 @@ in <code>cubar</code>.</p>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">conda</span> activate cubar_env</span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co"># install CodonTransformer and SpliceAI</span></span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="ex">pip</span> install CodonTransformer tensorflow spliceai</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="optimization-strategies">Optimization strategies<a class="anchor" aria-label="anchor" href="#optimization-strategies"></a>
+</h3>
 <div class="section level5">
 <h5 id="naive-method">“naive” method<a class="anchor" aria-label="anchor" href="#naive-method"></a>
 </h5>
@@ -133,7 +145,9 @@ range of organisms across the tree of life. Please refer to the original
 study for more details.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">seq_opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codon_optimize.html">codon_optimize</a></span><span class="op">(</span><span class="va">seq</span>, method <span class="op">=</span> <span class="st">"CodonTransformer"</span>, organism <span class="op">=</span> <span class="st">"Saccharomyces cerevisiae"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seq_opt</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seq_opt</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 9-letter DNAString object</span></span>
+<span><span class="co">#&gt; seq: ATGTTAAGATGA</span></span></code></pre></div>
 <p><code>cubar</code> can generate several optimized sequences at the
 same time using the argument <code>num_sequences</code> with the method
 “IDT” and “CodonTransformer”. When <code>num_sequences</code> is greater
@@ -143,13 +157,28 @@ value.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">seqs_opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codon_optimize.html">codon_optimize</a></span><span class="op">(</span><span class="va">seq</span>, cf <span class="op">=</span> <span class="va">cf_all</span>, method <span class="op">=</span> <span class="st">"IDT"</span>, num_sequences <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seqs_opt</span><span class="op">)</span></span>
+<span><span class="co">#&gt; DNAStringSet object of length 6:</span></span>
+<span><span class="co">#&gt;     width seq</span></span>
+<span><span class="co">#&gt; [1]     9 ATGCTCCGT</span></span>
+<span><span class="co">#&gt; [2]     9 ATGCTGCGT</span></span>
+<span><span class="co">#&gt; [3]     9 ATGCTTCGT</span></span>
+<span><span class="co">#&gt; [4]     9 ATGCTACGT</span></span>
+<span><span class="co">#&gt; [5]     9 ATGCTCCGA</span></span>
+<span><span class="co">#&gt; [6]     9 ATGCTTCGA</span></span>
 <span><span class="va">seqs_opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codon_optimize.html">codon_optimize</a></span><span class="op">(</span><span class="va">seq</span>, method <span class="op">=</span> <span class="st">"CodonTransformer"</span>, organism <span class="op">=</span> <span class="st">"Saccharomyces cerevisiae"</span>,</span>
 <span>num_sequences <span class="op">=</span> <span class="fl">10</span>, deterministic <span class="op">=</span><span class="cn">FALSE</span>, temperature <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seqs_opt</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seqs_opt</span><span class="op">)</span></span>
+<span><span class="co">#&gt; DNAStringSet object of length 4:</span></span>
+<span><span class="co">#&gt;     width seq</span></span>
+<span><span class="co">#&gt; [1]    12 ATGTTGAGATAA</span></span>
+<span><span class="co">#&gt; [2]    12 ATGTTAAGATAA</span></span>
+<span><span class="co">#&gt; [3]    12 ATGTTGAGATGA</span></span>
+<span><span class="co">#&gt; [4]    12 ATGTTGAGATAG</span></span></code></pre></div>
 </div>
-<div class="section level5">
-<h5 id="splice-site-detection">Splice site detection<a class="anchor" aria-label="anchor" href="#splice-site-detection"></a>
-</h5>
+</div>
+<div class="section level3">
+<h3 id="splice-site-detection">Splice site detection<a class="anchor" aria-label="anchor" href="#splice-site-detection"></a>
+</h3>
 <p>In addition, <code>cubar</code> integrated the deep learning tool
 <code>SpliceAI</code> to identify potential splice sites with the
 argument <code>spliceai</code>. When the probabilities of non-splice
@@ -160,9 +189,51 @@ otherwise it is marked as TRUE.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">seqs_opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codon_optimize.html">codon_optimize</a></span><span class="op">(</span><span class="va">seq</span>, cf <span class="op">=</span> <span class="va">cf_all</span>, method <span class="op">=</span> <span class="st">"IDT"</span>, num_sequences <span class="op">=</span> <span class="fl">10</span>, spliceai <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seqs_opt</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     Candidate_optimized_sequence Possible_splice_junction</span></span>
+<span><span class="co">#&gt;                           &lt;char&gt;                   &lt;lgcl&gt;</span></span>
+<span><span class="co">#&gt;  1:                    ATGCTACGC                    FALSE</span></span>
+<span><span class="co">#&gt;  2:                    ATGCTGCGA                    FALSE</span></span>
+<span><span class="co">#&gt;  3:                    ATGCTGCGT                    FALSE</span></span>
+<span><span class="co">#&gt;  4:                    ATGCTTCGC                    FALSE</span></span>
+<span><span class="co">#&gt;  5:                    ATGCTACGT                    FALSE</span></span>
+<span><span class="co">#&gt;  6:                    ATGCTTCGG                    FALSE</span></span>
+<span><span class="co">#&gt;  7:                    ATGCTCCGT                    FALSE</span></span>
+<span><span class="co">#&gt;  8:                    ATGCTTCGT                    FALSE</span></span>
+<span><span class="co">#&gt;  9:                    ATGCTCCGA                    FALSE</span></span>
+<span><span class="co">#&gt; 10:                    ATGCTTCGA                    FALSE</span></span>
 <span><span class="va">seq_opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codon_optimize.html">codon_optimize</a></span><span class="op">(</span><span class="va">seq</span>, method <span class="op">=</span> <span class="st">"CodonTransformer"</span>, organism <span class="op">=</span> <span class="st">"Saccharomyces cerevisiae"</span>, spliceai <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seq_opt</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">seq_opt</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    Candidate_optimized_sequence Possible_splice_junction</span></span>
+<span><span class="co">#&gt;                          &lt;char&gt;                   &lt;lgcl&gt;</span></span>
+<span><span class="co">#&gt; 1:                 ATGTTAAGATGA                    FALSE</span></span></code></pre></div>
 </div>
+<div class="section level3">
+<h3 id="recommendations">Recommendations<a class="anchor" aria-label="anchor" href="#recommendations"></a>
+</h3>
+<p>Codon usage within a coding sequence influences multiple aspects of
+mRNA biology, including RNA secondary structure, translation elongation,
+co-translational folding, and mRNA stability (Liu et al., 2021).
+Achieving an optimal coding sequence requires carefully balancing all of
+these factors, making codon optimization a more complex task than it may
+initially appear. The <code>naive</code> approach implemented in
+cubar—which simply replaces each non-optimal codon with the most
+preferred one—fails to account for local sequence context and may lead
+to unintended consequences. For instance, rare codons are often
+strategically positioned to facilitate proper folding of protein
+domains; indiscriminately replacing them with preferred codons can
+disrupt this process and promote aggregation (Moss et al., 2024).</p>
+<p>Given these complexities, we recommend using more sophisticated and
+context-aware methods for codon optimization. Established strategies
+such as that implemented in the IDT’s codon optimization tool have
+demonstrated long-term effectiveness and are widely adopted within the
+research community. Meanwhile, newer approaches based on deep generative
+models—such as CodonTransformer (Fallahpour et al., 2025) and CodonBert
+(Li et al., 2024)—leverage large-scale natural sequence data and
+advanced architectures like recurrent neural networks and attention
+mechanisms to capture context-dependent codon usage patterns (Novakovsky
+et al., 2023). These deep learning–based models offer a powerful,
+flexible framework for codon optimization and are likely to play a
+central role in future sequence design workflows.</p>
 <div class="section level5">
 <h5 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h5>
@@ -179,7 +250,27 @@ Jan 24;176(3):535-548.e24. doi: 10.1016/j.cell.2018.12.015. Epub 2019
 Jan 17. PMID: 30661751.</li>
 <li>Method used by the IDT codon optimization tool: <a href="https://sg.idtdna.com/pages/education/decoded/article/idt-codon-optimization-tool-makes-synthetic-gene-design-easy" class="external-link uri">https://sg.idtdna.com/pages/education/decoded/article/idt-codon-optimization-tool-makes-synthetic-gene-design-easy</a>
 </li>
+<li>Liu Y, Yang Q, Zhao F. Synonymous but Not Silent: The Codon Usage
+Code for Gene Expression and Protein Folding. Annu Rev Biochem. 2021 Jun
+20;90:375-401. doi: 10.1146/annurev-biochem-071320-112701. Epub 2021 Jan
+13. PMID: 33441035; PMCID: PMC8284178.</li>
+<li>Moss MJ, Chamness LM, Clark PL. The Effects of Codon Usage on
+Protein Structure and Folding. Annu Rev Biophys. 2024 Jul;53(1):87-108.
+doi: 10.1146/annurev-biophys-030722-020555. Epub 2024 Jun 28. PMID:
+38134335; PMCID: PMC11227313.</li>
+<li>Li S, Moayedpour S, Li R, Bailey M, Riahi S, Kogler-Anele L, Miladi
+M, Miner J, Pertuy F, Zheng D, Wang J, Balsubramani A, Tran K, Zacharia
+M, Wu M, Gu X, Clinton R, Asquith C, Skaleski J, Boeglin L, Chivukula S,
+Dias A, Strugnell T, Montoya FU, Agarwal V, Bar-Joseph Z, Jager S.
+CodonBERT large language model for mRNA vaccines. Genome Res. 2024 Aug
+20;34(7):1027-1035. doi: 10.1101/gr.278870.123. PMID: 38951026; PMCID:
+PMC11368176.</li>
+<li>Novakovsky G, Dexter N, Libbrecht MW, Wasserman WW, Mostafavi S.
+Obtaining genetics insights from deep learning via explainable
+artificial intelligence. Nat Rev Genet. 2023 Feb;24(2):125-137. doi:
+10.1038/s41576-022-00532-2. Epub 2022 Oct 3. PMID: 36192604.</li>
 </ul>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

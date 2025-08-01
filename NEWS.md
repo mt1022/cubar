@@ -1,4 +1,20 @@
-# cubar (development version)
+# cubar 1.2.0
+* Added functions to analyze amino acid usage.
+
+* Added new options IDT and CodonTransformer for codon optimization and 
+  SpliceAI for splice site detection.
+  
+* Added supported for tRNA weights from tAI package.
+
+* New vignette for codon optimization.
+
+* Fixed bugs in tAI calculation.
+
+* Separated codon-anticodon pairing calculation and visualization.
+
+* Improved documentation for all functions.
+
+* Miscellaneous bug fixes and code restructuring.
 
 # cubar 1.1.0
 

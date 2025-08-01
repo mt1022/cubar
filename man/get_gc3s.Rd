@@ -11,7 +11,7 @@ get_gc3s(cf, codon_table = get_codon_table(), level = "subfam")
 
 \item{codon_table}{a table of genetic code derived from \code{get_codon_table} or \code{create_codon_table}.}
 
-\item{level}{"subfam" (default) or "amino_acid". For which level to determine 
+\item{level}{"subfam" (default) or "amino_acid". For which level to determine
 GC content at synonymous 3rd codon positions.}
 }
 \value{

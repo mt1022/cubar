@@ -38,7 +38,10 @@ determining statistical significance of codon optimality (default depends on met
 \value{
 A data.table containing the input codon table with additional columns 
   indicating codon optimality status, statistical significance, and effect sizes 
-  from the regression analysis.
+  from the regression analysis. The columns include single-letter abbreviation 
+  of the amino acid, three-letter abbreviation, codon, codon subfamily, 
+  regression coefficient, regression P-value, Benjamini and Hochberg corrected 
+  Q-value, and indication of whether the codon is optimal.
 }
 \description{
 \code{est_optimal_codons} identifies optimal codons within each codon family 

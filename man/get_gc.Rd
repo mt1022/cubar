@@ -11,11 +11,11 @@ get_gc(cf)
 Rows represent sequences and columns represent codons.}
 }
 \value{
-A named numeric vector of GC content values (ranging from 0 to 1). 
+A named numeric vector of GC content values (ranging from 0 to 1).
   Names correspond to sequence identifiers from the input matrix.
 }
 \description{
-\code{get_gc} calculates the overall GC content (percentage of guanine and 
+\code{get_gc} calculates the overall GC content (percentage of guanine and
 cytosine nucleotides) for each coding sequence.
 }
 \examples{

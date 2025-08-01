@@ -12,7 +12,7 @@ get_gc4d(cf, codon_table = get_codon_table(), level = "subfam")
 \item{codon_table}{a table of genetic code derived from \code{get_codon_table} or
 \code{create_codon_table}.}
 
-\item{level}{"subfam" (default) or "amino_acid". For which level to determine 
+\item{level}{"subfam" (default) or "amino_acid". For which level to determine
 GC contents at 4-fold degenerate sites.}
 }
 \value{

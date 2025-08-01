@@ -10,21 +10,21 @@ get_enc(cf, codon_table = get_codon_table(), level = "subfam")
 \item{cf}{A matrix of codon frequencies as calculated by \code{count_codons()}.
 Rows represent sequences and columns represent codons.}
 
-\item{codon_table}{A codon table defining the genetic code, derived from 
+\item{codon_table}{A codon table defining the genetic code, derived from
 \code{get_codon_table()} or \code{create_codon_table()}.}
 
-\item{level}{Character string specifying the analysis level: "subfam" (default, 
+\item{level}{Character string specifying the analysis level: "subfam" (default,
 analyzes codon subfamilies) or "amino_acid" (analyzes at amino acid level).}
 }
 \value{
-A named numeric vector of ENC values. Names correspond to sequence 
-  identifiers from the input matrix. ENC values typically range from 20 
+A named numeric vector of ENC values. Names correspond to sequence
+  identifiers from the input matrix. ENC values typically range from 20
   (maximum bias) to 61 (uniform usage).
 }
 \description{
-\code{get_enc} computes the effective number of codons (ENC) for each coding 
-sequence, which quantifies the degree of codon usage bias. Lower ENC values 
-indicate stronger bias (fewer codons are used), while higher values indicate 
+\code{get_enc} computes the effective number of codons (ENC) for each coding
+sequence, which quantifies the degree of codon usage bias. Lower ENC values
+indicate stronger bias (fewer codons are used), while higher values indicate
 more uniform codon usage.
 }
 \examples{

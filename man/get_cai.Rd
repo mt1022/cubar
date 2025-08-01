@@ -10,23 +10,23 @@ get_cai(cf, rscu, level = "subfam")
 \item{cf}{A matrix of codon frequencies as calculated by \code{count_codons()}.
 Rows represent sequences and columns represent codons.}
 
-\item{rscu}{An RSCU table containing CAI weights for each codon. This table 
-should be generated using \code{est_rscu()} based on highly expressed genes, 
+\item{rscu}{An RSCU table containing CAI weights for each codon. This table
+should be generated using \code{est_rscu()} based on highly expressed genes,
 or prepared manually with appropriate weight values.}
 
-\item{level}{Character string specifying the analysis level: "subfam" (default, 
+\item{level}{Character string specifying the analysis level: "subfam" (default,
 analyzes codon subfamilies) or "amino_acid" (analyzes at amino acid level).}
 }
 \value{
-A named numeric vector of CAI values ranging from 0 to 1. Names 
-  correspond to sequence identifiers from the input matrix. Values closer 
+A named numeric vector of CAI values ranging from 0 to 1. Names
+  correspond to sequence identifiers from the input matrix. Values closer
   to 1 indicate higher similarity to highly expressed genes.
 }
 \description{
-\code{get_cai} calculates the Codon Adaptation Index (CAI) for each input 
-coding sequence. CAI measures how similar the codon usage of a gene is to 
-that of highly expressed genes, serving as an indicator of translational 
-efficiency. Higher CAI values suggest better adaptation to the translational 
+\code{get_cai} calculates the Codon Adaptation Index (CAI) for each input
+coding sequence. CAI measures how similar the codon usage of a gene is to
+that of highly expressed genes, serving as an indicator of translational
+efficiency. Higher CAI values suggest better adaptation to the translational
 machinery.
 }
 \examples{

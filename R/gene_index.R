@@ -144,7 +144,9 @@ get_cai <- function(cf, rscu, level = 'subfam'){
 #' @examples
 #' # calculate TAI of yeast genes based on genomic tRNA copy numbers
 #' w <- est_trna_weight(yeast_trna_gcn)
-#' yeast_cds_qc <- check_cds(yeast_cds)
+#' # note: check_istop is suppressed to facilitate package development.
+#' #   We suggest enable this option for real sequence analyses.
+#' yeast_cds_qc <- check_cds(yeast_cds, check_istop = FALSE)
 #' cf <- count_codons(yeast_cds_qc)
 #' tai <- get_tai(cf, w)
 #' head(tai)

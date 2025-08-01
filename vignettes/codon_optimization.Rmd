@@ -58,6 +58,8 @@ The "CodonTransformer" method optimizes codon usage with the third-party softwar
 ```{r, eval=FALSE}
 seq_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae")
 print(seq_opt)
+#> 9-letter DNAString object
+#> seq: ATGTTAAGATGA
 ```
 
 `cubar` can generate several optimized sequences at the same time using the argument `num_sequences` with the method "IDT" and "CodonTransformer". When `num_sequences` is greater than 1, identical duplicate sequences will be retained as a single copy, potentially resulting in a final sequence count less than the specified value.
@@ -65,9 +67,23 @@ print(seq_opt)
 ```{r, eval=FALSE}
 seqs_opt <- codon_optimize(seq, cf = cf_all, method = "IDT", num_sequences = 10)
 print(seqs_opt)
+#> DNAStringSet object of length 6:
+#>     width seq
+#> [1]     9 ATGCTCCGT
+#> [2]     9 ATGCTGCGT
+#> [3]     9 ATGCTTCGT
+#> [4]     9 ATGCTACGT
+#> [5]     9 ATGCTCCGA
+#> [6]     9 ATGCTTCGA
 seqs_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae",
 num_sequences = 10, deterministic =FALSE, temperature = 0.4)
 print(seqs_opt)
+#> DNAStringSet object of length 4:
+#>     width seq
+#> [1]    12 ATGTTGAGATAA
+#> [2]    12 ATGTTAAGATAA
+#> [3]    12 ATGTTGAGATGA
+#> [4]    12 ATGTTGAGATAG
 ```
 
 ### Splice site detection
@@ -76,8 +92,23 @@ In addition, `cubar` integrated the deep learning tool `SpliceAI` to identify po
 ```{r, eval=FALSE}
 seqs_opt <- codon_optimize(seq, cf = cf_all, method = "IDT", num_sequences = 10, spliceai = TRUE)
 print(seqs_opt)
+#>     Candidate_optimized_sequence Possible_splice_junction
+#>                           <char>                   <lgcl>
+#>  1:                    ATGCTACGC                    FALSE
+#>  2:                    ATGCTGCGA                    FALSE
+#>  3:                    ATGCTGCGT                    FALSE
+#>  4:                    ATGCTTCGC                    FALSE
+#>  5:                    ATGCTACGT                    FALSE
+#>  6:                    ATGCTTCGG                    FALSE
+#>  7:                    ATGCTCCGT                    FALSE
+#>  8:                    ATGCTTCGT                    FALSE
+#>  9:                    ATGCTCCGA                    FALSE
+#> 10:                    ATGCTTCGA                    FALSE
 seq_opt <- codon_optimize(seq, method = "CodonTransformer", organism = "Saccharomyces cerevisiae", spliceai = TRUE)
 print(seq_opt)
+#>    Candidate_optimized_sequence Possible_splice_junction
+#>                          <char>                   <lgcl>
+#> 1:                 ATGTTAAGATGA                    FALSE
 ```
 
 ### Recommendations

@@ -101,14 +101,15 @@ codon_optimize <- function(
   if(!inherits(seq, 'DNAString')){
     seq <- Biostrings::DNAString(seq)
   }
-  tryCatch({
-    protein <- as.character(Biostrings::translate(seq))
+  protein <- tryCatch({
+    as.character(Biostrings::translate(seq))
   }, warning = function(w){
     num_ignored <- length(seq) %% 3
     message(sprintf(
       "Warning: due to incomplete codon, the last %d base%s ignored.",
       num_ignored,
       ifelse(num_ignored == 1, " was", "s were")))
+    as.character(Biostrings::translate(seq[1:(length(seq) - num_ignored)]))
   })
   stop_codon <- strsplit(protein, "")[[1]] == "*"
   if(sum(stop_codon) != 0){

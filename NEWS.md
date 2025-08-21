@@ -1,3 +1,5 @@
+# cubar (development version)
+
 # cubar 1.2.0
 * Added functions to analyze amino acid usage.
 

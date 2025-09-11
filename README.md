@@ -187,7 +187,7 @@ If you use cubar in your research, please cite:
 
 > Mengyue Liu, Bu Zi, Hebin Zhang, Hong Zhang, cubar: a versatile package for codon usage bias analysis in R, Genetics, 2025, iyaf191, https://doi.org/10.1093/genetics/iyaf191
 
-Please also cite the original studies associated with each codon usage metric or third-party software. You can find the relevant references in the documentation of the corresponding functions (for example, type ?cubar::get_enc in the R console and check the 'References' section in the help page).
+Please also cite the original studies associated with each codon usage metric or third-party software. You can find the relevant references in the documentation of the corresponding functions (for example, type `?cubar::get_enc` in the R console and check the "References" section in the help page).
 
 ---
 

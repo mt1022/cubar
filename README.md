@@ -125,7 +125,7 @@ devtools::install_github("mt1022/cubar", dependencies = TRUE)
 
 ## Example Workflow
 
-Here's a typical analysis workflow demonstrating key functionality:
+Here's a toy example demonstrating key functionality:
 
 ```r
 library(cubar)
@@ -142,7 +142,7 @@ codon_freq <- count_codons(clean_cds)
 enc <- get_enc(codon_freq)           # Effective number of codons
 gc3s <- get_gc3s(codon_freq)         # GC content at 3rd positions
 
-# 4. Analyze highly expressed genes
+# 4. Calculate CAI with RSCU of highly expressed genes
 data(yeast_exp)
 yeast_exp <- yeast_exp[yeast_exp$gene_id %in% rownames(codon_freq), ]
 high_expr <- head(yeast_exp[order(-yeast_exp$fpkm), ], 500)
@@ -177,17 +177,18 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- **GitHub Copilot** was used to suggest code snippets during development
-- **[GitHub Education](https://education.github.com/)** for providing free access to development tools
 - The R and Bioconductor communities for excellent foundational packages
 - Contributors and users who have provided feedback and improvements
+- **[GitHub Education](https://education.github.com/)** for providing free access to development tools
+- **GitHub Copilot** was used to suggest code snippets during development
+
 
 ## Citation
 If you use cubar in your research, please cite:
 
 > Mengyue Liu, Bu Zi, Hebin Zhang, Hong Zhang, cubar: a versatile package for codon usage bias analysis in R, Genetics, 2025, iyaf191, https://doi.org/10.1093/genetics/iyaf191
 
-Please also cite the original studies associated with each codon usage metric or third-party software. You can find the relevant references in the documentation of the corresponding functions (for example, type `?cubar::get_enc` in the R console and check the "References" section in the help page).
+Please also cite the original studies associated with any codon usage metrics or third-party software you use. You can find the relevant references in the documentation of the corresponding functions (for example, type `?cubar::get_enc` in the R console and check the "References" section in the help page).
 
 ---
 

@@ -240,7 +240,7 @@
 <div class="section level2">
 <h2 id="example-workflow">Example Workflow<a class="anchor" aria-label="anchor" href="#example-workflow"></a>
 </h2>
-<p>Here’s a typical analysis workflow demonstrating key functionality:</p>
+<p>Here’s a toy example demonstrating key functionality:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mt1022/cubar" class="external-link">cubar</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -256,7 +256,7 @@
 <span><span class="va">enc</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_enc.html">get_enc</a></span><span class="op">(</span><span class="va">codon_freq</span><span class="op">)</span>           <span class="co"># Effective number of codons</span></span>
 <span><span class="va">gc3s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_gc3s.html">get_gc3s</a></span><span class="op">(</span><span class="va">codon_freq</span><span class="op">)</span>         <span class="co"># GC content at 3rd positions</span></span>
 <span></span>
-<span><span class="co"># 4. Analyze highly expressed genes</span></span>
+<span><span class="co"># 4. Calculate CAI with RSCU of highly expressed genes</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">)</span></span>
 <span><span class="va">yeast_exp</span> <span class="op">&lt;-</span> <span class="va">yeast_exp</span><span class="op">[</span><span class="va">yeast_exp</span><span class="op">$</span><span class="va">gene_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">codon_freq</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">high_expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">yeast_exp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">yeast_exp</span><span class="op">$</span><span class="va">fpkm</span><span class="op">)</span>, <span class="op">]</span>, <span class="fl">500</span><span class="op">)</span></span>
@@ -303,12 +303,12 @@
 <h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h2>
 <ul>
-<li>
-<strong>GitHub Copilot</strong> was used to suggest code snippets during development</li>
-<li>
-<strong><a href="https://education.github.com/" class="external-link">GitHub Education</a></strong> for providing free access to development tools</li>
 <li>The R and Bioconductor communities for excellent foundational packages</li>
 <li>Contributors and users who have provided feedback and improvements</li>
+<li>
+<strong><a href="https://education.github.com/" class="external-link">GitHub Education</a></strong> for providing free access to development tools</li>
+<li>
+<strong>GitHub Copilot</strong> was used to suggest code snippets during development</li>
 </ul>
 </div>
 <div class="section level2">
@@ -318,7 +318,7 @@
 <blockquote>
 <p>Mengyue Liu, Bu Zi, Hebin Zhang, Hong Zhang, cubar: a versatile package for codon usage bias analysis in R, Genetics, 2025, iyaf191, <a href="https://doi.org/10.1093/genetics/iyaf191" class="external-link uri">https://doi.org/10.1093/genetics/iyaf191</a></p>
 </blockquote>
-<p>Please also cite the original studies associated with each codon usage metric or third-party software. You can find the relevant references in the documentation of the corresponding functions (for example, type <code><a href="reference/get_enc.html">?cubar::get_enc</a></code> in the R console and check the “References” section in the help page).</p>
+<p>Please also cite the original studies associated with any codon usage metrics or third-party software you use. You can find the relevant references in the documentation of the corresponding functions (for example, type <code><a href="reference/get_enc.html">?cubar::get_enc</a></code> in the R console and check the “References” section in the help page).</p>
 <hr>
 <div align="center">
 <p><strong><a href="https://mt1022.github.io/cubar/">📚 Documentation</a> • <a href="https://github.com/mt1022/cubar/issues" class="external-link">🐛 Report Bug</a> • <a href="https://github.com/mt1022/cubar/issues" class="external-link">💡 Request Feature</a></strong></p>

@@ -6,6 +6,7 @@
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/cubar)](https://CRAN.R-project.org/package=cubar)
 [![](https://cranlogs.r-pkg.org/badges/cubar)](https://cran.r-project.org/package=cubar)
+[![DOI:10.1093/genetics/iyaf191](https://img.shields.io/badge/DOI-10.1093%2Fgenetics%2Fiyaf191-blue?style=flat-square)](https://doi.org/10.1093/genetics/iyaf191)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10155990.svg)](https://doi.org/10.5281/zenodo.10155990)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
